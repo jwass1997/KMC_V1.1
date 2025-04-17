@@ -22,6 +22,28 @@ class SystemGraph {
         SystemGraph(const std::string& path);
 
         ~SystemGraph();
+
+        std::filesystem::path getConfigFilePath(const std::string& folderPath, const std::string& fileName);
+
+        void initializeSystemGraph();
+
+        void initializeSystemGraph(const std::string& path);
+   
+        void initializeCoordinates();
+
+        void initializeElectrodes();
+
+        void initializeCoordinates(const std::string& configuration);
+
+        void initializeElectrodes(const std::string& configuration);
+
+        void initializeContainers();
+
+        void initializeConstantStateEnergies();
+
+        void initializeOccupiedStates();
+
+        void initializePotential();
         
         const unsigned int& getAcceptorNumber() const;
 
@@ -33,11 +55,11 @@ class SystemGraph {
 
         const double& getDistance(unsigned int stateIndex1, unsigned int stateIndex2) const;
 
-        const std::vector<double>& getAcceptorCoordinates(unsigned int acceptorIndex) const;
+        const std::vector<double> getAcceptorCoordinates(unsigned int acceptorIndex) const;
 
-        const std::vector<double>& getDonorCoordinates(unsigned int donorIndex) const;
+        const std::vector<double> getDonorCoordinates(unsigned int donorIndex) const;
 
-        const std::vector<double>& getElectrodeCoordinates(unsigned int acceptorIndex) const;
+        const std::vector<double> getElectrodeCoordinates(unsigned int electrodeIndex) const;
 
         const int& getOccupationOfState(unsigned int stateIndex) const;
 
@@ -73,7 +95,7 @@ class SystemGraph {
 
         void increaseEventCount(unsigned int stateIndex1, unsigned int stateIndex2);
 
-        void increaseSystemTime(double timeStep);
+        void increaseSystemTime(double totatlSumOfTransitionRates);
 
         void resetEventCounts();
 
@@ -89,7 +111,7 @@ class SystemGraph {
         unsigned int nAcceptors = 200;
         unsigned int nDonors = 3;
         unsigned int nElectrodes = 8;
-
+    
         unsigned int numOfStates;
 
         double radius = 100.0;
@@ -110,15 +132,21 @@ class SystemGraph {
 
         double systemTime = 0.0;
 
-        std::vector<std::vector<double>> acceptorCoordinates;
+        double totalSumOfRates;
 
-        std::vector<std::vector<double>> donorCoordinates;
+        double cumulativeSumOfRates;
 
-        std::vector<std::vector<double>> electrodeCoordinates;
+        std::vector<double> acceptorCoordinates;
+
+        std::vector<double> donorCoordinates;
+
+        std::vector<double> electrodeCoordinates;
+
+        std::vector<double> distanceMatrix;
 
         std::vector<Electrode* > electrodeData;
 
-        std::vector<std::vector<int>> eventCounts;
+        std::vector<int> eventCounts;
 
         std::vector<int> occupationOfStates;
 
@@ -126,13 +154,15 @@ class SystemGraph {
 
         std::vector<double> stateEnergies;
 
-        std::vector<std::vector<double>> constantTransitionRates;
+        std::vector<double> constantTransitionRates;
 
-        std::vector<std::vector<double>> dynamicalTransitionRates;
+        std::vector<double> dynamicalTransitionRates;
 
-        std::vector<std::vector<int>> listOfHoppingPartners;
+        std::vector<int> numOfNeighbours;
+        
+        std::vector<int> jaggedArrayLengths;
 
-        std::vector<std::vector<double>> distanceMatrix;
+        std::vector<int> neighbourIndices;
 
         std::vector<std::tuple<double, double>> defaultCircularElectrodeConfig = {
             {0.0, -1.0},
@@ -148,26 +178,4 @@ class SystemGraph {
         CircularFEMSolver* finiteElementSolver;
 
         friend class Simulator;
-
-        std::filesystem::path getConfigFilePath(const std::string& folderPath, const std::string& fileName);
-
-        void initializeSystemGraph();
-
-        void initializeSystemGraph(const std::string& path);
-   
-        void initializeCoordinates();
-
-        void initializeElectrodes();
-
-        void initializeCoordinates(const std::string& configuration);
-
-        void initializeElectrodes(const std::string& configuration);
-
-        void initializeContainers();
-
-        void initializeConstantStateEnergies();
-
-        void initializeOccupiedStates();
-
-        void initializePotential();
 };

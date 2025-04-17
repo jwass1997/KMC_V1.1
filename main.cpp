@@ -21,8 +21,8 @@ int main() {
     std::cout<<__cplusplus<<"\n";
     //createBatchOfSingleSystem(20, inputElectrodes, outpuElectrodes, -1.5, 1.5, 1e4, 1e4, 1, defaultDeviceConfigs, saveFolder, 1);
     //auto start = std::chrono::high_resolution_clock::now();
-    //recordDevice(deviceID1, 1e4, 1e6, defaultDeviceConfigs, saveFolder);
+    //recordDevice(deviceID1, 1e4, 1e5, defaultDeviceConfigs, saveFolder);
     //auto end = std::chrono::high_resolution_clock::now();
     //std::cout << "Simulation time: " << std::chrono::duration_cast<std::chrono::seconds>(end-start).count() << "\n";
-    //voltageCurrentCharacteristic(-1.5, 1.5, 5, controlElectrodeIndex, scanElectrodeIndex, 1e4, 1e7, 1, defaultDeviceConfigs, saveFolder);
+    voltageCurrentCharacteristic(-1.5, 1.5, 20, controlElectrodeIndex, scanElectrodeIndex, 1e4, 1e5, 1, defaultDeviceConfigs, saveFolder);
 }

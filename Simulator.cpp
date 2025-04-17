@@ -58,7 +58,7 @@ void Simulator::singleMCStep(bool trackingData) {
     system->increaseSystemTime(totalRate);
 
     if(trackingData) {
-        system->eventCounts[selectedI][selectedJ] += 1;
+        system->eventCounts[selectedI*numOfStates + selectedJ] += 1;
     }
 }
 

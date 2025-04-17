@@ -1,67 +1,108 @@
-void createBatchOfSingleSystem(
-    int batchSize, 
-    std::vector<int> inputElectrodes,
-    std::vector<int> outputElectrodes,
-    double minVoltage, 
-    double maxVoltage,
-    int equilibriumSteps,
-    int simulationSteps,
-    int numOfIntervals,
-    const std::string& defaultConfigs, 
-    const std::string& saveFolderPath, 
-    int batchID) {
+#include <iostream>
+#include <vector>
+#include <chrono>
 
-    if(saveFolderPath.empty()) {
-        throw std::invalid_argument("No save folder specified !");
+using namespace std;
+using namespace std::chrono;
+
+const int ROWS = 10000;
+const int COLS = 10000;
+
+// Benchmark using a nested C-style 2D array
+void benchmark_array() {
+    static int arr[ROWS][COLS];
+    // Initialize the array
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j)
+            arr[i][j] = 1;
+
+    volatile long long sum = 0;  // volatile prevents unwanted optimizations
+    auto start = high_resolution_clock::now();
+
+    // Sum all elements
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j)
+            sum += arr[i][j];
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end - start).count();
+    cout << "C-style 2D array: Sum = " << sum << ", Time = " << duration << " ms" << endl;
+}
+
+// Benchmark using a flattened C-style array (dynamically allocated)
+void benchmark_flattened_array() {
+    // Allocate one contiguous block for ROWS * COLS integers.
+    int* flat_arr = new int[ROWS * COLS];
+
+    // Initialize the flattened array
+    for (int i = 0; i < ROWS * COLS; ++i)
+        flat_arr[i] = 1;
+
+    volatile long long sum = 0;
+    auto start = high_resolution_clock::now();
+
+    // Use manual index arithmetic to simulate 2D access
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j)
+            sum += flat_arr[i * COLS + j];
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end - start).count();
+    cout << "Flattened C-style array: Sum = " << sum << ", Time = " << duration << " ms" << endl;
+
+    // Free the allocated memory
+    delete[] flat_arr;
+}
+
+// Benchmark using a vector of vectors
+void benchmark_nested_vector() {
+    // Create a vector of ROWS vectors, each of size COLS, filled with 1
+    vector<vector<int>> vec(ROWS, vector<int>(COLS, 1));
+    
+    volatile long long sum = 0;
+    auto start = high_resolution_clock::now();
+
+    // Sum all elements via two levels of indexing
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j)
+            sum += vec[i][j];
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end - start).count();
+    cout << "Nested vector: Sum = " << sum << ", Time = " << duration << " ms" << endl;
+}
+
+// Benchmark using a flattened vector with manual index computation
+void benchmark_flattened_vector() {
+    // Create a single vector with ROWS * COLS elements, filled with 1
+    vector<int> vec(ROWS * COLS, 1);
+    
+    volatile long long sum = 0;
+    auto start = high_resolution_clock::now();
+
+    // Access elements using index arithmetic
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j)
+            sum += vec[i * COLS + j];
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end - start).count();
+    cout << "Flattened vector: Sum = " << sum << ", Time = " << duration << " ms" << endl;
+}
+
+int main() {
+    /* cout << "Benchmarking a " << ROWS << " x " << COLS << " matrix:" << endl;
+
+    benchmark_array();
+    benchmark_flattened_array();
+    benchmark_nested_vector();
+    benchmark_flattened_vector();
+
+    return 0; */
+    for (int i = 0; i < 3; ++i) {
+        for (int j = i+1; j < 3; ++j) {
+            std::cout<<i*3 + j<<"\n";
+            std::cout<<j*3 + i<<"\n";
+        }
     }
-
-    std::string fileName = saveFolderPath + "batch" + std::to_string(batchID) + ".npz";
-
-    cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
-    std::vector<double> inputs(batchSize*inputElectrodes.size(), 0.0);
-    std::vector<double> outputs(batchSize*outputElectrodes.size(), 0.0);   
-    std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), inputElectrodes.size()}; 
-    std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize), outputElectrodes.size()}; 
-
-    for (int batch = 0; batch < batchSize; ++batch) {
-        Simulator simulator(defaultConfigs);
-        int nAcceptors = simulator.system->getAcceptorNumber();
-        int numOfStates = simulator.system->getNumOfStates();
-
-        for (int inputElectrodeIndex = 0; inputElectrodeIndex < inputElectrodes.size(); ++inputElectrodeIndex) {
-            double voltage = sampleFromUniformDistribution(minVoltage, maxVoltage);
-            simulator.system->updateElectrodeVoltage(inputElectrodeIndex, voltage);
-            inputs[inputElectrodeIndex] = voltage;
-        }
-
-        for (const auto& outputElectrodeIndex : outputElectrodes) {
-            simulator.system->updateElectrodeVoltage(outputElectrodeIndex, 0.0);
-        }
-
-        simulator.simulateNumberOfSteps(equilibriumSteps, false);
-
-        int intervalSteps = simulationSteps / numOfIntervals;
-        int intervalCounter = 0;
-        while (intervalCounter < numOfIntervals) {
-            double startClock = simulator.system->getSystemTime();
-            simulator.simulateNumberOfSteps(intervalSteps, true);
-            double endClock = simulator.system->getSystemTime();
-            double elapsedTime = endClock - startClock;
-            for (int i = 0; i < outputElectrodes.size(); ++i) {
-                int inCounts = 0;
-                int outCounts = 0;
-                double averageCurrent = 0.0;
-                for (int j = 0; j < numOfStates; ++j) {
-                    outCounts += simulator.system->getNumberOfEvents(nAcceptors+outputElectrodes[i], j);
-                    inCounts += simulator.system->getNumberOfEvents(j, nAcceptors+outputElectrodes[i]);            
-                } 
-                outputs[i + batch*outputElectrodes.size()] += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
-            }
-            simulator.system->resetEventCounts();
-            intervalCounter++;
-        }
-    }
-
-    cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
-    cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
 }
