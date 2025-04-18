@@ -144,6 +144,8 @@ class SystemGraph {
 
         std::vector<double> distanceMatrix;
 
+        std::vector<double> inverseAcceptorDistances;
+
         std::vector<Electrode* > electrodeData;
 
         std::vector<int> eventCounts;
@@ -157,6 +159,8 @@ class SystemGraph {
         std::vector<double> constantTransitionRates;
 
         std::vector<double> dynamicalTransitionRates;
+
+        std::vector<int> unoccupiedStateIndices;
 
         std::vector<int> numOfNeighbours;
         

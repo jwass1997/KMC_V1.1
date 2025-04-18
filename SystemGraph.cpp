@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "SystemGraph.h"
 #include "CircularFEMSolver.h"
 
@@ -6,7 +8,9 @@ SystemGraph::SystemGraph()
     , donorCoordinates(2*nDonors, 0.0)
     , electrodeCoordinates(2*nElectrodes, 0.0)
     , distanceMatrix(numOfStates*numOfStates, 0.0)
+    , inverseAcceptorDistances(nAcceptors*nAcceptors, 0.0)
     , occupationOfStates(nAcceptors, 0)
+    , unoccupiedStateIndices(nDonors, 0)
     , constantStateEnergies(numOfStates, 0.0)
     , stateEnergies(numOfStates, 0.0)
     , eventCounts(numOfStates*numOfStates, 0)
@@ -163,7 +167,9 @@ void SystemGraph::initializeSystemGraph(const std::string& path) {
     }
 
     distanceMatrix.resize(numOfStates*numOfStates, 0.0);
+    inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
     occupationOfStates.resize(nAcceptors, 0);
+    unoccupiedStateIndices.resize(nDonors, 0);
     constantStateEnergies.resize(numOfStates, 0.0);
     stateEnergies.resize(numOfStates, 0.0);
     eventCounts.resize(numOfStates*numOfStates, 0);
@@ -351,6 +357,15 @@ void SystemGraph::initializeContainers() {
             }
         }
     }
+
+    for (int i = 0; i < nAcceptors; ++i) {
+        inverseAcceptorDistances[i*nAcceptors + i] = 0.0;
+        for (int j = i+1; j < nAcceptors; ++j) {
+            double inverseDistance = 1.0 / distanceMatrix[i*nAcceptors + j];
+            inverseAcceptorDistances[i*nAcceptors + j];
+            inverseAcceptorDistances[j*nAcceptors + i];
+        }
+    } 
 }
 
 void SystemGraph::initializeConstantStateEnergies() {
@@ -396,13 +411,20 @@ void SystemGraph::initializeConstantStateEnergies() {
 
 void SystemGraph::initializeOccupiedStates() {
 
+    if (nAcceptors <= nDonors) {
+        throw std::invalid_argument("Number of acceptors can not be equal or smaller than number of donors");
+    }
+
     std::vector<int> randomVector(nAcceptors, 0);
 
     for(int i = 0; i < nAcceptors; ++i) {
         randomVector[i] = i;
     }
     std::shuffle(randomVector.begin(), randomVector.end(), rng);
-    for(int i = 0; i < nAcceptors - nDonors; ++i) {
+    for (int i = 0; i < nDonors; ++i) {
+        unoccupiedStateIndices[i] = randomVector[nAcceptors-(nDonors-i)];
+    }
+    for (int i = 0; i < nAcceptors - nDonors; ++i) {
         occupationOfStates[randomVector[i]] = 1;
     }
 }
@@ -415,11 +437,11 @@ void SystemGraph::initializePotential() {
 
 void SystemGraph::updateStateEnergy(unsigned int indexOfStateToUpdate) {
 
-    if(indexOfStateToUpdate >= nAcceptors+nElectrodes) {
+    if (indexOfStateToUpdate >= nAcceptors+nElectrodes) {
         throw std::invalid_argument("State index out of bounds !");
     }
 
-    if(indexOfStateToUpdate < nAcceptors) {
+    if (indexOfStateToUpdate < nAcceptors) {
         double acceptorInteraction = 0.0;
         for(int j = 0; j < nAcceptors; ++j) {
             if(j != indexOfStateToUpdate) {
@@ -430,21 +452,27 @@ void SystemGraph::updateStateEnergy(unsigned int indexOfStateToUpdate) {
         stateEnergies[indexOfStateToUpdate] -= A0*acceptorInteraction;
     }
 
-    if(indexOfStateToUpdate >= nAcceptors) {
+    if (indexOfStateToUpdate >= nAcceptors) {
         stateEnergies[indexOfStateToUpdate] = electrodeData[indexOfStateToUpdate-nAcceptors]->voltage*e / kbT;
     }
 }
 
 void SystemGraph::updateStateOccupation(int fromStateIndex, int toStateIndex) {
 
-    if(fromStateIndex < nAcceptors && toStateIndex < nAcceptors) {
+    if (fromStateIndex < nAcceptors && toStateIndex < nAcceptors) {
 		occupationOfStates[fromStateIndex] = 0;
 		occupationOfStates[toStateIndex] = 1;
+        std::replace(
+            unoccupiedStateIndices.begin(), 
+            unoccupiedStateIndices.end(),
+            toStateIndex,
+            fromStateIndex
+        );
 	}
-	if(fromStateIndex < nAcceptors && toStateIndex >= nAcceptors) {
+	if (fromStateIndex < nAcceptors && toStateIndex >= nAcceptors) {
 		occupationOfStates[fromStateIndex] = 0;
 	}
-	if(fromStateIndex >= nAcceptors) {
+	if (fromStateIndex >= nAcceptors) {
 		if(toStateIndex < nAcceptors) {
 			occupationOfStates[toStateIndex] = 1;
 		}
