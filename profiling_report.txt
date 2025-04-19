@@ -3,84 +3,131 @@ Flat profile:
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
  time   seconds   seconds    calls   s/call   s/call  name    
- 61.39     37.27    37.27 210080000     0.00     0.00  SystemGraph::updateStateEnergy(unsigned int)
- 19.29     48.98    11.71  1010000     0.00     0.00  SystemGraph::updateTransitionRates()
- 18.61     60.28    11.30  1010000     0.00     0.00  SystemGraph::sampleTransitionEvent()
-  0.18     60.39     0.11  1010000     0.00     0.00  Simulator::singleMCStep(bool)
-  0.13     60.47     0.08                             mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const
-  0.10     60.53     0.06                             mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const
-  0.08     60.58     0.05                             _init
-  0.07     60.62     0.04                             mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const
-  0.03     60.64     0.02                             mfem::LUFactors::LSolve(int, int, double*) const
-  0.02     60.65     0.01  2020000     0.00     0.00  sampleFromUniformDistribution(double, double)
-  0.02     60.66     0.01  1010000     0.00     0.00  SystemGraph::increaseSystemTime(double)
-  0.02     60.67     0.01     6576     0.00     0.00  std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
-  0.02     60.68     0.01                             mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int)
-  0.02     60.69     0.01                             mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&)
-  0.02     60.70     0.01                             mfem::SparseMatrix::NumNonZeroElems() const
-  0.02     60.71     0.01                             mfem::Vector::operator*(mfem::Vector const&) const
-  0.00     60.71     0.00  1010000     0.00     0.00  SystemGraph::updateStateOccupation(int, int)
-  0.00     60.71     0.00  1010000     0.00     0.00  SystemGraph::getNumOfStates() const
-  0.00     60.71     0.00   798012     0.00     0.00  mfem::Memory<int>::Delete()
-  0.00     60.71     0.00   159623     0.00     0.00  mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int)
-  0.00     60.71     0.00    43264     0.00     0.00  SystemGraph::getNumberOfEvents(int, int) const
-  0.00     60.71     0.00      600     0.00     0.00  calculateDistance(double, double, double, double)
-  0.00     60.71     0.00      200     0.00     0.00  sampleFromNormalDistribution(double, double)
-  0.00     60.71     0.00      200     0.00     0.00  CircularFEMSolver::calculatePotential(double, double)
-  0.00     60.71     0.00      200     0.00     0.00  SystemGraph::getAcceptorCoordinates(unsigned int) const
-  0.00     60.71     0.00      121     0.00     0.00  void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&)
-  0.00     60.71     0.00       63     0.00     0.00  void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&)
-  0.00     60.71     0.00       38     0.00     0.00  void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
-  0.00     60.71     0.00       14     0.00     4.32  Simulator::simulateNumberOfSteps(unsigned int, bool)
-  0.00     60.71     0.00       10     0.00     0.00  std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&)
-  0.00     60.71     0.00        8     0.00     0.00  CircularFEMSolver::getElectrodeVertices(double)
-  0.00     60.71     0.00        8     0.00     0.00  SystemGraph::getElectrodeCoordinates(unsigned int) const
-  0.00     60.71     0.00        6     0.00     0.00  std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&)
-  0.00     60.71     0.00        5     0.00     0.00  std::vector<char, std::allocator<char> >::_M_default_append(unsigned long)
-  0.00     60.71     0.00        4     0.00     4.32  std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&)
-  0.00     60.71     0.00        4     0.00     8.63  void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
-  0.00     60.71     0.00        4     0.00     0.00  void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&)
-  0.00     60.71     0.00        4     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
-  0.00     60.71     0.00        3     0.00     0.00  SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        3     0.00     0.00  SystemGraph::getDonorCoordinates(unsigned int) const
-  0.00     60.71     0.00        3     0.00     0.00  std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&)
-  0.00     60.71     0.00        3     0.00     0.00  std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
-  0.00     60.71     0.00        2     0.00     0.00  mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int)
-  0.00     60.71     0.00        2     0.00     0.00  mfem::Memory<char>::Delete()
-  0.00     60.71     0.00        2     0.00     0.00  mfem::Memory<double>::Delete()
-  0.00     60.71     0.00        2     0.00     0.00  std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
-  0.00     60.71     0.00        2     0.00     0.00  std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&)
-  0.00     60.71     0.00        2     0.00     0.00  std::vector<int, std::allocator<int> >::~vector()
-  0.00     60.71     0.00        1     0.00    60.42  recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeContainers()
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeOccupiedStates()
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::initializeConstantStateEnergies()
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::~SystemGraph()
-  0.00     60.71     0.00        1     0.00     0.00  CircularFEMSolver::setElectrodes()
-  0.00     60.71     0.00        1     0.00     0.00  CircularFEMSolver::createCircularMesh(int, int)
-  0.00     60.71     0.00        1     0.00     0.00  CircularFEMSolver::solvePoissonEquation()
-  0.00     60.71     0.00        1     0.00     0.00  CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&)
-  0.00     60.71     0.00        1     0.00     0.00  CircularFEMSolver::~CircularFEMSolver()
-  0.00     60.71     0.00        1     0.00     4.32  std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&)
-  0.00     60.71     0.00        1     0.00     4.32  std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&)
-  0.00     60.71     0.00        1     0.00     8.63  void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
-  0.00     60.71     0.00        1     0.00     8.63  void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
-  0.00     60.71     0.00        1     0.00     0.00  mfem::Mesh::~Mesh()
-  0.00     60.71     0.00        1     0.00     0.00  mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear()
-  0.00     60.71     0.00        1     0.00     0.00  Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
-  0.00     60.71     0.00        1     0.00     0.00  Simulator::~Simulator()
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::getSystemTime() const
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::getDonorNumber() const
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::getAcceptorNumber() const
-  0.00     60.71     0.00        1     0.00     0.00  SystemGraph::getElectrodeNumber() const
-  0.00     60.71     0.00        1     0.00     0.00  std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&)
-  0.00     60.71     0.00        1     0.00     0.00  std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long)
-  0.00     60.71     0.00        1     0.00     0.00  void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
+ 42.11    253.09   253.09 22000000     0.00     0.00  SystemGraph::updateTransitionRates()
+ 41.47    502.38   249.29 22000000     0.00     0.00  SystemGraph::sampleTransitionEvent()
+  5.23    533.84    31.46                             mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const
+  4.78    562.55    28.71                             mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const
+  1.87    573.78    11.23                             mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const
+  0.80    578.59     4.81 22000000     0.00     0.00  SystemGraph::updateStateEnergies()
+  0.76    583.18     4.59                             mfem::Vector::operator*(mfem::Vector const&) const
+  0.39    585.51     2.33                             mfem::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix const&, mfem::DenseMatrix&)
+  0.36    587.66     2.15                             mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&)
+  0.35    589.75     2.09                             mfem::LUFactors::Solve(int, int, double*) const
+  0.31    591.61     1.86                             mfem::LUFactors::LSolve(int, int, double*) const
+  0.28    593.29     1.68                             mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int)
+  0.16    594.26     0.97                             mfem::Vector::operator=(double)
+  0.09    594.82     0.56                             _init
+  0.09    595.34     0.52                             mfem::SparseMatrix::SearchRow(int)
+  0.09    595.86     0.52                             mfem::SparseMatrix::NumNonZeroElems() const
+  0.06    596.24     0.38                             mfem::DomainLFIntegrator::AssembleRHSElementVect(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::Vector&)
+  0.06    596.58     0.34                             mfem::H1_TriangleElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const
+  0.05    596.87     0.29                             mfem::AddMult_a_AAt(double, mfem::DenseMatrix const&, mfem::DenseMatrix&)
+  0.05    597.15     0.28                             mfem::FiniteElementSpace::GetFE(int) const
+  0.04    597.38     0.23                             mfem::DenseMatrix::SetSize(int, int)
+  0.04    597.60     0.22                             mfem::Vector::operator=(mfem::Vector const&)
+  0.03    597.81     0.21                             mfem::ElementTransformation::EvalWeight()
+  0.03    598.02     0.21                             mfem::H1_TriangleElement::CalcShape(mfem::IntegrationPoint const&, mfem::Vector&) const
+  0.03    598.21     0.19    20204     0.00     0.03  Simulator::simulateNumberOfSteps(unsigned int, bool)
+  0.03    598.40     0.19                             mfem::DiffusionIntegrator::AssembleElementMatrix(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::DenseMatrix&)
+  0.03    598.58     0.18                             mfem::Mesh::GetPointMatrix(int, mfem::DenseMatrix&) const
+  0.03    598.75     0.17                             mfem::Mesh::GetElementTransformation(int, mfem::IsoparametricTransformation*) const
+  0.02    598.89     0.14                             mfem::Memory<double>::CopyFrom(mfem::Memory<double> const&, int)
+  0.02    599.03     0.14                             mfem::FiniteElementSpace::GetElementDofs(int, mfem::Array<int>&, mfem::DofTransformation&) const
+  0.02    599.16     0.13 22000000     0.00     0.00  SystemGraph::increaseSystemTime(double)
+  0.02    599.29     0.13                             mfem::DenseMatrixInverse::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix&) const
+  0.02    599.41     0.12 44000000     0.00     0.00  sampleFromUniformDistribution(double, double)
+  0.02    599.52     0.11                             mfem::LinearForm::Assemble()
+  0.02    599.63     0.11                             mfem::DenseMatrix::operator=(mfem::DenseMatrix const&)
+  0.02    599.73     0.10                             mfem::BilinearForm::Assemble(int)
+  0.02    599.83     0.10                             mfem::Table::GetRow(int, mfem::Array<int>&) const
+  0.01    599.91     0.08                             mfem::IntegrationRules::Get(int, int)
+  0.01    599.98     0.07                             mfem::ConstantCoefficient::Eval(mfem::ElementTransformation&, mfem::IntegrationPoint const&)
+  0.01    600.05     0.07                             mfem::Poly_1D::CalcChebyshev(int, double, double*, double*)
+  0.01    600.12     0.07                             mfem::FiniteElement::CalcPhysShape(mfem::ElementTransformation&, mfem::Vector&) const
+  0.01    600.19     0.07                             mfem::DenseMatrixInverse::Mult(mfem::Vector const&, mfem::Vector&) const
+  0.01    600.26     0.07                             mfem::P1OnQuadFiniteElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const
+  0.01    600.32     0.06 22000000     0.00     0.00  SystemGraph::updateStateOccupation()
+  0.01    600.38     0.06                             mfem::CalcAdjugate(mfem::DenseMatrix const&, mfem::DenseMatrix&)
+  0.01    600.44     0.06                             mfem::Vector::AddElementVector(mfem::Array<int> const&, mfem::Vector const&)
+  0.01    600.50     0.06                             mfem::DenseMatrix::Det() const
+  0.01    600.56     0.06                             mfem::H1_FECollection::FiniteElementForGeometry(mfem::Geometry::Type) const
+  0.01    600.62     0.06                             mfem::Triangle::GetType() const
+  0.01    600.66     0.04                             mfem::FiniteElementSpace::D2C_GlobalRestrictionMatrix(mfem::FiniteElementSpace*)
+  0.01    600.70     0.04                             mfem::Memory<int>::CopyFromHost(int const*, int)
+  0.01    600.74     0.04                             mfem::Poly_1D::CalcChebyshev(int, double, double*)
+  0.01    600.78     0.04                             mfem::Triangle::GetVertices()
+  0.01    600.82     0.04                             mfem::Triangle::GetNVertices() const
+  0.00    600.84     0.02 22000200     0.00     0.00  SystemGraph::getNumOfStates() const
+  0.00    600.86     0.02   160200     0.00     0.00  CircularFEMSolver::calculatePotential(double, double)
+  0.00    600.88     0.02   141127     0.00     0.00  std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+  0.00    600.90     0.02                             mfem::DenseMatrix::operator=(double)
+  0.00    600.92     0.02                             mfem::Mesh::GetElementTransformation(int)
+  0.00    600.94     0.02                             mfem::Mesh::GetTransformationFEforElementType(mfem::Element::Type)
+  0.00    600.96     0.02                             mfem::GSSmoother::Mult(mfem::Vector const&, mfem::Vector&) const
+  0.00    600.98     0.02                             mfem::FiniteElementSpace::GetElementVDofs(int, mfem::Array<int>&) const
+  0.00    601.00     0.02                             mfem::FiniteElementCollection::GetFE(mfem::Geometry::Type, int) const
+  0.00    601.01     0.01    40000     0.00     0.00  SystemGraph::getSystemTime() const
+  0.00    601.02     0.01                             mfem::DiffusionIntegrator::GetRule(mfem::FiniteElement const&, mfem::FiniteElement const&)
+  0.00    601.03     0.01                             mfem::ElementTransformation::EvalAdjugateJ()
+  0.00    601.04     0.01                             mfem::Vector::SetSubVectorComplement(mfem::Array<int> const&, double)
+  0.00    601.05     0.01                             mfem::DenseMatrix::Weight() const
+  0.00    601.06     0.01                             mfem::MINRESSolver::Mult(mfem::Vector const&, mfem::Vector&) const
+  0.00    601.07     0.01                             mfem::SparseMatrix::Mult(mfem::Vector const&, mfem::Vector&) const
+  0.00    601.08     0.01                             mfem::FiniteElementCollection::GetNumDof(mfem::Geometry::Type, int) const
+  0.00    601.08     0.00  8320000     0.00     0.00  SystemGraph::getNumberOfEvents(int, int) const
+  0.00    601.08     0.00   798412     0.00     0.00  mfem::Memory<int>::Delete()
+  0.00    601.08     0.00   160423     0.00     0.00  mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int)
+  0.00    601.08     0.00    20000     0.00     0.00  SystemGraph::resetEventCounts()
+  0.00    601.08     0.00     2904     0.00     0.00  void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&)
+  0.00    601.08     0.00      802     0.00     0.00  mfem::Memory<double>::Delete()
+  0.00    601.08     0.00      600     0.00     0.00  calculateDistance(double, double, double, double)
+  0.00    601.08     0.00      410     0.00     0.00  std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&)
+  0.00    601.08     0.00      408     0.00     0.00  CircularFEMSolver::getElectrodeVertices(double)
+  0.00    601.08     0.00      401     0.00     0.00  CircularFEMSolver::solvePoissonEquation()
+  0.00    601.08     0.00      400     0.00     0.00  SystemGraph::updateElectrodeVoltage(int, double)
+  0.00    601.08     0.00      400     0.00     0.00  CircularFEMSolver::updateElectrode(double, int, double)
+  0.00    601.08     0.00      200     0.00     0.00  sampleFromNormalDistribution(double, double)
+  0.00    601.08     0.00      200     0.00     0.00  SystemGraph::getAcceptorNumber() const
+  0.00    601.08     0.00       23     0.00     0.00  void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&)
+  0.00    601.08     0.00       19     0.00     0.00  void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
+  0.00    601.08     0.00        5     0.00     0.00  std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&)
+  0.00    601.08     0.00        4     0.00     0.00  void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&)
+  0.00    601.08     0.00        4     0.00     0.00  std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&)
+  0.00    601.08     0.00        4     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
+  0.00    601.08     0.00        3     0.00     0.00  SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        3     0.00     0.00  std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
+  0.00    601.08     0.00        2     0.00     0.00  mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int)
+  0.00    601.08     0.00        2     0.00     0.00  mfem::Memory<char>::Delete()
+  0.00    601.08     0.00        2     0.00     0.00  std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&)
+  0.00    601.08     0.00        2     0.00     0.00  std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
+  0.00    601.08     0.00        2     0.00     0.00  std::vector<int, std::allocator<int> >::~vector()
+  0.00    601.08     0.00        1     0.00   507.76  voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::setElectrodeVoltage(unsigned int, double)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeContainers()
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeStateEnergies()
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::initializeOccupiedStates()
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  SystemGraph::~SystemGraph()
+  0.00    601.08     0.00        1     0.00     0.00  CircularFEMSolver::setElectrodes()
+  0.00    601.08     0.00        1     0.00     0.00  CircularFEMSolver::createCircularMesh(int, int)
+  0.00    601.08     0.00        1     0.00     0.00  CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&)
+  0.00    601.08     0.00        1     0.00     0.00  CircularFEMSolver::~CircularFEMSolver()
+  0.00    601.08     0.00        1     0.00     0.03  std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&)
+  0.00    601.08     0.00        1     0.00     0.03  std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&)
+  0.00    601.08     0.00        1     0.00     0.05  void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00    601.08     0.00        1     0.00     0.05  void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00    601.08     0.00        1     0.00     0.00  mfem::Mesh::~Mesh()
+  0.00    601.08     0.00        1     0.00     0.00  mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear()
+  0.00    601.08     0.00        1     0.00     0.00  Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00    601.08     0.00        1     0.00     0.00  Simulator::~Simulator()
+  0.00    601.08     0.00        1     0.00     0.00  std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&)
+  0.00    601.08     0.00        1     0.00     0.00  std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long)
+  0.00    601.08     0.00        1     0.00     0.00  std::vector<char, std::allocator<char> >::_M_default_append(unsigned long)
+  0.00    601.08     0.00        1     0.00     0.00  void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -118,375 +165,506 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 4 byte(s) for 0.02% of 60.71 seconds
+granularity: each sample hit covers 4 byte(s) for 0.00% of 601.08 seconds
 
 index % time    self  children    called     name
                                                  <spontaneous>
-[1]     99.5    0.00   60.42                 main [1]
-                0.00   60.42       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-                0.00    0.00       4/4           std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [57]
-                0.00    0.00       2/10          std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [51]
-                0.00    0.00       2/2           std::vector<int, std::allocator<int> >::~vector() [67]
-                0.00    0.00       1/1           createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [68]
+[1]     84.5    0.00  507.76                 main [1]
+                0.00  507.76       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+                0.00    0.00       4/4           std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [110]
+                0.00    0.00       2/410         std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [100]
+                0.00    0.00       2/2           std::vector<int, std::allocator<int> >::~vector() [117]
+                0.00    0.00       1/1           createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
 -----------------------------------------------
-                0.00   60.42       1/1           main [1]
-[2]     99.5    0.00   60.42       1         recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-                0.00   34.53       4/4           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-                0.00    8.63       2/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    8.63       1/1           void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [10]
-                0.00    8.63       1/1           void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-                0.00    0.00       1/1           Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [27]
-                0.00    0.00   43264/43264       SystemGraph::getNumberOfEvents(int, int) const [44]
-                0.00    0.00     200/200         SystemGraph::getAcceptorCoordinates(unsigned int) const [47]
-                0.00    0.00      19/38          void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [50]
-                0.00    0.00      17/121         void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [48]
-                0.00    0.00       8/8           SystemGraph::getElectrodeCoordinates(unsigned int) const [53]
-                0.00    0.00       3/3           SystemGraph::getDonorCoordinates(unsigned int) const [59]
-                0.00    0.00       1/1           SystemGraph::getAcceptorNumber() const [83]
-                0.00    0.00       1/1           SystemGraph::getElectrodeNumber() const [84]
-                0.00    0.00       1/1           SystemGraph::getDonorNumber() const [82]
-                0.00    0.00       1/1           SystemGraph::getSystemTime() const [81]
-                0.00    0.00       1/1           Simulator::~Simulator() [80]
+                0.00  507.76       1/1           main [1]
+[2]     84.5    0.00  507.76       1         voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+                0.19  507.44   20200/20204       Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+                0.00    0.05       1/1           void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [53]
+                0.00    0.05       1/1           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+                0.00    0.02     400/400         SystemGraph::updateElectrodeVoltage(int, double) [70]
+                0.01    0.00   40000/40000       SystemGraph::getSystemTime() const [71]
+                0.00    0.00       1/1           Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [80]
+                0.00    0.00     200/22000200     SystemGraph::getNumOfStates() const [61]
+                0.00    0.00 8320000/8320000     SystemGraph::getNumberOfEvents(int, int) const [93]
+                0.00    0.00   20000/20000       SystemGraph::resetEventCounts() [96]
+                0.00    0.00     200/200         SystemGraph::getAcceptorNumber() const [104]
+                0.00    0.00       1/1           SystemGraph::setElectrodeVoltage(unsigned int, double) [119]
+                0.00    0.00       1/1           Simulator::~Simulator() [130]
 -----------------------------------------------
-                0.11   60.31 1010000/1010000     Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-[3]     99.5    0.11   60.31 1010000         Simulator::singleMCStep(bool) [3]
-               37.27    0.00 210080000/210080000     SystemGraph::updateStateEnergy(unsigned int) [5]
-               11.71    0.00 1010000/1010000     SystemGraph::updateTransitionRates() [8]
-               11.30    0.01 1010000/1010000     SystemGraph::sampleTransitionEvent() [9]
-                0.01    0.01 1010000/1010000     SystemGraph::increaseSystemTime(double) [19]
-                0.00    0.00 1010000/1010000     SystemGraph::getNumOfStates() const [41]
-                0.00    0.00 1010000/1010000     SystemGraph::updateStateOccupation(int, int) [40]
+                0.00    0.03       1/20204       std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [59]
+                0.00    0.03       1/20204       std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [60]
+                0.00    0.03       1/20204       void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [53]
+                0.00    0.03       1/20204       void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+                0.19  507.44   20200/20204       voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[3]     84.5    0.19  507.54   20204         Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+              253.09    0.00 22000000/22000000     SystemGraph::updateTransitionRates() [4]
+              249.29    0.07 22000000/22000000     SystemGraph::sampleTransitionEvent() [5]
+                4.81    0.00 22000000/22000000     SystemGraph::updateStateEnergies() [9]
+                0.13    0.07 22000000/22000000     SystemGraph::increaseSystemTime(double) [28]
+                0.06    0.00 22000000/22000000     SystemGraph::updateStateOccupation() [46]
+                0.02    0.00 22000000/22000200     SystemGraph::getNumOfStates() const [61]
 -----------------------------------------------
-                0.00    4.32       1/14          std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [13]
-                0.00    4.32       1/14          std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [12]
-                0.00    4.32       1/14          void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-                0.00    4.32       1/14          void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [10]
-                0.00    8.63       2/14          recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-                0.00   17.26       4/14          std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [7]
-                0.00   17.26       4/14          void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-[4]     99.5    0.00   60.42      14         Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.11   60.31 1010000/1010000     Simulator::singleMCStep(bool) [3]
+              253.09    0.00 22000000/22000000     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[4]     42.1  253.09    0.00 22000000         SystemGraph::updateTransitionRates() [4]
 -----------------------------------------------
-               37.27    0.00 210080000/210080000     Simulator::singleMCStep(bool) [3]
-[5]     61.4   37.27    0.00 210080000         SystemGraph::updateStateEnergy(unsigned int) [5]
------------------------------------------------
-                0.00   34.53       4/4           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[6]     56.9    0.00   34.53       4         void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-                0.00   17.26       4/4           std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [7]
-                0.00   17.26       4/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00      32/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
-                0.00    0.00       4/5           std::vector<char, std::allocator<char> >::_M_default_append(unsigned long) [55]
------------------------------------------------
-                0.00   17.26       4/4           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-[7]     28.4    0.00   17.26       4         std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [7]
-                0.00   17.26       4/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00       8/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
-                0.00    0.00       4/6           std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [54]
------------------------------------------------
-               11.71    0.00 1010000/1010000     Simulator::singleMCStep(bool) [3]
-[8]     19.3   11.71    0.00 1010000         SystemGraph::updateTransitionRates() [8]
------------------------------------------------
-               11.30    0.01 1010000/1010000     Simulator::singleMCStep(bool) [3]
-[9]     18.6   11.30    0.01 1010000         SystemGraph::sampleTransitionEvent() [9]
-                0.00    0.00 1010000/2020000     sampleFromUniformDistribution(double, double) [20]
------------------------------------------------
-                0.00    8.63       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[10]    14.2    0.00    8.63       1         void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [10]
-                0.00    4.32       1/1           std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [12]
-                0.00    4.32       1/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00      11/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
------------------------------------------------
-                0.00    8.63       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[11]    14.2    0.00    8.63       1         void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-                0.00    4.32       1/1           std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [13]
-                0.00    4.32       1/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00       8/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
-                0.00    0.00       1/5           std::vector<char, std::allocator<char> >::_M_default_append(unsigned long) [55]
------------------------------------------------
-                0.00    4.32       1/1           void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [10]
-[12]     7.1    0.00    4.32       1         std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [12]
-                0.00    4.32       1/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00       2/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
-                0.00    0.00       1/6           std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [54]
------------------------------------------------
-                0.00    4.32       1/1           void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-[13]     7.1    0.00    4.32       1         std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [13]
-                0.00    4.32       1/14          Simulator::simulateNumberOfSteps(unsigned int, bool) [4]
-                0.00    0.00       2/63          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
-                0.00    0.00       1/6           std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [54]
+              249.29    0.07 22000000/22000000     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[5]     41.5  249.29    0.07 22000000         SystemGraph::sampleTransitionEvent() [5]
+                0.06    0.01 22000000/44000000     sampleFromUniformDistribution(double, double) [34]
 -----------------------------------------------
                                                  <spontaneous>
-[14]     0.1    0.08    0.00                 mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const [14]
+[6]      5.2   31.46    0.00                 mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const [6]
 -----------------------------------------------
                                                  <spontaneous>
-[15]     0.1    0.06    0.00                 mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const [15]
+[7]      4.8   28.71    0.00                 mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const [7]
 -----------------------------------------------
                                                  <spontaneous>
-[16]     0.1    0.05    0.00                 _init [16]
+[8]      1.9   11.23    0.00                 mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const [8]
+-----------------------------------------------
+                4.81    0.00 22000000/22000000     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[9]      0.8    4.81    0.00 22000000         SystemGraph::updateStateEnergies() [9]
 -----------------------------------------------
                                                  <spontaneous>
-[17]     0.1    0.04    0.00                 mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const [17]
+[10]     0.8    4.59    0.00                 mfem::Vector::operator*(mfem::Vector const&) const [10]
 -----------------------------------------------
                                                  <spontaneous>
-[18]     0.0    0.02    0.00                 mfem::LUFactors::LSolve(int, int, double*) const [18]
------------------------------------------------
-                0.01    0.01 1010000/1010000     Simulator::singleMCStep(bool) [3]
-[19]     0.0    0.01    0.01 1010000         SystemGraph::increaseSystemTime(double) [19]
-                0.00    0.00 1010000/2020000     sampleFromUniformDistribution(double, double) [20]
------------------------------------------------
-                0.00    0.00 1010000/2020000     SystemGraph::sampleTransitionEvent() [9]
-                0.00    0.00 1010000/2020000     SystemGraph::increaseSystemTime(double) [19]
-[20]     0.0    0.01    0.01 2020000         sampleFromUniformDistribution(double, double) [20]
-                0.01    0.00    6475/6576        std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
+[11]     0.4    2.33    0.00                 mfem::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix const&, mfem::DenseMatrix&) [11]
 -----------------------------------------------
                                                  <spontaneous>
-[21]     0.0    0.01    0.00                 mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int) [21]
+[12]     0.4    2.15    0.00                 mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&) [12]
 -----------------------------------------------
                                                  <spontaneous>
-[22]     0.0    0.01    0.00                 mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&) [22]
+[13]     0.3    2.09    0.00                 mfem::LUFactors::Solve(int, int, double*) const [13]
 -----------------------------------------------
                                                  <spontaneous>
-[23]     0.0    0.01    0.00                 mfem::SparseMatrix::NumNonZeroElems() const [23]
+[14]     0.3    1.86    0.00                 mfem::LUFactors::LSolve(int, int, double*) const [14]
 -----------------------------------------------
                                                  <spontaneous>
-[24]     0.0    0.01    0.00                 mfem::Vector::operator*(mfem::Vector const&) const [24]
+[15]     0.3    1.68    0.00                 mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int) [15]
 -----------------------------------------------
-                                   1             std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
-                0.00    0.00       1/6576        sampleFromNormalDistribution(double, double) [31]
-                0.00    0.00     100/6576        void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [30]
-                0.01    0.00    6475/6576        sampleFromUniformDistribution(double, double) [20]
-[25]     0.0    0.01    0.00    6576+1       std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
-                                   1             std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
+                                                 <spontaneous>
+[16]     0.2    0.97    0.00                 mfem::Vector::operator=(double) [16]
 -----------------------------------------------
-                0.00    0.00       1/1           Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [27]
-[26]     0.0    0.00    0.00       1         SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [26]
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-                0.00    0.00       1/1           SystemGraph::initializeConstantStateEnergies() [32]
+                                                 <spontaneous>
+[17]     0.1    0.56    0.00                 _init [17]
 -----------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[27]     0.0    0.00    0.00       1         Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [27]
-                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [26]
+                                                 <spontaneous>
+[18]     0.1    0.52    0.00                 mfem::SparseMatrix::SearchRow(int) [18]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [26]
-[28]     0.0    0.00    0.00       1         SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-                0.00    0.00       1/1           SystemGraph::initializeOccupiedStates() [29]
-                0.00    0.00       3/3           std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&) [60]
-                0.00    0.00       2/2           std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&) [66]
-                0.00    0.00       1/1           SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [71]
-                0.00    0.00       1/1           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [70]
-                0.00    0.00       1/1           SystemGraph::initializeContainers() [69]
-                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [76]
-                0.00    0.00       1/1           CircularFEMSolver::solvePoissonEquation() [75]
+                                                 <spontaneous>
+[19]     0.1    0.52    0.00                 mfem::SparseMatrix::NumNonZeroElems() const [19]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[29]     0.0    0.00    0.00       1         SystemGraph::initializeOccupiedStates() [29]
-                0.00    0.00       1/1           void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [30]
+                                                 <spontaneous>
+[20]     0.1    0.38    0.00                 mfem::DomainLFIntegrator::AssembleRHSElementVect(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::Vector&) [20]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeOccupiedStates() [29]
-[30]     0.0    0.00    0.00       1         void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [30]
-                0.00    0.00     100/6576        std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
+                                                 <spontaneous>
+[21]     0.1    0.34    0.00                 mfem::H1_TriangleElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const [21]
 -----------------------------------------------
-                0.00    0.00     200/200         SystemGraph::initializeConstantStateEnergies() [32]
-[31]     0.0    0.00    0.00     200         sampleFromNormalDistribution(double, double) [31]
-                0.00    0.00       1/6576        std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [25]
+                                                 <spontaneous>
+[22]     0.0    0.29    0.00                 mfem::AddMult_a_AAt(double, mfem::DenseMatrix const&, mfem::DenseMatrix&) [22]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [26]
-[32]     0.0    0.00    0.00       1         SystemGraph::initializeConstantStateEnergies() [32]
-                0.00    0.00     200/200         sampleFromNormalDistribution(double, double) [31]
-                0.00    0.00     600/600         calculateDistance(double, double, double, double) [45]
-                0.00    0.00     200/200         CircularFEMSolver::calculatePotential(double, double) [46]
+                                                 <spontaneous>
+[23]     0.0    0.28    0.00                 mfem::FiniteElementSpace::GetFE(int) const [23]
 -----------------------------------------------
-                0.00    0.00 1010000/1010000     Simulator::singleMCStep(bool) [3]
-[40]     0.0    0.00    0.00 1010000         SystemGraph::updateStateOccupation(int, int) [40]
+                                                 <spontaneous>
+[24]     0.0    0.23    0.00                 mfem::DenseMatrix::SetSize(int, int) [24]
 -----------------------------------------------
-                0.00    0.00 1010000/1010000     Simulator::singleMCStep(bool) [3]
-[41]     0.0    0.00    0.00 1010000         SystemGraph::getNumOfStates() const [41]
+                                                 <spontaneous>
+[25]     0.0    0.22    0.00                 mfem::Vector::operator=(mfem::Vector const&) [25]
 -----------------------------------------------
-                0.00    0.00       1/798012      mfem::BilinearForm::~BilinearForm() [382]
-                0.00    0.00       2/798012      mfem::Mesh::SetAttributes() [2423]
-                0.00    0.00       2/798012      mfem::FiniteElementSpace::Destroy() [1028]
-                0.00    0.00       3/798012      mfem::FiniteElementSpace::BuildElementToDofTable() const [4435]
-                0.00    0.00       4/798012      mfem::FiniteElementSpace::~FiniteElementSpace() [1035]
-                0.00    0.00  798000/798012      mfem::FiniteElementSpace::GetElementDofs(int, mfem::Array<int>&, mfem::DofTransformation&) const [4402]
-[42]     0.0    0.00    0.00  798012         mfem::Memory<int>::Delete() [42]
+                                                 <spontaneous>
+[26]     0.0    0.21    0.00                 mfem::ElementTransformation::EvalWeight() [26]
 -----------------------------------------------
-                0.00    0.00       1/159623      mfem::H1_TriangleElement::H1_TriangleElement(int, int) [1051]
-                0.00    0.00       2/159623      mfem::Table::GetRow(int, mfem::Array<int>&) const [5569]
-                0.00    0.00       2/159623      mfem::Mesh::SetAttributes() [2423]
-                0.00    0.00       2/159623      mfem::TensorBasisElement::TensorBasisElement(int, int, int, mfem::TensorBasisElement::DofMapType) [1131]
-                0.00    0.00       2/159623      mfem::NodalTensorFiniteElement::NodalTensorFiniteElement(int, int, int, mfem::TensorBasisElement::DofMapType) [1832]
-                0.00    0.00       2/159623      mfem::PointFiniteElement::PointFiniteElement() [1095]
-                0.00    0.00       3/159623      mfem::Array<int>::GrowSize(int) [2791]
-                0.00    0.00       9/159623      CircularFEMSolver::setElectrodes() [73]
-                0.00    0.00  159600/159623      mfem::Triangle::GetVertices(mfem::Array<int>&) const [5757]
-[43]     0.0    0.00    0.00  159623         mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [43]
+                                                 <spontaneous>
+[27]     0.0    0.21    0.00                 mfem::H1_TriangleElement::CalcShape(mfem::IntegrationPoint const&, mfem::Vector&) const [27]
 -----------------------------------------------
-                0.00    0.00   43264/43264       recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[44]     0.0    0.00    0.00   43264         SystemGraph::getNumberOfEvents(int, int) const [44]
+                0.13    0.07 22000000/22000000     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[28]     0.0    0.13    0.07 22000000         SystemGraph::increaseSystemTime(double) [28]
+                0.06    0.01 22000000/44000000     sampleFromUniformDistribution(double, double) [34]
 -----------------------------------------------
-                0.00    0.00     600/600         SystemGraph::initializeConstantStateEnergies() [32]
-[45]     0.0    0.00    0.00     600         calculateDistance(double, double, double, double) [45]
+                                                 <spontaneous>
+[29]     0.0    0.19    0.00                 mfem::DiffusionIntegrator::AssembleElementMatrix(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::DenseMatrix&) [29]
 -----------------------------------------------
-                0.00    0.00     200/200         SystemGraph::initializeConstantStateEnergies() [32]
-[46]     0.0    0.00    0.00     200         CircularFEMSolver::calculatePotential(double, double) [46]
+                                                 <spontaneous>
+[30]     0.0    0.18    0.00                 mfem::Mesh::GetPointMatrix(int, mfem::DenseMatrix&) const [30]
 -----------------------------------------------
-                0.00    0.00     200/200         recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[47]     0.0    0.00    0.00     200         SystemGraph::getAcceptorCoordinates(unsigned int) const [47]
+                                                 <spontaneous>
+[31]     0.0    0.17    0.00                 mfem::Mesh::GetElementTransformation(int, mfem::IsoparametricTransformation*) const [31]
 -----------------------------------------------
-                0.00    0.00      17/121         recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-                0.00    0.00      48/121         CircularFEMSolver::setElectrodes() [73]
-                0.00    0.00      56/121         CircularFEMSolver::getElectrodeVertices(double) [52]
-[48]     0.0    0.00    0.00     121         void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [48]
+                                                 <spontaneous>
+[32]     0.0    0.14    0.00                 mfem::Memory<double>::CopyFrom(mfem::Memory<double> const&, int) [32]
 -----------------------------------------------
-                0.00    0.00       2/63          std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [13]
-                0.00    0.00       2/63          std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [12]
-                0.00    0.00       8/63          std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [7]
-                0.00    0.00       8/63          void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-                0.00    0.00      11/63          void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [10]
-                0.00    0.00      32/63          void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-[49]     0.0    0.00    0.00      63         void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [49]
+                                                 <spontaneous>
+[33]     0.0    0.14    0.00                 mfem::FiniteElementSpace::GetElementDofs(int, mfem::Array<int>&, mfem::DofTransformation&) const [33]
+                0.00    0.00  798000/798412      mfem::Memory<int>::Delete() [94]
 -----------------------------------------------
-                0.00    0.00       5/38          SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [70]
-                0.00    0.00      14/38          SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [71]
-                0.00    0.00      19/38          recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[50]     0.0    0.00    0.00      38         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [50]
+                0.06    0.01 22000000/44000000     SystemGraph::sampleTransitionEvent() [5]
+                0.06    0.01 22000000/44000000     SystemGraph::increaseSystemTime(double) [28]
+[34]     0.0    0.12    0.02 44000000         sampleFromUniformDistribution(double, double) [34]
+                0.02    0.00  141026/141127      std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
 -----------------------------------------------
-                                  68             std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [51]
-                0.00    0.00       2/10          main [1]
-                0.00    0.00       8/10          CircularFEMSolver::getElectrodeVertices(double) [52]
-[51]     0.0    0.00    0.00      10+68      std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [51]
-                                  68             std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [51]
+                                                 <spontaneous>
+[35]     0.0    0.13    0.00                 mfem::DenseMatrixInverse::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix&) const [35]
 -----------------------------------------------
-                0.00    0.00       8/8           CircularFEMSolver::setElectrodes() [73]
-[52]     0.0    0.00    0.00       8         CircularFEMSolver::getElectrodeVertices(double) [52]
-                0.00    0.00      56/121         void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [48]
-                0.00    0.00       8/10          std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [51]
+                                                 <spontaneous>
+[36]     0.0    0.11    0.00                 mfem::LinearForm::Assemble() [36]
 -----------------------------------------------
-                0.00    0.00       8/8           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[53]     0.0    0.00    0.00       8         SystemGraph::getElectrodeCoordinates(unsigned int) const [53]
+                                                 <spontaneous>
+[37]     0.0    0.11    0.00                 mfem::DenseMatrix::operator=(mfem::DenseMatrix const&) [37]
 -----------------------------------------------
-                0.00    0.00       1/6           std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [13]
-                0.00    0.00       1/6           std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [12]
-                0.00    0.00       4/6           std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [7]
-[54]     0.0    0.00    0.00       6         std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [54]
+                                                 <spontaneous>
+[38]     0.0    0.10    0.00                 mfem::BilinearForm::Assemble(int) [38]
 -----------------------------------------------
-                0.00    0.00       1/5           void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [11]
-                0.00    0.00       4/5           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [6]
-[55]     0.0    0.00    0.00       5         std::vector<char, std::allocator<char> >::_M_default_append(unsigned long) [55]
+                                                 <spontaneous>
+[39]     0.0    0.10    0.00                 mfem::Table::GetRow(int, mfem::Array<int>&) const [39]
+                0.00    0.00     802/160423      mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [95]
 -----------------------------------------------
-                0.00    0.00       4/4           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [70]
-[56]     0.0    0.00    0.00       4         void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&) [56]
+                                                 <spontaneous>
+[40]     0.0    0.08    0.00                 mfem::IntegrationRules::Get(int, int) [40]
+-----------------------------------------------
+                                                 <spontaneous>
+[41]     0.0    0.07    0.00                 mfem::ConstantCoefficient::Eval(mfem::ElementTransformation&, mfem::IntegrationPoint const&) [41]
+-----------------------------------------------
+                                                 <spontaneous>
+[42]     0.0    0.07    0.00                 mfem::Poly_1D::CalcChebyshev(int, double, double*, double*) [42]
+-----------------------------------------------
+                                                 <spontaneous>
+[43]     0.0    0.07    0.00                 mfem::FiniteElement::CalcPhysShape(mfem::ElementTransformation&, mfem::Vector&) const [43]
+-----------------------------------------------
+                                                 <spontaneous>
+[44]     0.0    0.07    0.00                 mfem::DenseMatrixInverse::Mult(mfem::Vector const&, mfem::Vector&) const [44]
+-----------------------------------------------
+                                                 <spontaneous>
+[45]     0.0    0.07    0.00                 mfem::P1OnQuadFiniteElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const [45]
+-----------------------------------------------
+                0.06    0.00 22000000/22000000     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[46]     0.0    0.06    0.00 22000000         SystemGraph::updateStateOccupation() [46]
+-----------------------------------------------
+                                                 <spontaneous>
+[47]     0.0    0.06    0.00                 mfem::CalcAdjugate(mfem::DenseMatrix const&, mfem::DenseMatrix&) [47]
+-----------------------------------------------
+                                                 <spontaneous>
+[48]     0.0    0.06    0.00                 mfem::Vector::AddElementVector(mfem::Array<int> const&, mfem::Vector const&) [48]
+-----------------------------------------------
+                                                 <spontaneous>
+[49]     0.0    0.06    0.00                 mfem::DenseMatrix::Det() const [49]
+-----------------------------------------------
+                                                 <spontaneous>
+[50]     0.0    0.06    0.00                 mfem::H1_FECollection::FiniteElementForGeometry(mfem::Geometry::Type) const [50]
+-----------------------------------------------
+                                                 <spontaneous>
+[51]     0.0    0.06    0.00                 mfem::Triangle::GetType() const [51]
+-----------------------------------------------
+                0.00    0.05       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[52]     0.0    0.00    0.05       1         void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+                0.00    0.03       1/1           std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [59]
+                0.00    0.03       1/20204       Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+                0.00    0.00       8/23          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [105]
+                0.00    0.00       1/1           std::vector<char, std::allocator<char> >::_M_default_append(unsigned long) [133]
+-----------------------------------------------
+                0.00    0.05       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[53]     0.0    0.00    0.05       1         void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [53]
+                0.00    0.03       1/1           std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [60]
+                0.00    0.03       1/20204       Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+                0.00    0.00      11/23          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [105]
+-----------------------------------------------
+                                                 <spontaneous>
+[54]     0.0    0.04    0.00                 mfem::FiniteElementSpace::D2C_GlobalRestrictionMatrix(mfem::FiniteElementSpace*) [54]
+-----------------------------------------------
+                                                 <spontaneous>
+[55]     0.0    0.04    0.00                 mfem::Memory<int>::CopyFromHost(int const*, int) [55]
+-----------------------------------------------
+                                                 <spontaneous>
+[56]     0.0    0.04    0.00                 mfem::Poly_1D::CalcChebyshev(int, double, double*) [56]
+-----------------------------------------------
+                                                 <spontaneous>
+[57]     0.0    0.04    0.00                 mfem::Triangle::GetVertices() [57]
+-----------------------------------------------
+                                                 <spontaneous>
+[58]     0.0    0.04    0.00                 mfem::Triangle::GetNVertices() const [58]
+-----------------------------------------------
+                0.00    0.03       1/1           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+[59]     0.0    0.00    0.03       1         std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [59]
+                0.00    0.03       1/20204       Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+                0.00    0.00       2/23          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [105]
+                0.00    0.00       1/2           std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [115]
+-----------------------------------------------
+                0.00    0.03       1/1           void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [53]
+[60]     0.0    0.00    0.03       1         std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [60]
+                0.00    0.03       1/20204       Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+                0.00    0.00       2/23          void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [105]
+                0.00    0.00       1/2           std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [115]
+-----------------------------------------------
+                0.00    0.00     200/22000200     voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+                0.02    0.00 22000000/22000200     Simulator::simulateNumberOfSteps(unsigned int, bool) [3]
+[61]     0.0    0.02    0.00 22000200         SystemGraph::getNumOfStates() const [61]
+-----------------------------------------------
+                0.00    0.00     200/160200      SystemGraph::initializeStateEnergies() [81]
+                0.02    0.00  160000/160200      SystemGraph::updateElectrodeVoltage(int, double) [70]
+[62]     0.0    0.02    0.00  160200         CircularFEMSolver::calculatePotential(double, double) [62]
+-----------------------------------------------
+                                   1             std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
+                0.00    0.00       1/141127      sampleFromNormalDistribution(double, double) [85]
+                0.00    0.00     100/141127      void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [84]
+                0.02    0.00  141026/141127      sampleFromUniformDistribution(double, double) [34]
+[63]     0.0    0.02    0.00  141127+1       std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
+                                   1             std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
+-----------------------------------------------
+                                                 <spontaneous>
+[64]     0.0    0.02    0.00                 mfem::DenseMatrix::operator=(double) [64]
+-----------------------------------------------
+                                                 <spontaneous>
+[65]     0.0    0.02    0.00                 mfem::Mesh::GetElementTransformation(int) [65]
+-----------------------------------------------
+                                                 <spontaneous>
+[66]     0.0    0.02    0.00                 mfem::Mesh::GetTransformationFEforElementType(mfem::Element::Type) [66]
+-----------------------------------------------
+                                                 <spontaneous>
+[67]     0.0    0.02    0.00                 mfem::GSSmoother::Mult(mfem::Vector const&, mfem::Vector&) const [67]
+-----------------------------------------------
+                                                 <spontaneous>
+[68]     0.0    0.02    0.00                 mfem::FiniteElementSpace::GetElementVDofs(int, mfem::Array<int>&) const [68]
+-----------------------------------------------
+                                                 <spontaneous>
+[69]     0.0    0.02    0.00                 mfem::FiniteElementCollection::GetFE(mfem::Geometry::Type, int) const [69]
+-----------------------------------------------
+                0.00    0.02     400/400         voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[70]     0.0    0.00    0.02     400         SystemGraph::updateElectrodeVoltage(int, double) [70]
+                0.02    0.00  160000/160200      CircularFEMSolver::calculatePotential(double, double) [62]
+                0.00    0.00     400/400         CircularFEMSolver::updateElectrode(double, int, double) [103]
+                0.00    0.00     400/401         CircularFEMSolver::solvePoissonEquation() [102]
+-----------------------------------------------
+                0.01    0.00   40000/40000       voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[71]     0.0    0.01    0.00   40000         SystemGraph::getSystemTime() const [71]
+-----------------------------------------------
+                                                 <spontaneous>
+[72]     0.0    0.01    0.00                 mfem::DiffusionIntegrator::GetRule(mfem::FiniteElement const&, mfem::FiniteElement const&) [72]
+-----------------------------------------------
+                                                 <spontaneous>
+[73]     0.0    0.01    0.00                 mfem::ElementTransformation::EvalAdjugateJ() [73]
+-----------------------------------------------
+                                                 <spontaneous>
+[74]     0.0    0.01    0.00                 mfem::Vector::SetSubVectorComplement(mfem::Array<int> const&, double) [74]
+-----------------------------------------------
+                                                 <spontaneous>
+[75]     0.0    0.01    0.00                 mfem::DenseMatrix::Weight() const [75]
+-----------------------------------------------
+                                                 <spontaneous>
+[76]     0.0    0.01    0.00                 mfem::MINRESSolver::Mult(mfem::Vector const&, mfem::Vector&) const [76]
+-----------------------------------------------
+                                                 <spontaneous>
+[77]     0.0    0.01    0.00                 mfem::SparseMatrix::Mult(mfem::Vector const&, mfem::Vector&) const [77]
+-----------------------------------------------
+                                                 <spontaneous>
+[78]     0.0    0.01    0.00                 mfem::FiniteElementCollection::GetNumDof(mfem::Geometry::Type, int) const [78]
+-----------------------------------------------
+                0.00    0.00       1/1           Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [80]
+[79]     0.0    0.00    0.00       1         SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [79]
+                0.00    0.00       1/1           SystemGraph::initializeStateEnergies() [81]
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+-----------------------------------------------
+                0.00    0.00       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[80]     0.0    0.00    0.00       1         Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [80]
+                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [79]
+-----------------------------------------------
+                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [79]
+[81]     0.0    0.00    0.00       1         SystemGraph::initializeStateEnergies() [81]
+                0.00    0.00     200/160200      CircularFEMSolver::calculatePotential(double, double) [62]
+                0.00    0.00     200/200         sampleFromNormalDistribution(double, double) [85]
+                0.00    0.00     600/600         calculateDistance(double, double, double, double) [99]
+-----------------------------------------------
+                0.00    0.00       1/1           SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [79]
+[82]     0.0    0.00    0.00       1         SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+                0.00    0.00       1/1           SystemGraph::initializeOccupiedStates() [83]
+                0.00    0.00       5/5           std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&) [107]
+                0.00    0.00       4/4           std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&) [109]
+                0.00    0.00       1/1           SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [122]
+                0.00    0.00       1/1           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [121]
+                0.00    0.00       1/1           SystemGraph::initializeContainers() [120]
+                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [126]
+                0.00    0.00       1/401         CircularFEMSolver::solvePoissonEquation() [102]
+-----------------------------------------------
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[83]     0.0    0.00    0.00       1         SystemGraph::initializeOccupiedStates() [83]
+                0.00    0.00       1/1           void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [84]
+-----------------------------------------------
+                0.00    0.00       1/1           SystemGraph::initializeOccupiedStates() [83]
+[84]     0.0    0.00    0.00       1         void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [84]
+                0.00    0.00     100/141127      std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
+-----------------------------------------------
+                0.00    0.00     200/200         SystemGraph::initializeStateEnergies() [81]
+[85]     0.0    0.00    0.00     200         sampleFromNormalDistribution(double, double) [85]
+                0.00    0.00       1/141127      std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [63]
+-----------------------------------------------
+                0.00    0.00 8320000/8320000     voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[93]     0.0    0.00    0.00 8320000         SystemGraph::getNumberOfEvents(int, int) const [93]
+-----------------------------------------------
+                0.00    0.00       2/798412      mfem::Mesh::SetAttributes() [2452]
+                0.00    0.00       2/798412      mfem::FiniteElementSpace::Destroy() [1062]
+                0.00    0.00       3/798412      mfem::FiniteElementSpace::BuildElementToDofTable() const [4447]
+                0.00    0.00       4/798412      mfem::FiniteElementSpace::~FiniteElementSpace() [1069]
+                0.00    0.00     401/798412      mfem::BilinearForm::~BilinearForm() [422]
+                0.00    0.00  798000/798412      mfem::FiniteElementSpace::GetElementDofs(int, mfem::Array<int>&, mfem::DofTransformation&) const [33]
+[94]     0.0    0.00    0.00  798412         mfem::Memory<int>::Delete() [94]
+-----------------------------------------------
+                0.00    0.00       1/160423      mfem::H1_TriangleElement::H1_TriangleElement(int, int) [1085]
+                0.00    0.00       2/160423      mfem::Mesh::SetAttributes() [2452]
+                0.00    0.00       2/160423      mfem::TensorBasisElement::TensorBasisElement(int, int, int, mfem::TensorBasisElement::DofMapType) [1165]
+                0.00    0.00       2/160423      mfem::NodalTensorFiniteElement::NodalTensorFiniteElement(int, int, int, mfem::TensorBasisElement::DofMapType) [1861]
+                0.00    0.00       2/160423      mfem::PointFiniteElement::PointFiniteElement() [1129]
+                0.00    0.00       3/160423      mfem::Array<int>::GrowSize(int) [2817]
+                0.00    0.00       9/160423      CircularFEMSolver::setElectrodes() [124]
+                0.00    0.00     802/160423      mfem::Table::GetRow(int, mfem::Array<int>&) const [39]
+                0.00    0.00  159600/160423      mfem::Triangle::GetVertices(mfem::Array<int>&) const [5760]
+[95]     0.0    0.00    0.00  160423         mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [95]
+-----------------------------------------------
+                0.00    0.00   20000/20000       voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[96]     0.0    0.00    0.00   20000         SystemGraph::resetEventCounts() [96]
+-----------------------------------------------
+                0.00    0.00      48/2904        CircularFEMSolver::setElectrodes() [124]
+                0.00    0.00    2856/2904        CircularFEMSolver::getElectrodeVertices(double) [101]
+[97]     0.0    0.00    0.00    2904         void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [97]
+-----------------------------------------------
+                0.00    0.00     802/802         mfem::BilinearForm::FormLinearSystem(mfem::Array<int> const&, mfem::Vector&, mfem::Vector&, mfem::OperatorHandle&, mfem::Vector&, mfem::Vector&, int) [387]
+[98]     0.0    0.00    0.00     802         mfem::Memory<double>::Delete() [98]
+-----------------------------------------------
+                0.00    0.00     600/600         SystemGraph::initializeStateEnergies() [81]
+[99]     0.0    0.00    0.00     600         calculateDistance(double, double, double, double) [99]
+-----------------------------------------------
+                                8868             std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [100]
+                0.00    0.00       2/410         main [1]
+                0.00    0.00     408/410         CircularFEMSolver::getElectrodeVertices(double) [101]
+[100]    0.0    0.00    0.00     410+8868    std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [100]
+                                8868             std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [100]
+-----------------------------------------------
+                0.00    0.00       8/408         CircularFEMSolver::setElectrodes() [124]
+                0.00    0.00     400/408         CircularFEMSolver::updateElectrode(double, int, double) [103]
+[101]    0.0    0.00    0.00     408         CircularFEMSolver::getElectrodeVertices(double) [101]
+                0.00    0.00    2856/2904        void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [97]
+                0.00    0.00     408/410         std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) [100]
+-----------------------------------------------
+                0.00    0.00       1/401         SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+                0.00    0.00     400/401         SystemGraph::updateElectrodeVoltage(int, double) [70]
+[102]    0.0    0.00    0.00     401         CircularFEMSolver::solvePoissonEquation() [102]
+-----------------------------------------------
+                0.00    0.00     400/400         SystemGraph::updateElectrodeVoltage(int, double) [70]
+[103]    0.0    0.00    0.00     400         CircularFEMSolver::updateElectrode(double, int, double) [103]
+                0.00    0.00     400/408         CircularFEMSolver::getElectrodeVertices(double) [101]
+-----------------------------------------------
+                0.00    0.00     200/200         voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[104]    0.0    0.00    0.00     200         SystemGraph::getAcceptorNumber() const [104]
+-----------------------------------------------
+                0.00    0.00       2/23          std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [59]
+                0.00    0.00       2/23          std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [60]
+                0.00    0.00       8/23          void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+                0.00    0.00      11/23          void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [53]
+[105]    0.0    0.00    0.00      23         void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) [105]
+-----------------------------------------------
+                0.00    0.00       5/19          SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [121]
+                0.00    0.00      14/19          SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [122]
+[106]    0.0    0.00    0.00      19         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [106]
+-----------------------------------------------
+                0.00    0.00       5/5           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[107]    0.0    0.00    0.00       5         std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&) [107]
+-----------------------------------------------
+                0.00    0.00       4/4           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [121]
+[108]    0.0    0.00    0.00       4         void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&) [108]
+-----------------------------------------------
+                0.00    0.00       4/4           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[109]    0.0    0.00    0.00       4         std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&) [109]
 -----------------------------------------------
                 0.00    0.00       4/4           main [1]
-[57]     0.0    0.00    0.00       4         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [57]
+[110]    0.0    0.00    0.00       4         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [110]
 -----------------------------------------------
-                0.00    0.00       1/3           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [70]
-                0.00    0.00       2/3           SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [71]
-[58]     0.0    0.00    0.00       3         SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [58]
+                0.00    0.00       1/3           SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [121]
+                0.00    0.00       2/3           SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [122]
+[111]    0.0    0.00    0.00       3         SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [111]
 -----------------------------------------------
-                0.00    0.00       3/3           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[59]     0.0    0.00    0.00       3         SystemGraph::getDonorCoordinates(unsigned int) const [59]
+                0.00    0.00       3/3           SystemGraph::initializeContainers() [120]
+[112]    0.0    0.00    0.00       3         std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [112]
 -----------------------------------------------
-                0.00    0.00       3/3           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[60]     0.0    0.00    0.00       3         std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&) [60]
+                0.00    0.00       1/2           CircularFEMSolver::createCircularMesh(int, int) [125]
+                0.00    0.00       1/2           mfem::Array<mfem::Vertex>::GrowSize(int) [2685]
+[113]    0.0    0.00    0.00       2         mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [113]
 -----------------------------------------------
-                0.00    0.00       3/3           SystemGraph::initializeContainers() [69]
-[61]     0.0    0.00    0.00       3         std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [61]
+                0.00    0.00       2/2           mfem::FiniteElementSpace::~FiniteElementSpace() [1069]
+[114]    0.0    0.00    0.00       2         mfem::Memory<char>::Delete() [114]
 -----------------------------------------------
-                0.00    0.00       1/2           CircularFEMSolver::createCircularMesh(int, int) [74]
-                0.00    0.00       1/2           mfem::Array<mfem::Vertex>::GrowSize(int) [2659]
-[62]     0.0    0.00    0.00       2         mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [62]
+                0.00    0.00       1/2           std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [59]
+                0.00    0.00       1/2           std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [60]
+[115]    0.0    0.00    0.00       2         std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&) [115]
 -----------------------------------------------
-                0.00    0.00       2/2           mfem::FiniteElementSpace::~FiniteElementSpace() [1035]
-[63]     0.0    0.00    0.00       2         mfem::Memory<char>::Delete() [63]
------------------------------------------------
-                0.00    0.00       2/2           mfem::BilinearForm::FormLinearSystem(mfem::Array<int> const&, mfem::Vector&, mfem::Vector&, mfem::OperatorHandle&, mfem::Vector&, mfem::Vector&, int) [346]
-[64]     0.0    0.00    0.00       2         mfem::Memory<double>::Delete() [64]
------------------------------------------------
-                0.00    0.00       2/2           SystemGraph::initializeContainers() [69]
-[65]     0.0    0.00    0.00       2         std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [65]
------------------------------------------------
-                0.00    0.00       2/2           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[66]     0.0    0.00    0.00       2         std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&) [66]
+                0.00    0.00       2/2           SystemGraph::initializeContainers() [120]
+[116]    0.0    0.00    0.00       2         std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [116]
 -----------------------------------------------
                 0.00    0.00       2/2           main [1]
-[67]     0.0    0.00    0.00       2         std::vector<int, std::allocator<int> >::~vector() [67]
+[117]    0.0    0.00    0.00       2         std::vector<int, std::allocator<int> >::~vector() [117]
 -----------------------------------------------
                 0.00    0.00       1/1           main [1]
-[68]     0.0    0.00    0.00       1         createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [68]
-                0.00    0.00       1/1           std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&) [85]
+[118]    0.0    0.00    0.00       1         createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
+                0.00    0.00       1/1           std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&) [131]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[69]     0.0    0.00    0.00       1         SystemGraph::initializeContainers() [69]
-                0.00    0.00       3/3           std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [61]
-                0.00    0.00       2/2           std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [65]
+                0.00    0.00       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[119]    0.0    0.00    0.00       1         SystemGraph::setElectrodeVoltage(unsigned int, double) [119]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[70]     0.0    0.00    0.00       1         SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [70]
-                0.00    0.00       5/38          void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [50]
-                0.00    0.00       4/4           void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&) [56]
-                0.00    0.00       1/3           SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [58]
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[120]    0.0    0.00    0.00       1         SystemGraph::initializeContainers() [120]
+                0.00    0.00       3/3           std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) [112]
+                0.00    0.00       2/2           std::vector<double, std::allocator<double> >::_M_default_append(unsigned long) [116]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[71]     0.0    0.00    0.00       1         SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [71]
-                0.00    0.00      14/38          void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [50]
-                0.00    0.00       2/3           SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [58]
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[121]    0.0    0.00    0.00       1         SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [121]
+                0.00    0.00       5/19          void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [106]
+                0.00    0.00       4/4           void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&) [108]
+                0.00    0.00       1/3           SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [111]
 -----------------------------------------------
-                0.00    0.00       1/1           Simulator::~Simulator() [80]
-[72]     0.0    0.00    0.00       1         SystemGraph::~SystemGraph() [72]
-                0.00    0.00       1/1           CircularFEMSolver::~CircularFEMSolver() [77]
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[122]    0.0    0.00    0.00       1         SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [122]
+                0.00    0.00      14/19          void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [106]
+                0.00    0.00       2/3           SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [111]
 -----------------------------------------------
-                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [76]
-[73]     0.0    0.00    0.00       1         CircularFEMSolver::setElectrodes() [73]
-                0.00    0.00      48/121         void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [48]
-                0.00    0.00       9/159623      mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [43]
-                0.00    0.00       8/8           CircularFEMSolver::getElectrodeVertices(double) [52]
+                0.00    0.00       1/1           Simulator::~Simulator() [130]
+[123]    0.0    0.00    0.00       1         SystemGraph::~SystemGraph() [123]
+                0.00    0.00       1/1           CircularFEMSolver::~CircularFEMSolver() [127]
 -----------------------------------------------
-                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [76]
-[74]     0.0    0.00    0.00       1         CircularFEMSolver::createCircularMesh(int, int) [74]
-                0.00    0.00       1/2           mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [62]
+                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [126]
+[124]    0.0    0.00    0.00       1         CircularFEMSolver::setElectrodes() [124]
+                0.00    0.00      48/2904        void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) [97]
+                0.00    0.00       9/160423      mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [95]
+                0.00    0.00       8/408         CircularFEMSolver::getElectrodeVertices(double) [101]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[75]     0.0    0.00    0.00       1         CircularFEMSolver::solvePoissonEquation() [75]
+                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [126]
+[125]    0.0    0.00    0.00       1         CircularFEMSolver::createCircularMesh(int, int) [125]
+                0.00    0.00       1/2           mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [113]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [28]
-[76]     0.0    0.00    0.00       1         CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [76]
-                0.00    0.00       1/1           CircularFEMSolver::createCircularMesh(int, int) [74]
-                0.00    0.00       1/1           CircularFEMSolver::setElectrodes() [73]
-                0.00    0.00       1/1           std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long) [86]
+                0.00    0.00       1/1           SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [82]
+[126]    0.0    0.00    0.00       1         CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [126]
+                0.00    0.00       1/1           CircularFEMSolver::createCircularMesh(int, int) [125]
+                0.00    0.00       1/1           CircularFEMSolver::setElectrodes() [124]
+                0.00    0.00       1/1           std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long) [132]
 -----------------------------------------------
-                0.00    0.00       1/1           SystemGraph::~SystemGraph() [72]
-[77]     0.0    0.00    0.00       1         CircularFEMSolver::~CircularFEMSolver() [77]
-                0.00    0.00       1/1           mfem::Mesh::~Mesh() [78]
+                0.00    0.00       1/1           SystemGraph::~SystemGraph() [123]
+[127]    0.0    0.00    0.00       1         CircularFEMSolver::~CircularFEMSolver() [127]
+                0.00    0.00       1/1           mfem::Mesh::~Mesh() [128]
 -----------------------------------------------
-                0.00    0.00       1/1           CircularFEMSolver::~CircularFEMSolver() [77]
-[78]     0.0    0.00    0.00       1         mfem::Mesh::~Mesh() [78]
-                0.00    0.00       1/1           mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [79]
+                0.00    0.00       1/1           CircularFEMSolver::~CircularFEMSolver() [127]
+[128]    0.0    0.00    0.00       1         mfem::Mesh::~Mesh() [128]
+                0.00    0.00       1/1           mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [129]
 -----------------------------------------------
-                0.00    0.00       1/1           mfem::Mesh::~Mesh() [78]
-[79]     0.0    0.00    0.00       1         mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [79]
+                0.00    0.00       1/1           mfem::Mesh::~Mesh() [128]
+[129]    0.0    0.00    0.00       1         mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [129]
 -----------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[80]     0.0    0.00    0.00       1         Simulator::~Simulator() [80]
-                0.00    0.00       1/1           SystemGraph::~SystemGraph() [72]
+                0.00    0.00       1/1           voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
+[130]    0.0    0.00    0.00       1         Simulator::~Simulator() [130]
+                0.00    0.00       1/1           SystemGraph::~SystemGraph() [123]
 -----------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[81]     0.0    0.00    0.00       1         SystemGraph::getSystemTime() const [81]
+                0.00    0.00       1/1           createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [118]
+[131]    0.0    0.00    0.00       1         std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&) [131]
 -----------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[82]     0.0    0.00    0.00       1         SystemGraph::getDonorNumber() const [82]
+                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [126]
+[132]    0.0    0.00    0.00       1         std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long) [132]
 -----------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[83]     0.0    0.00    0.00       1         SystemGraph::getAcceptorNumber() const [83]
------------------------------------------------
-                0.00    0.00       1/1           recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [2]
-[84]     0.0    0.00    0.00       1         SystemGraph::getElectrodeNumber() const [84]
------------------------------------------------
-                0.00    0.00       1/1           createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [68]
-[85]     0.0    0.00    0.00       1         std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&) [85]
------------------------------------------------
-                0.00    0.00       1/1           CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [76]
-[86]     0.0    0.00    0.00       1         std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long) [86]
+                0.00    0.00       1/1           void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [52]
+[133]    0.0    0.00    0.00       1         std::vector<char, std::allocator<char> >::_M_default_append(unsigned long) [133]
 -----------------------------------------------
 
  This table describes the call tree of the program, and was sorted by
@@ -579,29 +757,45 @@ notice and this notice are preserved.
 
 Index by function name
 
-   [2] recordDevice(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [12] std::vector<char, std::allocator<char> > cnpy::create_npy_header<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::vector<unsigned long, std::allocator<unsigned long> > const&) [47] SystemGraph::getAcceptorCoordinates(unsigned int) const
-  [45] calculateDistance(double, double, double, double) [7] std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [53] SystemGraph::getElectrodeCoordinates(unsigned int) const
-  [31] sampleFromNormalDistribution(double, double) [13] std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [23] mfem::SparseMatrix::NumNonZeroElems() const
-  [68] createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [10] void cnpy::npz_save<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [14] mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const
-  [20] sampleFromUniformDistribution(double, double) [6] void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [17] mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const
-  [58] SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [11] void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [15] mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const
-   [5] SystemGraph::updateStateEnergy(unsigned int) [21] mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int) [24] mfem::Vector::operator*(mfem::Vector const&) const
-  [19] SystemGraph::increaseSystemTime(double) [22] mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&) [18] mfem::LUFactors::LSolve(int, int, double*) const
-  [69] SystemGraph::initializeContainers() [78] mfem::Mesh::~Mesh() [85] std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&)
-  [70] SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [62] mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [25] std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
-  [71] SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [63] mfem::Memory<char>::Delete() [56] void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&)
-  [28] SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [64] mfem::Memory<double>::Delete() [86] std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long)
-   [9] SystemGraph::sampleTransitionEvent() [42] mfem::Memory<int>::Delete() [54] std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&)
-  [40] SystemGraph::updateStateOccupation(int, int) [43] mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [55] std::vector<char, std::allocator<char> >::_M_default_append(unsigned long)
-   [8] SystemGraph::updateTransitionRates() [79] mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [49] void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&)
-  [29] SystemGraph::initializeOccupiedStates() [3] Simulator::singleMCStep(bool) [60] std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&)
-  [32] SystemGraph::initializeConstantStateEnergies() [4] Simulator::simulateNumberOfSteps(unsigned int, bool) [65] std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
-  [26] SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [27] Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [50] void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
-  [72] SystemGraph::~SystemGraph() [80] Simulator::~Simulator() [66] std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&)
-  [73] CircularFEMSolver::setElectrodes() [81] SystemGraph::getSystemTime() const [61] std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
-  [46] CircularFEMSolver::calculatePotential(double, double) [82] SystemGraph::getDonorNumber() const [48] void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&)
-  [74] CircularFEMSolver::createCircularMesh(int, int) [41] SystemGraph::getNumOfStates() const [51] std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&)
-  [52] CircularFEMSolver::getElectrodeVertices(double) [83] SystemGraph::getAcceptorNumber() const [67] std::vector<int, std::allocator<int> >::~vector()
-  [75] CircularFEMSolver::solvePoissonEquation() [44] SystemGraph::getNumberOfEvents(int, int) const [57] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
-  [76] CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [84] SystemGraph::getElectrodeNumber() const [30] void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
-  [77] CircularFEMSolver::~CircularFEMSolver() [59] SystemGraph::getDonorCoordinates(unsigned int) const [16] _init
+  [99] calculateDistance(double, double, double, double) [22] mfem::AddMult_a_AAt(double, mfem::DenseMatrix const&, mfem::DenseMatrix&) [7] mfem::SparseMatrix::Gauss_Seidel_forw(mfem::Vector const&, mfem::Vector&) const
+  [85] sampleFromNormalDistribution(double, double) [40] mfem::IntegrationRules::Get(int, int) [77] mfem::SparseMatrix::Mult(mfem::Vector const&, mfem::Vector&) const
+   [2] voltageCurrentCharacteristic(double, double, int, int, int, int, int, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [20] mfem::DomainLFIntegrator::AssembleRHSElementVect(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::Vector&) [8] mfem::SparseMatrix::AddMult(mfem::Vector const&, mfem::Vector&, double) const
+ [118] createDirectoryFromStringPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [54] mfem::FiniteElementSpace::D2C_GlobalRestrictionMatrix(mfem::FiniteElementSpace*) [43] mfem::FiniteElement::CalcPhysShape(mfem::ElementTransformation&, mfem::Vector&) const
+  [34] sampleFromUniformDistribution(double, double) [41] mfem::ConstantCoefficient::Eval(mfem::ElementTransformation&, mfem::IntegrationPoint const&) [50] mfem::H1_FECollection::FiniteElementForGeometry(mfem::Geometry::Type) const
+  [96] SystemGraph::resetEventCounts() [29] mfem::DiffusionIntegrator::AssembleElementMatrix(mfem::FiniteElement const&, mfem::ElementTransformation&, mfem::DenseMatrix&) [35] mfem::DenseMatrixInverse::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix&) const
+ [111] SystemGraph::getConfigFilePath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [72] mfem::DiffusionIntegrator::GetRule(mfem::FiniteElement const&, mfem::FiniteElement const&) [44] mfem::DenseMatrixInverse::Mult(mfem::Vector const&, mfem::Vector&) const
+  [28] SystemGraph::increaseSystemTime(double) [26] mfem::ElementTransformation::EvalWeight() [33] mfem::FiniteElementSpace::GetElementDofs(int, mfem::Array<int>&, mfem::DofTransformation&) const
+ [119] SystemGraph::setElectrodeVoltage(unsigned int, double) [73] mfem::ElementTransformation::EvalAdjugateJ() [68] mfem::FiniteElementSpace::GetElementVDofs(int, mfem::Array<int>&) const
+   [9] SystemGraph::updateStateEnergies() [12] mfem::add(mfem::Vector const&, double, mfem::Vector const&, mfem::Vector&) [23] mfem::FiniteElementSpace::GetFE(int) const
+ [120] SystemGraph::initializeContainers() [65] mfem::Mesh::GetElementTransformation(int) [21] mfem::H1_TriangleElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const
+ [121] SystemGraph::initializeElectrodes(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [66] mfem::Mesh::GetTransformationFEforElementType(mfem::Element::Type) [27] mfem::H1_TriangleElement::CalcShape(mfem::IntegrationPoint const&, mfem::Vector&) const
+ [122] SystemGraph::initializeCoordinates(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [128] mfem::Mesh::~Mesh() [45] mfem::P1OnQuadFiniteElement::CalcDShape(mfem::IntegrationPoint const&, mfem::DenseMatrix&) const
+  [82] SystemGraph::initializeSystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [11] mfem::Mult(mfem::DenseMatrix const&, mfem::DenseMatrix const&, mfem::DenseMatrix&) [69] mfem::FiniteElementCollection::GetFE(mfem::Geometry::Type, int) const
+   [5] SystemGraph::sampleTransitionEvent() [113] mfem::Memory<mfem::Vertex>::CopyFrom(mfem::Memory<mfem::Vertex> const&, int) [78] mfem::FiniteElementCollection::GetNumDof(mfem::Geometry::Type, int) const
+  [46] SystemGraph::updateStateOccupation() [114] mfem::Memory<char>::Delete() [30] mfem::Mesh::GetPointMatrix(int, mfem::DenseMatrix&) const
+   [4] SystemGraph::updateTransitionRates() [98] mfem::Memory<double>::Delete() [31] mfem::Mesh::GetElementTransformation(int, mfem::IsoparametricTransformation*) const
+  [70] SystemGraph::updateElectrodeVoltage(int, double) [32] mfem::Memory<double>::CopyFrom(mfem::Memory<double> const&, int) [39] mfem::Table::GetRow(int, mfem::Array<int>&) const
+  [81] SystemGraph::initializeStateEnergies() [55] mfem::Memory<int>::CopyFromHost(int const*, int) [10] mfem::Vector::operator*(mfem::Vector const&) const
+  [83] SystemGraph::initializeOccupiedStates() [94] mfem::Memory<int>::Delete() [58] mfem::Triangle::GetNVertices() const
+  [79] SystemGraph::SystemGraph(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [95] mfem::Memory<int>::CopyFrom(mfem::Memory<int> const&, int) [51] mfem::Triangle::GetType() const
+ [123] SystemGraph::~SystemGraph() [48] mfem::Vector::AddElementVector(mfem::Array<int> const&, mfem::Vector const&) [13] mfem::LUFactors::Solve(int, int, double*) const
+ [124] CircularFEMSolver::setElectrodes() [74] mfem::Vector::SetSubVectorComplement(mfem::Array<int> const&, double) [14] mfem::LUFactors::LSolve(int, int, double*) const
+ [103] CircularFEMSolver::updateElectrode(double, int, double) [25] mfem::Vector::operator=(mfem::Vector const&) [131] std::basic_ostream<char, std::char_traits<char> >& std::filesystem::__cxx11::operator<< <char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, std::filesystem::__cxx11::path const&)
+  [62] CircularFEMSolver::calculatePotential(double, double) [16] mfem::Vector::operator=(double) [63] std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+ [125] CircularFEMSolver::createCircularMesh(int, int) [56] mfem::Poly_1D::CalcChebyshev(int, double, double*) [108] void std::vector<Electrode*, std::allocator<Electrode*> >::_M_realloc_insert<Electrode* const&>(__gnu_cxx::__normal_iterator<Electrode**, std::vector<Electrode*, std::allocator<Electrode*> > >, Electrode* const&)
+ [101] CircularFEMSolver::getElectrodeVertices(double) [42] mfem::Poly_1D::CalcChebyshev(int, double, double*, double*) [132] std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_default_append(unsigned long)
+ [102] CircularFEMSolver::solvePoissonEquation() [129] mfem::MemAlloc<mfem::Tetrahedron, 1024>::Clear() [115] std::vector<char, std::allocator<char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, unsigned long, char const&)
+ [126] CircularFEMSolver::CircularFEMSolver(double, int, int, std::vector<Electrode*, std::allocator<Electrode*> >&) [57] mfem::Triangle::GetVertices() [133] std::vector<char, std::allocator<char> >::_M_default_append(unsigned long)
+ [127] CircularFEMSolver::~CircularFEMSolver() [3] Simulator::simulateNumberOfSteps(unsigned int, bool) [105] void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&)
+  [59] std::vector<char, std::allocator<char> > cnpy::create_npy_header<double>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [80] Simulator::Simulator(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [107] std::vector<double, std::allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, unsigned long, double const&)
+  [60] std::vector<char, std::allocator<char> > cnpy::create_npy_header<int>(std::vector<unsigned long, std::allocator<unsigned long> > const&) [130] Simulator::~Simulator() [116] std::vector<double, std::allocator<double> >::_M_default_append(unsigned long)
+  [52] void cnpy::npz_save<double>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [71] SystemGraph::getSystemTime() const [106] void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
+  [53] void cnpy::npz_save<int>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int const*, std::vector<unsigned long, std::allocator<unsigned long> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [61] SystemGraph::getNumOfStates() const [109] std::vector<int, std::allocator<int> >::_M_fill_insert(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, unsigned long, int const&)
+  [36] mfem::LinearForm::Assemble() [104] SystemGraph::getAcceptorNumber() const [112] std::vector<int, std::allocator<int> >::_M_default_append(unsigned long)
+  [24] mfem::DenseMatrix::SetSize(int, int) [93] SystemGraph::getNumberOfEvents(int, int) const [97] void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&)
+  [37] mfem::DenseMatrix::operator=(mfem::DenseMatrix const&) [67] mfem::GSSmoother::Mult(mfem::Vector const&, mfem::Vector&) const [100] std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&)
+  [64] mfem::DenseMatrix::operator=(double) [49] mfem::DenseMatrix::Det() const [117] std::vector<int, std::allocator<int> >::~vector()
+  [38] mfem::BilinearForm::Assemble(int) [75] mfem::DenseMatrix::Weight() const [110] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
+  [47] mfem::CalcAdjugate(mfem::DenseMatrix const&, mfem::DenseMatrix&) [76] mfem::MINRESSolver::Mult(mfem::Vector const&, mfem::Vector&) const [84] void std::shuffle<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
+  [15] mfem::SparseMatrix::AddSubMatrix(mfem::Array<int> const&, mfem::Array<int> const&, mfem::DenseMatrix const&, int) [19] mfem::SparseMatrix::NumNonZeroElems() const [17] _init
+  [18] mfem::SparseMatrix::SearchRow(int) [6] mfem::SparseMatrix::Gauss_Seidel_back(mfem::Vector const&, mfem::Vector&) const

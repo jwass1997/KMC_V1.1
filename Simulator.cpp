@@ -45,20 +45,18 @@ void Simulator::singleMCStep(bool trackingData) {
 
     int numOfStates = system->getNumOfStates();
 
-    for (int indexOfState = 0; indexOfState < numOfStates; ++indexOfState) {
-        system->updateStateEnergy(indexOfState);
-    }
+    system->updateStateEnergies();
 
     system->updateTransitionRates();
 
-    auto [selectedI, selectedJ, totalRate] = system->sampleTransitionEvent();
+    system->sampleTransitionEvent();
 
-    system->updateStateOccupation(selectedI, selectedJ);
+    system->updateStateOccupation();
 
-    system->increaseSystemTime(totalRate);
+    system->increaseSystemTime(system->totalSumOfRates);
 
     if(trackingData) {
-        system->eventCounts[selectedI*numOfStates + selectedJ] += 1;
+        system->eventCounts[system->lastHopIndices[0]*numOfStates + system->lastHopIndices[1]] += 1;
     }
 }
 

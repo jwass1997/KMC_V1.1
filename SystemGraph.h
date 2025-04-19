@@ -39,7 +39,7 @@ class SystemGraph {
 
         void initializeContainers();
 
-        void initializeConstantStateEnergies();
+        void initializeStateEnergies();
 
         void initializeOccupiedStates();
 
@@ -79,21 +79,21 @@ class SystemGraph {
 
         void setElectrodeVoltage(unsigned int electrodeIdx, double voltage);
 
-        void updateStateEnergy(unsigned int indexOfState);
+        void updateStateEnergies();
 
-        void updateStateOccupation(int fromStateIndex, int toStateIndex);
+        void updateStateOccupation();
 
         void updateTransitionRates();
 
         int selectEvent(std::vector<double> cumulativeRateCatalog);
 
-        std::tuple<int, int, double> sampleTransitionEvent();
+        void sampleTransitionEvent();
 
         void updateElectrodeVoltage(int electrodeIndex, double voltage);
 
         void multiElectrodeUpdate(std::vector<int> electrodeIndices, std::vector<double> voltages);
 
-        void increaseEventCount(unsigned int stateIndex1, unsigned int stateIndex2);
+        void increaseEventCount();
 
         void increaseSystemTime(double totatlSumOfTransitionRates);
 
@@ -156,9 +156,13 @@ class SystemGraph {
 
         std::vector<double> stateEnergies;
 
+        std::vector<double> acceptorInteraction;
+
         std::vector<double> constantTransitionRates;
 
         std::vector<double> dynamicalTransitionRates;
+
+        std::vector<double> aggregatedTransitionRates;
 
         std::vector<int> unoccupiedStateIndices;
 
@@ -167,6 +171,8 @@ class SystemGraph {
         std::vector<int> jaggedArrayLengths;
 
         std::vector<int> neighbourIndices;
+
+        std::vector<int> lastHopIndices;
 
         std::vector<std::tuple<double, double>> defaultCircularElectrodeConfig = {
             {0.0, -1.0},

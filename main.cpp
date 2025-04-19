@@ -19,10 +19,8 @@ int main() {
     std::vector<int> inputElectrodes = {1,2,3,4,5,6,7};
     std::vector<int> outpuElectrodes = {0};
     std::cout<<__cplusplus<<"\n";
-    //createBatchOfSingleSystem(20, inputElectrodes, outpuElectrodes, -1.5, 1.5, 1e4, 1e4, 1, defaultDeviceConfigs, saveFolder, 1);
-    //auto start = std::chrono::high_resolution_clock::now();
-    recordDevice(deviceID1, 1e4, 1e6, defaultDeviceConfigs, saveFolder);
-    //auto end = std::chrono::high_resolution_clock::now();
-    //std::cout << "Simulation time: " << std::chrono::duration_cast<std::chrono::seconds>(end-start).count() << "\n";
-    //voltageCurrentCharacteristic(-1.5, 1.5, 20, controlElectrodeIndex, scanElectrodeIndex, 1e4, 1e5, 1, defaultDeviceConfigs, saveFolder);
+    //createBatchOfSingleSystem(20, inputElectrodes, outpuElectrodes, -1.5, 1.5, 1e4, 1e6, 1, defaultDeviceConfigs, saveFolder, 1);
+    //recordDevice(deviceID1, 1e4, 1e6, defaultDeviceConfigs, saveFolder);
+
+    IVCurve(-1.5, 1.5, 10, 100, 0, 1e3, 1e6, 100, 1, defaultDeviceConfigs, saveFolder);
 }

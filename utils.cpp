@@ -1,4 +1,5 @@
 #include <random>
+#include <omp.h>
 
 #include "utils.h"
 #include "SystemGraph.h"
@@ -148,98 +149,104 @@ void recordDevice(
     cnpy::npz_save(deviceName, "device_time", &total_time, {1}, "a");
 }
 
-void voltageCurrentCharacteristic(
-    double minVoltage, 
-    double maxVoltage, 
-    int numOfPoints, 
-    int controlElectrodeIndex, 
-    int scanElectrodeIndex, 
-    int equilibriumSteps, 
-    int simulationSteps, 
+void IVCurve(
+    double maxVoltage,
+    double minVoltage,
+    int numOfSimulations,
+    int numOfVoltageSettings,
+    int scanElectrodeIndex,
+    int equilibriumSteps,
+    int simulationSteps,
+    int numOfIntervals,
     int ID,
     const std::string& defaultConfig,
     const std::string& saveFolderPath) {
+        
+        if (saveFolderPath.empty()) {
+            throw std::invalid_argument("No save folder specified");
+        }
 
-    if (saveFolderPath.empty()) {
-        throw std::invalid_argument("No save folder specified !");
-    }
-    std::string dataFileName = saveFolderPath + "/IVcharacteristic" + std::to_string(ID) + ".npz";
-    cnpy::npz_save(dataFileName, "ID", &ID, {1}, "w");
+        std::string dataFileName = saveFolderPath + "/IVcharacteristic" + std::to_string(ID) + ".npz";
+        cnpy::npz_save(dataFileName, "ID", &ID, {1}, "w");
 
-    double voltageStep = (maxVoltage - minVoltage) / (numOfPoints-1);
+        std::vector<double> inputs(numOfVoltageSettings*8, 0.0);
+        std::vector<double> outputs(numOfVoltageSettings, 0.0);
 
-    std::vector<double> currentValues(numOfPoints, 0.0);
-    std::vector<double> voltageValues(numOfPoints, 0.0);
+        #pragma omp parallel
+        {      
+            std::mt19937 threadRng(std::random_device{}() + omp_get_thread_num());
+            std::uniform_real_distribution<double> uni(minVoltage, maxVoltage);
 
-    for (int i = 0; i < numOfPoints; ++i) {
-        voltageValues[i] = minVoltage + voltageStep*i;
-    }
-    
-    Simulator simulator(defaultConfig);
-    simulator.system->setElectrodeVoltage(scanElectrodeIndex, 0.0);
+            #pragma omp for
+            for (int setting = 0; setting < numOfVoltageSettings; ++setting) {
+                std::vector<double> voltageSetting(8, 0.0);
+                for (int i = 0; i < 8; ++i) {
+                    voltageSetting[i] = uni(threadRng);
+                }
+                double averageOutputCurrent = 0.0;
+                for (int simCount = 0; simCount < numOfSimulations; ++simCount) {
+                    double current = currentFromVoltageCombination(
+                        voltageSetting,
+                        scanElectrodeIndex,
+                        equilibriumSteps,
+                        simulationSteps,
+                        numOfIntervals,
+                        defaultConfig
+                    );
 
-    for (int scanPoint = 0; scanPoint < numOfPoints; ++scanPoint) {
-        std::cout << scanPoint << "\n";
-        double currentValue = calculateCurrentAverage(
-            simulator,
-            controlElectrodeIndex,
-            scanElectrodeIndex,
-            voltageValues[scanPoint],
-            equilibriumSteps,
-            simulationSteps,
-            100
-        );
-        currentValues[scanPoint] = currentValue;
-    }
-    
-    std::vector<size_t> shape = {static_cast<size_t>(currentValues.size())};
-    cnpy::npz_save(dataFileName, "currentValues", currentValues.data(), shape, "a");
+                    averageOutputCurrent += current / static_cast<double>(numOfSimulations);
+                }
+                outputs[setting] = averageOutputCurrent;
+                for (int i = 0; i < 8; ++i) {
+                    inputs[setting*8 + i] = voltageSetting[i];
+                }
+            }
+            
+        }
+        std::vector<size_t> inputShape = {static_cast<size_t>(numOfVoltageSettings), 8};
+        std::vector<size_t> outputShape = {static_cast<size_t>(numOfVoltageSettings)};
+        cnpy::npz_save(dataFileName, "inputs", inputs.data(), inputShape, "a");
+        cnpy::npz_save(dataFileName, "outputs", outputs.data(), outputShape, "a");
 }
 
-double calculateCurrentAverage(
-    Simulator& simulator, 
-    int controlElectrodeIndex,
-    int scanElectrodeIndex, 
-    double voltage, 
-    int equilibriumSteps, 
-    int simulationSteps, 
-    int numberOfIntervals) {
+double currentFromVoltageCombination(
+    std::vector<double> voltageSetting,
+    int scanElectrodeIndex,
+    int equilibriumSteps,
+    int simulationSteps,
+    int numOfIntervals,
+    const std::string& defaultConfig) {
+        
+        Simulator simulator(defaultConfig);
+        int nAcceptors = simulator.system->getAcceptorNumber();
+        int numOfStates = simulator.system->getNumOfStates();
+        std::vector<int> electrodeIndices = {0, 1, 2, 3, 4, 5, 6, 7};
+        simulator.system->multiElectrodeUpdate(electrodeIndices, voltageSetting); 
+        
+        simulator.simulateNumberOfSteps(equilibriumSteps, false);
 
-    /**
-     * 
-     * Single current average for a specific voltage
-     * 
-     */
-    auto start_time = std::chrono::high_resolution_clock::now();
-    simulator.system->updateElectrodeVoltage(controlElectrodeIndex, voltage);
-    simulator.system->updateElectrodeVoltage(scanElectrodeIndex, 0.0);
-    simulator.simulateNumberOfSteps(equilibriumSteps, false);
-    
-    int nAcceptors = simulator.system->getAcceptorNumber();
-    int numOfStates = simulator.system->getNumOfStates();
+        double averageCurrent = 0.0;
+        int intervalSteps = simulationSteps / numOfIntervals;
+        int intervalCounter = 0;
+        while(intervalCounter < numOfIntervals) {
+            double startClock = simulator.system->getSystemTime();
+            simulator.simulateNumberOfSteps(intervalSteps, true);
+            double endClock = simulator.system->getSystemTime();
 
-    double averageCurrent = 0.0;
-    int intervalSteps = simulationSteps / numberOfIntervals;
-    int intervalCounter = 0;
-    while (intervalCounter < numberOfIntervals) {
-        double startClock = simulator.system->getSystemTime();
-        simulator.simulateNumberOfSteps(intervalSteps, true);
-        double endClock = simulator.system->getSystemTime();
-
-        int inCounts = 0;
-        int outCounts = 0;
-        for (int i = 0; i < numOfStates; ++i) {
-            outCounts += simulator.system->getNumberOfEvents(nAcceptors+scanElectrodeIndex, i);
-            inCounts += simulator.system->getNumberOfEvents(i, nAcceptors+scanElectrodeIndex);            
+            double elapsedTime = endClock - startClock;
+            int inCounts = 0;
+            int outCounts = 0;
+            for (int i = 0; i < numOfStates; ++i) {
+                outCounts += simulator.system->getNumberOfEvents(nAcceptors+scanElectrodeIndex, i);
+                inCounts += simulator.system->getNumberOfEvents(i, nAcceptors+scanElectrodeIndex); 
+            }
+            averageCurrent += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
+            
+            simulator.system->resetEventCounts();
+            intervalCounter++;
         }
-        double elapsedTime = endClock - startClock;
-        averageCurrent += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numberOfIntervals));
 
-        simulator.system->resetEventCounts(); 
-        intervalCounter++;
-    }
-
-    return averageCurrent;
+        return averageCurrent;
 }
 
 void createBatchOfSingleSystem(
@@ -259,9 +266,6 @@ void createBatchOfSingleSystem(
         throw std::invalid_argument("No save folder specified !");
     }
 
-    std::string fileName = saveFolderPath + "/batch" + std::to_string(batchID) + ".npz";
-
-    cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     std::vector<double> inputs(batchSize*inputElectrodes.size(), 0.0);
     std::vector<double> outputs(batchSize*outputElectrodes.size(), 0.0);   
     std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), inputElectrodes.size()}; 
@@ -276,44 +280,51 @@ void createBatchOfSingleSystem(
 
     std::vector<double> voltages(numOfInputElectrodes+numOfOutputElectrodes);
 
-    for (int batch = 0; batch < batchSize; ++batch) {
-        Simulator simulator(defaultConfigs);
-        int nAcceptors = simulator.system->getAcceptorNumber();
-        int numOfStates = simulator.system->getNumOfStates();
+    #pragma omp parallel 
+    {   
+        std::mt19937 rng(std::random_device{}() + omp_get_thread_num());
+        std::uniform_real_distribution<double> uni(minVoltage, maxVoltage);
+        #pragma omp for schedule(dynamic)
+        for (int batch = 0; batch < batchSize; ++batch) {
+            Simulator simulator(defaultConfigs);
+            int nAcceptors = simulator.system->getAcceptorNumber();
+            int numOfStates = simulator.system->getNumOfStates();
 
-  
-        for (int i = 0; i < numOfInputElectrodes; ++i) {
-            voltages[i] = sampleFromUniformDistribution(minVoltage, maxVoltage);
-            inputs[batch*numOfInputElectrodes + i] = voltages[i];
-        }
-        for (int i = numOfInputElectrodes; i < numOfInputElectrodes+numOfOutputElectrodes; ++i) {
-            voltages[i] = -1.0;
-        }
-        simulator.system->multiElectrodeUpdate(systemElectrodes, voltages);
-        simulator.simulateNumberOfSteps(equilibriumSteps, false);
-
-        int intervalSteps = simulationSteps / numOfIntervals;
-        int intervalCounter = 0;
-        while (intervalCounter < numOfIntervals) {
-            double startClock = simulator.system->getSystemTime();
-            simulator.simulateNumberOfSteps(intervalSteps, true);
-            double endClock = simulator.system->getSystemTime();
-            double elapsedTime = endClock - startClock;
-            for (int i = 0; i < outputElectrodes.size(); ++i) {
-                int inCounts = 0;
-                int outCounts = 0;
-                double averageCurrent = 0.0;
-                for (int j = 0; j < numOfStates; ++j) {
-                    outCounts += simulator.system->getNumberOfEvents(nAcceptors+outputElectrodes[i], j);
-                    inCounts += simulator.system->getNumberOfEvents(j, nAcceptors+outputElectrodes[i]);            
-                } 
-                outputs[batch*outputElectrodes.size() + i] += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
+        
+            for (int i = 0; i < numOfInputElectrodes; ++i) {
+                voltages[i] = uni(rng);
+                inputs[batch*numOfInputElectrodes + i] = voltages[i];
             }
-            simulator.system->resetEventCounts();
-            intervalCounter++;
+            for (int i = numOfInputElectrodes; i < numOfInputElectrodes+numOfOutputElectrodes; ++i) {
+                voltages[i] = -1.0;
+            }
+            simulator.system->multiElectrodeUpdate(systemElectrodes, voltages);
+            simulator.simulateNumberOfSteps(equilibriumSteps, false);
+
+            int intervalSteps = simulationSteps / numOfIntervals;
+            int intervalCounter = 0;
+            while (intervalCounter < numOfIntervals) {
+                double startClock = simulator.system->getSystemTime();
+                simulator.simulateNumberOfSteps(intervalSteps, true);
+                double endClock = simulator.system->getSystemTime();
+                double elapsedTime = endClock - startClock;
+                for (int i = 0; i < outputElectrodes.size(); ++i) {
+                    int inCounts = 0;
+                    int outCounts = 0;
+                    double averageCurrent = 0.0;
+                    for (int j = 0; j < numOfStates; ++j) {
+                        outCounts += simulator.system->getNumberOfEvents(nAcceptors+outputElectrodes[i], j);
+                        inCounts += simulator.system->getNumberOfEvents(j, nAcceptors+outputElectrodes[i]);            
+                    } 
+                    outputs[batch*outputElectrodes.size() + i] += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
+                }
+                simulator.system->resetEventCounts();
+                intervalCounter++;
+            }
         }
     }
-
+    std::string fileName = saveFolderPath + "/batch" + std::to_string(batchID) + ".npz";
+    cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
 }

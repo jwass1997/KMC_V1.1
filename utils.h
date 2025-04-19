@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <random>
+#include <cstdint>
+#include <cstring>
 #include <string>
 #include <filesystem>
 
@@ -29,6 +31,8 @@ inline constexpr double epsr = 10.0;
 
 inline constexpr double kbT = 1.0630997e-21;
 
+inline double fastExp(double x);
+
 double sampleFromUniformDistribution(double min, double max);
 
 double sampleFromNormalDistribution(double mean, double standardDeviation);
@@ -39,27 +43,61 @@ void createDirectoryFromStringPath(const std::string& path, const std::string& d
 
 void recordDevice(const std::string& ID, int equilibriumSteps, int numOfSteps, const std::string& defaultConfigs, const std::string& saveFolderPath);
 
-void voltageCurrentCharacteristic(
-    double minVoltage, 
-    double maxVoltage, 
-    int numOfPoints, 
-    int controlElectrodeIndex, 
-    int scanElectrodeIndex, 
-    int equilibriumSteps, 
-    int scanSteps, 
-    int ID, 
-    const std::string& defaultConfigs, 
+inline double fastExp(double x) {
+    /**
+     * Fast exponential from: https://gist.github.com/jrade/293a73f89dfef51da6522428c857802d
+     */
+    constexpr double a = (1ll << 52) / 0.6931471805599453;
+    constexpr double b = (1ll << 52) * (1023 - 0.04367744890362246);
+    x = a * x + b;
+
+    // Remove these lines if bounds checking is not needed
+    constexpr double c = (1ll << 52);
+    constexpr double d = (1ll << 52) * 2047;
+    if (x < c || x > d)
+        x = (x < c) ? 0.0 : d;
+
+    // With C++20 one can use std::bit_cast instead
+    uint64_t n = static_cast<uint64_t>(x);
+    memcpy(&x, &n, 8);
+    return x;
+};
+
+inline std::vector<double> sampleVoltageSetting(
+    int numOfElectrodes,
+    double minVoltage,
+    double maxVoltage) {
+
+        std::vector<double> voltageSetting(numOfElectrodes, 0.0);
+
+        for (auto& voltage : voltageSetting) {
+            voltage = sampleFromUniformDistribution(minVoltage, maxVoltage);
+        }
+        
+        return voltageSetting;
+};
+
+void IVCurve(
+    double maxVoltage,
+    double minVoltage,
+    int numOfSimulations,
+    int numOfVoltageSettings,
+    int scanElectrodeIndex,
+    int equilibriumSteps,
+    int simulationSteps,
+    int numOfIntervals,
+    int ID,
+    const std::string& defaultConfig,
     const std::string& saveFolderPath
 );
 
-double calculateCurrentAverage(
-    Simulator& simulator, 
-    int controlElectrodeIndex, 
-    int scanElectrodeIndex, 
-    double voltage, 
-    int equilibriumSteps, 
-    int simulationSteps, 
-    int numberOfIntervals
+double currentFromVoltageCombination(
+    std::vector<double> voltageSetting,
+    int scanElectrodeIndex,
+    int equilibriumSteps,
+    int simulationSteps,
+    int numOfIntervals,
+    const std::string& defaultConfig
 );
 
 void createBatchOfSingleSystem(

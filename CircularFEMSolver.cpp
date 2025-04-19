@@ -105,7 +105,7 @@ void CircularFEMSolver::createCircularMesh(int numOfCircleVertices, int numOfCon
         bdrElement[1] = 1 + (numOfConcentricCircles-1)*numOfCircleVertices + (i+1) % numOfCircleVertices;
         mesh->AddBdrSegment(bdrElement, 1);
     }
-
+    mfem::out.Disable();
     mesh->FinalizeTriMesh(0, 0, true);
 }
 

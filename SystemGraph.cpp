@@ -1,26 +1,32 @@
 #include <algorithm>
+#include <omp.h>
 
 #include "SystemGraph.h"
 #include "CircularFEMSolver.h"
 
 SystemGraph::SystemGraph() 
-    : acceptorCoordinates(2*nAcceptors, 0.0)
-    , donorCoordinates(2*nDonors, 0.0)
-    , electrodeCoordinates(2*nElectrodes, 0.0)
-    , distanceMatrix(numOfStates*numOfStates, 0.0)
-    , inverseAcceptorDistances(nAcceptors*nAcceptors, 0.0)
-    , occupationOfStates(nAcceptors, 0)
-    , unoccupiedStateIndices(nDonors, 0)
-    , constantStateEnergies(numOfStates, 0.0)
-    , stateEnergies(numOfStates, 0.0)
-    , eventCounts(numOfStates*numOfStates, 0)
-    , finiteElementSolver(nullptr)
+    : finiteElementSolver(nullptr)
 {
     /**
      * 
      * Graph is directly ready for simulation
      * 
      */
+
+    numOfStates = nAcceptors + nElectrodes;
+
+    acceptorCoordinates.resize(2*nAcceptors, 0.0);
+    donorCoordinates.resize(2*nDonors, 0.0);
+    electrodeCoordinates.resize(2*nElectrodes, 0.0);
+    distanceMatrix.resize(numOfStates*numOfStates, 0.0);
+    inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
+    occupationOfStates.resize(nAcceptors, 0);
+    unoccupiedStateIndices.resize(nDonors, 0);
+    constantStateEnergies.resize(numOfStates, 0.0);
+    stateEnergies.resize(numOfStates, 0.0);
+    acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
+    eventCounts.resize(numOfStates*numOfStates, 0);
+    lastHopIndices.resize(2, 0);
 
     initializeSystemGraph();
 }
@@ -131,7 +137,7 @@ void SystemGraph::initializeSystemGraph() {
     initializeContainers();
     initializeOccupiedStates();
     initializePotential();
-    initializeConstantStateEnergies();
+    initializeStateEnergies();
 }
 
 std::filesystem::path SystemGraph::getConfigFilePath(const std::string& folderPath, const std::string& fileName) {
@@ -172,12 +178,14 @@ void SystemGraph::initializeSystemGraph(const std::string& path) {
     unoccupiedStateIndices.resize(nDonors, 0);
     constantStateEnergies.resize(numOfStates, 0.0);
     stateEnergies.resize(numOfStates, 0.0);
+    acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
     eventCounts.resize(numOfStates*numOfStates, 0);
+    lastHopIndices.resize(2, 0);
 
     initializeContainers();
     initializeOccupiedStates();
     initializePotential();
-    initializeConstantStateEnergies();
+    initializeStateEnergies();
 }
 
 void SystemGraph::initializeCoordinates() {
@@ -342,6 +350,7 @@ void SystemGraph::initializeContainers() {
 
     constantTransitionRates.resize(2*totalNumOfEvents);
     dynamicalTransitionRates.resize(2*totalNumOfEvents);
+    aggregatedTransitionRates.resize(2*totalNumOfEvents);
     neighbourIndices.resize(2*totalNumOfEvents);
 
     for (int i = 0; i < numOfStates; ++i) {
@@ -352,8 +361,8 @@ void SystemGraph::initializeContainers() {
                 int indexJI = writePtr[j]++;
                 neighbourIndices[indexIJ] = j;
                 neighbourIndices[indexJI] = i;
-                constantTransitionRates[indexIJ] = nu0*std::exp(-2.0*distance / a);
-                constantTransitionRates[indexJI] = nu0*std::exp(-2.0*distance / a);
+                constantTransitionRates[indexIJ] = nu0*fastExp(-2.0*distance / a);
+                constantTransitionRates[indexJI] = nu0*fastExp(-2.0*distance / a);
             }
         }
     }
@@ -361,14 +370,14 @@ void SystemGraph::initializeContainers() {
     for (int i = 0; i < nAcceptors; ++i) {
         inverseAcceptorDistances[i*nAcceptors + i] = 0.0;
         for (int j = i+1; j < nAcceptors; ++j) {
-            double inverseDistance = 1.0 / distanceMatrix[i*nAcceptors + j];
-            inverseAcceptorDistances[i*nAcceptors + j];
-            inverseAcceptorDistances[j*nAcceptors + i];
+            double inverseDistance = 1.0 / distanceMatrix[i*numOfStates + j];
+            inverseAcceptorDistances[i*nAcceptors + j] = inverseDistance;
+            inverseAcceptorDistances[j*nAcceptors + i] = inverseDistance;
         }
     } 
 }
 
-void SystemGraph::initializeConstantStateEnergies() {
+void SystemGraph::initializeStateEnergies() {
 
     /**
      * 
@@ -407,6 +416,19 @@ void SystemGraph::initializeConstantStateEnergies() {
 	for(int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
 		constantStateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
 	}
+
+    for (int i = 0; i < nAcceptors; ++i) {
+        for (int j = 0; j < nAcceptors; ++j) {
+            if (i != j) {
+                acceptorInteraction[i] += (1 - occupationOfStates[j]) * inverseAcceptorDistances[i*nAcceptors + j];
+            }
+        }
+        stateEnergies[i] = constantStateEnergies[i] - A0*acceptorInteraction[i];
+    }
+
+    for (int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
+        stateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
+    }
 }
 
 void SystemGraph::initializeOccupiedStates() {
@@ -435,116 +457,118 @@ void SystemGraph::initializePotential() {
     finiteElementSolver->solvePoissonEquation();
 }
 
-void SystemGraph::updateStateEnergy(unsigned int indexOfStateToUpdate) {
+void SystemGraph::updateStateEnergies() {
 
-    if (indexOfStateToUpdate >= nAcceptors+nElectrodes) {
-        throw std::invalid_argument("State index out of bounds !");
-    }
-
-    if (indexOfStateToUpdate < nAcceptors) {
-        double acceptorInteraction = 0.0;
-        for(int j = 0; j < nAcceptors; ++j) {
-            if(j != indexOfStateToUpdate) {
-                acceptorInteraction += (1 - occupationOfStates[j]) / getDistance(indexOfStateToUpdate, j);
+    if (lastHopIndices[0] < nAcceptors && lastHopIndices[1] < nAcceptors) {
+        for (int i = 0; i < nAcceptors; ++i) {
+            if (i != lastHopIndices[1]) {
+                acceptorInteraction[i] -= 1.0*inverseAcceptorDistances[i*nAcceptors + lastHopIndices[1]];
+            }
+            if (i != lastHopIndices[0]) {
+                acceptorInteraction[i] += 1.0*inverseAcceptorDistances[i*nAcceptors + lastHopIndices[0]];
             }
         }
-        stateEnergies[indexOfStateToUpdate] = constantStateEnergies[indexOfStateToUpdate];
-        stateEnergies[indexOfStateToUpdate] -= A0*acceptorInteraction;
+    }
+    if (lastHopIndices[0] < nAcceptors && lastHopIndices[1] >= nAcceptors) {
+        for (int i = 0; i < nAcceptors; ++i) {
+            if (i != lastHopIndices[0]) {
+                acceptorInteraction[i] += 1.0*inverseAcceptorDistances[i*nAcceptors + lastHopIndices[0]];
+            }
+        }
+    }
+    if (lastHopIndices[0] >= nAcceptors && lastHopIndices[1] < nAcceptors) {
+        for (int i = 0; i < nAcceptors; ++i) {
+            if (i != lastHopIndices[1]) {
+                acceptorInteraction[i] -= 1.0*inverseAcceptorDistances[i*nAcceptors + lastHopIndices[1]];
+            }
+        }
     }
 
-    if (indexOfStateToUpdate >= nAcceptors) {
-        stateEnergies[indexOfStateToUpdate] = electrodeData[indexOfStateToUpdate-nAcceptors]->voltage*e / kbT;
+    for (int i = 0; i < nAcceptors; ++i) {
+        stateEnergies[i] = constantStateEnergies[i] - A0*acceptorInteraction[i];
     }
 }
 
-void SystemGraph::updateStateOccupation(int fromStateIndex, int toStateIndex) {
+void SystemGraph::updateStateOccupation() {
 
-    if (fromStateIndex < nAcceptors && toStateIndex < nAcceptors) {
-		occupationOfStates[fromStateIndex] = 0;
-		occupationOfStates[toStateIndex] = 1;
-        std::replace(
-            unoccupiedStateIndices.begin(), 
-            unoccupiedStateIndices.end(),
-            toStateIndex,
-            fromStateIndex
-        );
+    if (lastHopIndices[0] < nAcceptors && lastHopIndices[1] < nAcceptors) {
+		occupationOfStates[lastHopIndices[0]] = 0;
+		occupationOfStates[lastHopIndices[1]] = 1;
 	}
-	if (fromStateIndex < nAcceptors && toStateIndex >= nAcceptors) {
-		occupationOfStates[fromStateIndex] = 0;
+	if (lastHopIndices[0] < nAcceptors && lastHopIndices[1] >= nAcceptors) {
+		occupationOfStates[lastHopIndices[0]] = 0;
 	}
-	if (fromStateIndex >= nAcceptors) {
-		if(toStateIndex < nAcceptors) {
-			occupationOfStates[toStateIndex] = 1;
+	if (lastHopIndices[0] >= nAcceptors) {
+		if(lastHopIndices[1] < nAcceptors) {
+			occupationOfStates[lastHopIndices[1]] = 1;
 		}
 	}
 }
 
 void SystemGraph::updateTransitionRates() {
 
+    double sum = 0.0;
+
+    #pragma omp parallel for schedule(static) reduction(+:sum)
+
     for (int i = 0; i < numOfStates; ++i) {
 		for (int k = jaggedArrayLengths[i]; k < jaggedArrayLengths[i+1]; ++k) {
             int partner = neighbourIndices[k];
-            // Electrode - Electrode
-            if (i >= nAcceptors && partner >= nAcceptors) {
-                dynamicalTransitionRates[k] = 0.0;
-            }
 			// Electrode - Acceptor
-			else if (i >= nAcceptors && partner < nAcceptors) {
-				if(getOccupationOfState(partner) == 1) {
+			if (i >= nAcceptors && partner < nAcceptors) {
+				if(occupationOfStates[partner] == 1) {
 					dynamicalTransitionRates[k] = 0.0;
 				}
 				else {
-					double deltaE = getStateEnergy(partner) - getStateEnergy(i);
+					double deltaE = stateEnergies[partner] - stateEnergies[i];
 					if (deltaE < 0.0) {
 						dynamicalTransitionRates[k] = nu0;
 					} 
 					else {
-						dynamicalTransitionRates[k] = nu0*std::exp(-deltaE);
+						dynamicalTransitionRates[k] = nu0*fastExp(-deltaE);
 					} 
 				}
 			}
 			// Acceptor - Electrode
 			else if (i < nAcceptors && partner >= nAcceptors) {
-				if (getOccupationOfState(i) == 0) {
+				if (occupationOfStates[i] == 0) {
 					dynamicalTransitionRates[k] = 0.0;
 				} 
 				else {
-					double deltaE = getStateEnergy(partner) - getStateEnergy(i);
+					double deltaE = stateEnergies[partner] - stateEnergies[i];
 					if (deltaE < 0.0) {
 						dynamicalTransitionRates[k] = nu0;
 					}
 					else {
-						dynamicalTransitionRates[k] = nu0*std::exp(-deltaE);
+						dynamicalTransitionRates[k] = nu0*fastExp(-deltaE);
 					}
 				}
 			}
 			// Acceptor - Acceptor
 			else if (i < nAcceptors && partner < nAcceptors) {
-				if ((getOccupationOfState(i) == 1) && (getOccupationOfState(partner) == 0)) {
-					double deltaE = getStateEnergy(partner) - getStateEnergy(i) - A0 / getDistance(i, partner);
+				if ((occupationOfStates[i] == 1) && (occupationOfStates[partner] == 0)) {
+					double deltaE = stateEnergies[partner] - stateEnergies[i] - A0 / distanceMatrix[i*numOfStates + partner];
 					if (deltaE < 0.0) {
 						dynamicalTransitionRates[k] = nu0;
 					}
 					else {
-						dynamicalTransitionRates[k] = nu0*std::exp(-deltaE);
+						dynamicalTransitionRates[k] = nu0*fastExp(-deltaE);
 					} 
 				}
 				else {
 					dynamicalTransitionRates[k] = 0.0;
 				}					
 			}
+
+            aggregatedTransitionRates[k] = dynamicalTransitionRates[k]*constantTransitionRates[k];
+            sum += aggregatedTransitionRates[k];
 		}
 	}
+
+    totalSumOfRates = sum;
 }
 
-std::tuple<int, int, double> SystemGraph::sampleTransitionEvent() {
-
-    totalSumOfRates = 0.0;
-
-    for (int i = 0; i < dynamicalTransitionRates.size(); ++i) {
-        double rate = constantTransitionRates[i]*dynamicalTransitionRates[i];
-        totalSumOfRates+=rate;
-    }
+void SystemGraph::sampleTransitionEvent() {
 
     double r = sampleFromUniformDistribution(0.0, totalSumOfRates);
     cumulativeSumOfRates = 0.0;
@@ -556,17 +580,16 @@ std::tuple<int, int, double> SystemGraph::sampleTransitionEvent() {
             cumulativeSumOfRates+=rate;
             if (cumulativeSumOfRates >= r) {
                 int j = neighbourIndices[k];
-                auto output = std::make_tuple(i, j, totalSumOfRates);
-                 return output;
+                lastHopIndices[0] = i;
+                lastHopIndices[1] = j;
+                return;
             }
         }
     }
-
-    throw std::runtime_error("No event selected");
 }
 
-void SystemGraph::increaseEventCount(unsigned int stateIndex1, unsigned int stateIndex2) {
-    eventCounts[stateIndex1*numOfStates + stateIndex2] += 1;
+void SystemGraph::increaseEventCount() {
+    eventCounts[lastHopIndices[0]*numOfStates + lastHopIndices[1]] += 1;
 }
 
 void SystemGraph::increaseSystemTime(double totalSumOfTransitionRates) {
