@@ -120,7 +120,7 @@ class SystemGraph {
         double a = 20.0;
         double T = 77.0;
 
-        double energyDisorder = 0.01*e / kbT;
+        double energyDisorder = 0.05*e / kbT;
         double R = std::sqrt(M_PI*radius*radius / static_cast<double>(nAcceptors));
         double A0 = (e*e) / (4.0*kbT*PI*eps0*epsr*1e-9*R);
 
@@ -163,8 +163,6 @@ class SystemGraph {
         std::vector<double> dynamicalTransitionRates;
 
         std::vector<double> aggregatedTransitionRates;
-
-        std::vector<int> unoccupiedStateIndices;
 
         std::vector<int> numOfNeighbours;
         

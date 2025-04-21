@@ -62,12 +62,6 @@ void Simulator::singleMCStep(bool trackingData) {
 
 void Simulator::simulateNumberOfSteps(unsigned int numOfSteps, bool trackingData) {
 
-    /**
-     * 
-     * For equilibrium simulation set trackingData = false
-     * 
-     */
-
     for(int i = 0; i < numOfSteps; ++i) {
         singleMCStep(trackingData);
     }

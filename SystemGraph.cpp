@@ -21,7 +21,6 @@ SystemGraph::SystemGraph()
     distanceMatrix.resize(numOfStates*numOfStates, 0.0);
     inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
     occupationOfStates.resize(nAcceptors, 0);
-    unoccupiedStateIndices.resize(nDonors, 0);
     constantStateEnergies.resize(numOfStates, 0.0);
     stateEnergies.resize(numOfStates, 0.0);
     acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
@@ -175,7 +174,6 @@ void SystemGraph::initializeSystemGraph(const std::string& path) {
     distanceMatrix.resize(numOfStates*numOfStates, 0.0);
     inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
     occupationOfStates.resize(nAcceptors, 0);
-    unoccupiedStateIndices.resize(nDonors, 0);
     constantStateEnergies.resize(numOfStates, 0.0);
     stateEnergies.resize(numOfStates, 0.0);
     acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
@@ -443,9 +441,6 @@ void SystemGraph::initializeOccupiedStates() {
         randomVector[i] = i;
     }
     std::shuffle(randomVector.begin(), randomVector.end(), rng);
-    for (int i = 0; i < nDonors; ++i) {
-        unoccupiedStateIndices[i] = randomVector[nAcceptors-(nDonors-i)];
-    }
     for (int i = 0; i < nAcceptors - nDonors; ++i) {
         occupationOfStates[randomVector[i]] = 1;
     }
@@ -576,7 +571,7 @@ void SystemGraph::sampleTransitionEvent() {
         int L = jaggedArrayLengths[i];
         int R = jaggedArrayLengths[i+1];
         for (int k = L; k < R; ++k) {
-            double rate = constantTransitionRates[k]*dynamicalTransitionRates[k];
+            double rate = aggregatedTransitionRates[k];
             cumulativeSumOfRates+=rate;
             if (cumulativeSumOfRates >= r) {
                 int j = neighbourIndices[k];
@@ -608,6 +603,7 @@ void SystemGraph::resetPotential() {
 
     for (int i = 0; i < nAcceptors; ++i) {
         constantStateEnergies[i] -= finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] -= finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
     }
 }
 
@@ -615,6 +611,7 @@ void SystemGraph::updatePotential() {
 
     for (int i = 0; i < nAcceptors; ++i) {
         constantStateEnergies[i] += finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] += finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
     }
 }
 
@@ -667,6 +664,7 @@ void SystemGraph::multiElectrodeUpdate(std::vector<int> electrodeIndices, std::v
     for (int i = 0; i < electrodeIndices.size(); ++i) {
         setElectrodeVoltage(electrodeIndices[i], newVoltages[i]);
         constantStateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
+        stateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
     }
 
     resetPotential();

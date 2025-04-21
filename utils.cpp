@@ -171,7 +171,7 @@ void IVCurve(
 
         std::vector<double> inputs(numOfVoltageSettings*8, 0.0);
         std::vector<double> outputs(numOfVoltageSettings, 0.0);
-
+        
         #pragma omp parallel
         {      
             std::mt19937 threadRng(std::random_device{}() + omp_get_thread_num());

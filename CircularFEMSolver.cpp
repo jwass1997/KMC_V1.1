@@ -165,7 +165,7 @@ void CircularFEMSolver::updateMultipleElectrodes(std::vector<int> electrodeIndic
 
     for (int i = 0; i < electrodeIndices.size(); ++i) {
         for (const auto& index : electrodesTdofIndices[electrodeIndices[i]]) {
-            (*solution)[ess_tdof_list[index]] = newVoltages[electrodeIndices[i]];
+            (*solution)[ess_tdof_list[index]] = newVoltages[i];
         }
     }
 }

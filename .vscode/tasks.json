@@ -18,6 +18,7 @@
                 "main",
                 "-I/usr/local/include",
                 "-L/usr/local/lib",
+                "-fopenmp",
                 "-lmfem",
                 "-lm",
                 "-lcnpy",
