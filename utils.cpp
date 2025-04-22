@@ -149,11 +149,9 @@ void recordDevice(
     cnpy::npz_save(deviceName, "device_time", &total_time, {1}, "a");
 }
 
-void IVCurve(
-    double maxVoltage,
-    double minVoltage,
-    int numOfSimulations,
-    int numOfVoltageSettings,
+double IVPoint(
+    std::vector<double> voltageSetting,
+    int numOfDevices,
     int scanElectrodeIndex,
     int equilibriumSteps,
     int simulationSteps,
@@ -166,47 +164,22 @@ void IVCurve(
             throw std::invalid_argument("No save folder specified");
         }
 
-        std::string dataFileName = saveFolderPath + "/IVcharacteristic" + std::to_string(ID) + ".npz";
-        cnpy::npz_save(dataFileName, "ID", &ID, {1}, "w");
-
-        std::vector<double> inputs(numOfVoltageSettings*8, 0.0);
-        std::vector<double> outputs(numOfVoltageSettings, 0.0);
+        double averageOutputCurrent = 0.0;
         
-        #pragma omp parallel
-        {      
-            std::mt19937 threadRng(std::random_device{}() + omp_get_thread_num());
-            std::uniform_real_distribution<double> uni(minVoltage, maxVoltage);
+        for (int deviceNumber = 0; deviceNumber < numOfDevices; ++deviceNumber) {
+            double current = currentFromVoltageCombination(
+                voltageSetting,
+                scanElectrodeIndex,
+                equilibriumSteps,
+                simulationSteps,
+                numOfIntervals,
+                defaultConfig
+            );
 
-            #pragma omp for
-            for (int setting = 0; setting < numOfVoltageSettings; ++setting) {
-                std::vector<double> voltageSetting(8, 0.0);
-                for (int i = 0; i < 8; ++i) {
-                    voltageSetting[i] = uni(threadRng);
-                }
-                double averageOutputCurrent = 0.0;
-                for (int simCount = 0; simCount < numOfSimulations; ++simCount) {
-                    double current = currentFromVoltageCombination(
-                        voltageSetting,
-                        scanElectrodeIndex,
-                        equilibriumSteps,
-                        simulationSteps,
-                        numOfIntervals,
-                        defaultConfig
-                    );
-
-                    averageOutputCurrent += current / static_cast<double>(numOfSimulations);
-                }
-                outputs[setting] = averageOutputCurrent;
-                for (int i = 0; i < 8; ++i) {
-                    inputs[setting*8 + i] = voltageSetting[i];
-                }
-            }
-            
+            averageOutputCurrent += current / static_cast<double>(numOfDevices);
         }
-        std::vector<size_t> inputShape = {static_cast<size_t>(numOfVoltageSettings), 8};
-        std::vector<size_t> outputShape = {static_cast<size_t>(numOfVoltageSettings)};
-        cnpy::npz_save(dataFileName, "inputs", inputs.data(), inputShape, "a");
-        cnpy::npz_save(dataFileName, "outputs", outputs.data(), outputShape, "a");
+
+        return averageOutputCurrent;
 }
 
 double currentFromVoltageCombination(

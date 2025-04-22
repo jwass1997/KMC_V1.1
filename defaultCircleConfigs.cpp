@@ -17,7 +17,7 @@ int main() {
     int nAcceptors = 200;
     int nDonors = 3;
     int nElectrodes = 8;
-    double radius = 100.0;
+    double radius = 150.0;
     double R = std::sqrt(M_PI*radius*radius / static_cast<double>(nAcceptors));
     
     radius = radius / R;
@@ -69,11 +69,15 @@ int main() {
         file << xCoordinate << " " << yCoordinate << "\n";
     }
     file.close();
-
+    double minVoltage = -1.5;
+    double maxVoltage = 1.5;
     file.open("default_configs/default_circle_electrodes.txt");
     for(int i = 0; i < nElectrodes; ++i) {
-        double defaultVoltage = 1.5*uniformDistribution(rng) - 1.5;
+        double defaultVoltage = minVoltage + (maxVoltage-minVoltage)*uniformDistribution(rng);
         file << defaultAngularPositions[i] << " " << defaultVoltage << "\n";
     }
     file.close();
+
+    std::cout << "radius == " << radius << "\n";
+    std::cout << "R == " << R << "\n";
 }

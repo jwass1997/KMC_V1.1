@@ -77,11 +77,9 @@ inline std::vector<double> sampleVoltageSetting(
         return voltageSetting;
 };
 
-void IVCurve(
-    double maxVoltage,
-    double minVoltage,
-    int numOfSimulations,
-    int numOfVoltageSettings,
+double IVPoint(
+    std::vector<double> voltageSetting,
+    int numOfDevices,
     int scanElectrodeIndex,
     int equilibriumSteps,
     int simulationSteps,

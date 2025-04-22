@@ -5,8 +5,8 @@
 using namespace std;
 using namespace std::chrono;
 
-const int ROWS = 10000;
-const int COLS = 10000;
+const int ROWS = 5000;
+const int COLS = 5000;
 
 // Benchmark using a nested C-style 2D array
 void benchmark_array() {
@@ -91,18 +91,12 @@ void benchmark_flattened_vector() {
 }
 
 int main() {
-    /* cout << "Benchmarking a " << ROWS << " x " << COLS << " matrix:" << endl;
+    cout << "Benchmarking a " << ROWS << " x " << COLS << " matrix:" << endl;
 
     benchmark_array();
     benchmark_flattened_array();
     benchmark_nested_vector();
     benchmark_flattened_vector();
 
-    return 0; */
-    for (int i = 0; i < 3; ++i) {
-        for (int j = i+1; j < 3; ++j) {
-            std::cout<<i*3 + j<<"\n";
-            std::cout<<j*3 + i<<"\n";
-        }
-    }
+    return 0;
 }

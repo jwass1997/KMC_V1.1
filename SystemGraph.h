@@ -114,7 +114,7 @@ class SystemGraph {
     
         unsigned int numOfStates;
 
-        double radius = 100.0;
+        double radius = 150.0;
 
         double nu0 = 1.0;
         double a = 20.0;
