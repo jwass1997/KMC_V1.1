@@ -33,6 +33,8 @@ inline constexpr double kbT = 1.0630997e-21;
 
 inline double fastExp(double x);
 
+bool argParser(int argc, char* argv[]);
+
 double sampleFromUniformDistribution(double min, double max);
 
 double sampleFromNormalDistribution(double mean, double standardDeviation);
@@ -90,6 +92,7 @@ double IVPoint(
 );
 
 double currentFromVoltageCombination(
+    Simulator& simulator,
     std::vector<double> voltageSetting,
     int scanElectrodeIndex,
     int equilibriumSteps,

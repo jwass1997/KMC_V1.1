@@ -1,5 +1,6 @@
 #include <random>
 #include <omp.h>
+#include <boost/program_options.hpp>
 
 #include "utils.h"
 #include "SystemGraph.h"
@@ -167,7 +168,9 @@ double IVPoint(
         double averageOutputCurrent = 0.0;
         
         for (int deviceNumber = 0; deviceNumber < numOfDevices; ++deviceNumber) {
+            Simulator simulator(defaultConfig);
             double current = currentFromVoltageCombination(
+                simulator,
                 voltageSetting,
                 scanElectrodeIndex,
                 equilibriumSteps,
@@ -183,6 +186,7 @@ double IVPoint(
 }
 
 double currentFromVoltageCombination(
+    Simulator& simulator,
     std::vector<double> voltageSetting,
     int scanElectrodeIndex,
     int equilibriumSteps,
@@ -190,7 +194,6 @@ double currentFromVoltageCombination(
     int numOfIntervals,
     const std::string& defaultConfig) {
         
-        Simulator simulator(defaultConfig);
         int nAcceptors = simulator.system->getAcceptorNumber();
         int numOfStates = simulator.system->getNumOfStates();
         std::vector<int> electrodeIndices = {0, 1, 2, 3, 4, 5, 6, 7};
@@ -199,6 +202,8 @@ double currentFromVoltageCombination(
         simulator.simulateNumberOfSteps(equilibriumSteps, false);
 
         double averageCurrent = 0.0;
+        double totalTime = 0.0;
+        int totalNet = 0;
         int intervalSteps = simulationSteps / numOfIntervals;
         int intervalCounter = 0;
         while(intervalCounter < numOfIntervals) {
@@ -213,11 +218,14 @@ double currentFromVoltageCombination(
                 outCounts += simulator.system->getNumberOfEvents(nAcceptors+scanElectrodeIndex, i);
                 inCounts += simulator.system->getNumberOfEvents(i, nAcceptors+scanElectrodeIndex); 
             }
-            averageCurrent += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
+            totalTime += elapsedTime;
+            totalNet += inCounts-outCounts;
             
             simulator.system->resetEventCounts();
             intervalCounter++;
         }
+
+        averageCurrent = static_cast<double>(totalNet) / totalTime;
 
         return averageCurrent;
 }

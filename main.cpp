@@ -9,7 +9,7 @@
 #include "Simulator.h"
 #include "utils.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     std::string saveFolder = "currentData";
     std::string defaultDeviceConfigs = "default_configs";
     createDirectoryFromStringPath("", saveFolder);
@@ -25,7 +25,7 @@ int main() {
     //createBatchOfSingleSystem(20, inputElectrodes, outpuElectrodes, -1.5, 1.5, 1e4, 1e6, 1, defaultDeviceConfigs, saveFolder, 1);
     //recordDevice(deviceID1, 1e4, 1e5, defaultDeviceConfigs, saveFolder);
 
-    int numOfPoints = 200;
+    int numOfPoints = 100;
     double maxVoltage = -1.;
     double minVoltage = 1.;
     double range = maxVoltage - minVoltage;
@@ -33,10 +33,11 @@ int main() {
     std::vector<double> currents(numOfPoints, 0.0);
     #pragma omp parallel for
     for (int voltagePoint = 0; voltagePoint < numOfPoints; ++voltagePoint) {
+        std::cout<<voltagePoint<<"\n";
         std::vector<double> voltageSetting = {0.,0.,0.,0.,0.,0.,0.,0.};
-        voltageSetting[7] = minVoltage + voltageStep*voltagePoint;
+        voltageSetting[1] = minVoltage + voltageStep*voltagePoint;
         double outputCurrent = 0.0;
-        outputCurrent = IVPoint(voltageSetting, 30, 0, 1e3, 1e4, 1, voltagePoint, defaultDeviceConfigs, saveFolder);
+        outputCurrent = IVPoint(voltageSetting, 5, 0, 1e4, 1e7, 100, voltagePoint, defaultDeviceConfigs, saveFolder);
         currents[voltagePoint] = outputCurrent;
     }
     std::string fileName = "currents.npz";
