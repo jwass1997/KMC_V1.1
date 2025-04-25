@@ -22,8 +22,6 @@ int main(int argc, char* argv[]) {
     int maxThreads = omp_get_max_threads();
     //std::cout << maxThreads << "\n";
     //std::cout<<__cplusplus<<"\n";
-    //createBatchOfSingleSystem(20, inputElectrodes, outpuElectrodes, -1.5, 1.5, 1e4, 1e6, 1, defaultDeviceConfigs, saveFolder, 1);
-    //recordDevice(deviceID1, 1e4, 1e5, defaultDeviceConfigs, saveFolder);
 
     int numOfPoints = 100;
     double maxVoltage = -1.;
