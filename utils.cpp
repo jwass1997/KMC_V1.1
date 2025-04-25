@@ -232,8 +232,8 @@ double currentFromVoltageCombination(
 
 void createBatchOfSingleSystem(
     int batchSize, 
-    std::vector<int> inputElectrodes,
-    std::vector<int> outputElectrodes,
+    std::vector<int> inputElectrodeIndeces,
+    int outputElectrodeIndex,
     double minVoltage, 
     double maxVoltage,
     int equilibriumSteps,
@@ -243,23 +243,17 @@ void createBatchOfSingleSystem(
     const std::string& saveFolderPath, 
     int batchID) {
 
-    if(saveFolderPath.empty()) {
+    if (saveFolderPath.empty()) {
         throw std::invalid_argument("No save folder specified !");
     }
 
-    std::vector<double> inputs(batchSize*inputElectrodes.size(), 0.0);
-    std::vector<double> outputs(batchSize*outputElectrodes.size(), 0.0);   
-    std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), inputElectrodes.size()}; 
-    std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize), outputElectrodes.size()}; 
+    std::vector<double> inputs(batchSize*inputElectrodeIndeces.size(), 0.0);
+    std::vector<double> outputs(batchSize, 0.0);   
+    std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), inputElectrodeIndeces.size()}; 
+    std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)}; 
 
-    std::vector<int> systemElectrodes;
-    systemElectrodes.insert(systemElectrodes.end(), inputElectrodes.begin(), inputElectrodes.end());
-    systemElectrodes.insert(systemElectrodes.end(), outputElectrodes.begin(), outputElectrodes.end());
-
-    int numOfInputElectrodes = inputElectrodes.size();
-    int numOfOutputElectrodes = outputElectrodes.size();
-
-    std::vector<double> voltages(numOfInputElectrodes+numOfOutputElectrodes);
+    std::vector<int> systemElectrodes = inputElectrodeIndeces;
+    systemElectrodes.push_back(outputElectrodeIndex);
 
     #pragma omp parallel 
     {   
@@ -271,14 +265,9 @@ void createBatchOfSingleSystem(
             int nAcceptors = simulator.system->getAcceptorNumber();
             int numOfStates = simulator.system->getNumOfStates();
 
-        
-            for (int i = 0; i < numOfInputElectrodes; ++i) {
-                voltages[i] = uni(rng);
-                inputs[batch*numOfInputElectrodes + i] = voltages[i];
-            }
-            for (int i = numOfInputElectrodes; i < numOfInputElectrodes+numOfOutputElectrodes; ++i) {
-                voltages[i] = -1.0;
-            }
+            std::vector<double> voltages = sampleVoltageSetting(8, -1.5, 1.5);
+            voltages[outputElectrodeIndex] = 0.0;
+
             simulator.system->multiElectrodeUpdate(systemElectrodes, voltages);
             simulator.simulateNumberOfSteps(equilibriumSteps, false);
 
@@ -308,4 +297,79 @@ void createBatchOfSingleSystem(
     cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
+}
+
+int argParser(int argc, char* argv[]) {
+
+    boost::program_options::options_description globalOptions(" ");
+
+    globalOptions.add_options()
+        ("help, h", "help message")
+        ("command", boost::program_options::value<std::string>(), "command to run");
+    
+    boost::program_options::positional_options_description position;
+    position.add("command", 1);
+
+    auto parsedCommand = boost::program_options::command_line_parser(argc, argv).options(globalOptions)
+                                                                                .positional(position)
+                                                                                .allow_unregistered()
+                                                                                .run();
+    
+    boost::program_options::variables_map vm;
+    boost::program_options::store(parsedCommand, vm);
+
+    if (vm.count("help") || !vm.count("command")) {
+        std::cout << globalOptions << "\n"
+                  << "Allowed commands:\n"
+                  << " singleRun --equilibriumSteps <int> --simulationSteps <int>\n"
+                  << " batchRun --batchSize <int> --batchName <string>";
+        return 0;
+    }
+
+    std::string firstCommand = vm["command"].as<std::string>();
+    std::vector<std::string> remainingCommand = 
+        boost::program_options::collect_unrecognized(
+            parsedCommand.options, 
+            boost::program_options::include_positional);
+
+    remainingCommand.erase(remainingCommand.begin());
+
+    if (firstCommand == "singleRun") {
+        boost::program_options::options_description singleRunOptions("Single run options");
+        singleRunOptions.add_options()
+            ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
+            ("simulationSteps", boost::program_options::value<int>()->required());
+        
+        boost::program_options::variables_map singleRunVM;
+        boost::program_options::store(
+            boost::program_options::command_line_parser(remainingCommand).options(singleRunOptions).run(),
+            singleRunVM);
+        boost::program_options::notify(singleRunVM);
+
+        Simulator simulator;
+        simulator.simulateNumberOfSteps(singleRunVM["equilibriumSteps"].as<int>(), false);
+        simulator.simulateNumberOfSteps(singleRunVM["simulationSteps"].as<int>(), true);
+        
+        return 1;
+    }
+
+    else if (firstCommand == "batchRun") {
+        boost::program_options::options_description batchRunOptions("Batch run options");
+        batchRunOptions.add_options()
+            ("batchSize", boost::program_options::value<int>()->default_value(512))
+            ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
+            ("simulationSteps", boost::program_options::value<int>()->required());
+    }
+
+    else if (firstCommand == "IVpoint") {
+
+        return 1;
+    }
+    
+    else {
+        std::cerr << "Unknown command: " << firstCommand << "\n";
+        return -1;
+    }
+
+    return 0;
 }

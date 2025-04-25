@@ -6,6 +6,7 @@
 #include <cstring>
 #include <string>
 #include <filesystem>
+#include <boost/program_options.hpp>
 
 #include "cnpy.h"
 
@@ -33,7 +34,7 @@ inline constexpr double kbT = 1.0630997e-21;
 
 inline double fastExp(double x);
 
-bool argParser(int argc, char* argv[]);
+int argParser(int argc, char* argv[]);
 
 double sampleFromUniformDistribution(double min, double max);
 
@@ -103,8 +104,8 @@ double currentFromVoltageCombination(
 
 void createBatchOfSingleSystem(
     int batchSize, 
-    std::vector<int> inputElectrodes,
-    std::vector<int> outputElectrodes,
+    std::vector<int> inputElectrodeIndeces,
+    int outputElectrodeIndex,
     double minVoltage,
     double maxVoltage,
     int equilibriumSteps, 
