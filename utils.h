@@ -112,5 +112,5 @@ void createBatchOfSingleSystem(
     int numOfIntervals,
     const std::string& defaultConfigs, 
     const std::string& saveFolder, 
-    std::string batchID
+    const std::string& batchID
 );

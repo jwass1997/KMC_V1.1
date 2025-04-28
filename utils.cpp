@@ -240,11 +240,13 @@ void createBatchOfSingleSystem(
     int numOfIntervals,
     const std::string& defaultConfigs, 
     const std::string& saveFolderPath, 
-    std::string batchID) {
+    const std::string& batchID) {
 
     if (saveFolderPath.empty()) {
         throw std::invalid_argument("No save folder specified !");
     }
+
+    std::string fileName = saveFolderPath + "/batch_" + batchID + ".npz";
 
     std::vector<int> systemElectrodes = {0, 1, 2, 3, 4, 5, 6, 7};
     int numOfElectrodes = systemElectrodes.size();
@@ -290,7 +292,7 @@ void createBatchOfSingleSystem(
             outputs[batch] = averageOutputCurrent;
         }
     }
-    std::string fileName = saveFolderPath + "/batch_" + batchID + ".npz";
+
     cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
@@ -361,7 +363,7 @@ int argParser(int argc, char* argv[]) {
         batchRunOptions.add_options()
             ("batchSize", boost::program_options::value<int>()->default_value(512))
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
-            ("simulationSteps", boost::program_options::value<int>()->required());
+            ("simulationSteps", boost::program_options::value<int>()->required())
             ("batchName", boost::program_options::value<std::string>()->required());
         
         boost::program_options::variables_map batchRunVM;
@@ -380,7 +382,7 @@ int argParser(int argc, char* argv[]) {
             batchRunVM["simulationSteps"].as<int>(),
             10, 
             "default_configs",
-            "currentdata",
+            "currentData",
             batchRunVM["batchName"].as<std::string>()
         );
 
