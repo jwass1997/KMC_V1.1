@@ -113,7 +113,7 @@ void recordDevice(
     std::vector<size_t> shapeFlattenedElectrodeCoordinates = {static_cast<size_t>(nElectrodes), 2};
     std::vector<size_t> shapeFlattenedEventCounts = {static_cast<size_t>(nAcceptors+nElectrodes), static_cast<size_t>(nAcceptors+nElectrodes)};
 
-    std::string deviceName = saveFolderPath + "/device" + ID + ".npz";
+    std::string deviceName = saveFolderPath + "/device_" + ID + ".npz";
     cnpy::npz_save(deviceName, "ID", &ID, {1}, "w"); 
 
     simulator.simulateNumberOfSteps(equilibriumSteps, false);
@@ -232,7 +232,6 @@ double currentFromVoltageCombination(
 
 void createBatchOfSingleSystem(
     int batchSize, 
-    std::vector<int> inputElectrodeIndeces,
     int outputElectrodeIndex,
     double minVoltage, 
     double maxVoltage,
@@ -241,19 +240,20 @@ void createBatchOfSingleSystem(
     int numOfIntervals,
     const std::string& defaultConfigs, 
     const std::string& saveFolderPath, 
-    int batchID) {
+    std::string batchID) {
 
     if (saveFolderPath.empty()) {
         throw std::invalid_argument("No save folder specified !");
     }
 
-    std::vector<double> inputs(batchSize*inputElectrodeIndeces.size(), 0.0);
+    std::vector<int> systemElectrodes = {0, 1, 2, 3, 4, 5, 6, 7};
+    int numOfElectrodes = systemElectrodes.size();
+
+    std::vector<double> inputs(batchSize*numOfElectrodes, 0.0);
     std::vector<double> outputs(batchSize, 0.0);   
-    std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), inputElectrodeIndeces.size()}; 
+    std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), static_cast<size_t>(numOfElectrodes)}; 
     std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)}; 
 
-    std::vector<int> systemElectrodes = inputElectrodeIndeces;
-    systemElectrodes.push_back(outputElectrodeIndex);
 
     #pragma omp parallel 
     {   
@@ -265,35 +265,32 @@ void createBatchOfSingleSystem(
             int nAcceptors = simulator.system->getAcceptorNumber();
             int numOfStates = simulator.system->getNumOfStates();
 
-            std::vector<double> voltages = sampleVoltageSetting(8, -1.5, 1.5);
+            std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
             voltages[outputElectrodeIndex] = 0.0;
+
+            for (int i = 0; i < numOfElectrodes; ++i) {
+                inputs[batch*numOfElectrodes + i] = voltages[i];
+            }
 
             simulator.system->multiElectrodeUpdate(systemElectrodes, voltages);
             simulator.simulateNumberOfSteps(equilibriumSteps, false);
 
             int intervalSteps = simulationSteps / numOfIntervals;
             int intervalCounter = 0;
-            while (intervalCounter < numOfIntervals) {
-                double startClock = simulator.system->getSystemTime();
-                simulator.simulateNumberOfSteps(intervalSteps, true);
-                double endClock = simulator.system->getSystemTime();
-                double elapsedTime = endClock - startClock;
-                for (int i = 0; i < outputElectrodes.size(); ++i) {
-                    int inCounts = 0;
-                    int outCounts = 0;
-                    double averageCurrent = 0.0;
-                    for (int j = 0; j < numOfStates; ++j) {
-                        outCounts += simulator.system->getNumberOfEvents(nAcceptors+outputElectrodes[i], j);
-                        inCounts += simulator.system->getNumberOfEvents(j, nAcceptors+outputElectrodes[i]);            
-                    } 
-                    outputs[batch*outputElectrodes.size() + i] += static_cast<double>(inCounts-outCounts) / (elapsedTime*static_cast<double>(numOfIntervals));
-                }
-                simulator.system->resetEventCounts();
-                intervalCounter++;
-            }
+            double averageOutputCurrent = currentFromVoltageCombination(
+                simulator,
+                voltages,
+                outputElectrodeIndex,
+                equilibriumSteps,
+                simulationSteps,
+                numOfIntervals, 
+                defaultConfigs
+            );
+            
+            outputs[batch] = averageOutputCurrent;
         }
     }
-    std::string fileName = saveFolderPath + "/batch" + std::to_string(batchID) + ".npz";
+    std::string fileName = saveFolderPath + "/batch_" + batchID + ".npz";
     cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
@@ -321,8 +318,8 @@ int argParser(int argc, char* argv[]) {
     if (vm.count("help") || !vm.count("command")) {
         std::cout << globalOptions << "\n"
                   << "Allowed commands:\n"
-                  << " singleRun --equilibriumSteps <int> --simulationSteps <int>\n"
-                  << " batchRun --batchSize <int> --batchName <string>";
+                  << " singleRun --equilibriumSteps <int> --simulationSteps <int> --deviceName <string>\n"
+                  << " batchRun --batchSize <int> --equilibriumSteps <int> --simulationSteps <int> --batchName <string>\n";
         return 0;
     }
 
@@ -338,17 +335,23 @@ int argParser(int argc, char* argv[]) {
         boost::program_options::options_description singleRunOptions("Single run options");
         singleRunOptions.add_options()
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
-            ("simulationSteps", boost::program_options::value<int>()->required());
+            ("simulationSteps", boost::program_options::value<int>()->required())
+            ("deviceName", boost::program_options::value<std::string>()->required());
         
         boost::program_options::variables_map singleRunVM;
         boost::program_options::store(
-            boost::program_options::command_line_parser(remainingCommand).options(singleRunOptions).run(),
-            singleRunVM);
+            boost::program_options::command_line_parser(
+                remainingCommand).options(singleRunOptions).run(),
+                singleRunVM);
         boost::program_options::notify(singleRunVM);
 
-        Simulator simulator;
-        simulator.simulateNumberOfSteps(singleRunVM["equilibriumSteps"].as<int>(), false);
-        simulator.simulateNumberOfSteps(singleRunVM["simulationSteps"].as<int>(), true);
+        recordDevice(
+            singleRunVM["deviceName"].as<std::string>(),
+            singleRunVM["equilibriumSteps"].as<int>(),
+            singleRunVM["simulationSteps"].as<int>(),
+            "default_configs",
+            "currentData"
+        );
         
         return 1;
     }
@@ -359,6 +362,29 @@ int argParser(int argc, char* argv[]) {
             ("batchSize", boost::program_options::value<int>()->default_value(512))
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
             ("simulationSteps", boost::program_options::value<int>()->required());
+            ("batchName", boost::program_options::value<std::string>()->required());
+        
+        boost::program_options::variables_map batchRunVM;
+        boost::program_options::store(
+            boost::program_options::command_line_parser(
+                remainingCommand).options(batchRunOptions).run(),
+                batchRunVM);
+        boost::program_options::notify(batchRunVM);
+        
+        createBatchOfSingleSystem(
+            batchRunVM["batchSize"].as<int>(),
+            0,
+            -1.5,
+            1.5,
+            batchRunVM["equilibriumSteps"].as<int>(),
+            batchRunVM["simulationSteps"].as<int>(),
+            10, 
+            "default_configs",
+            "currentdata",
+            batchRunVM["batchName"].as<std::string>()
+        );
+
+        return 1;
     }
 
     else if (firstCommand == "IVpoint") {

@@ -104,7 +104,6 @@ double currentFromVoltageCombination(
 
 void createBatchOfSingleSystem(
     int batchSize, 
-    std::vector<int> inputElectrodeIndeces,
     int outputElectrodeIndex,
     double minVoltage,
     double maxVoltage,
@@ -113,5 +112,5 @@ void createBatchOfSingleSystem(
     int numOfIntervals,
     const std::string& defaultConfigs, 
     const std::string& saveFolder, 
-    int batchID
+    std::string batchID
 );
