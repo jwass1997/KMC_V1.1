@@ -11,7 +11,7 @@ build() {
 
 run() {
 	echo "Simulating device..."
-	./main singleRun --equilibriumSteps=100000 --simulationSteps=1000000 --deviceName=test
+	./main singleRun --equilibriumSteps=10000 --simulationSteps=10000000 --deviceName=test
 }
 
 build

@@ -12,6 +12,11 @@ Simulator::Simulator()
     : system(nullptr) 
 {
     system = new SystemGraph();
+
+    std::cout << "A0/kbT == " << system->A0 << "\n";
+    std::cout << "R == " << system->R << "\n";
+    std::cout << "a/R == " << system->a << "\n";
+    std::cout << "stdE/kbT == " << system->energyDisorder << "\n";
 }
 
 Simulator::Simulator(const std::string& path) 
@@ -22,6 +27,11 @@ Simulator::Simulator(const std::string& path)
     }
 
     system = new SystemGraph(path);
+
+    std::cout << "A0/kbT == " << system->A0 << "\n";
+    std::cout << "R == " << system->R << "\n";
+    std::cout << "a/R == " << system->a << "\n";
+    std::cout << "stdE/kbT == " << system->energyDisorder << "\n";
 }
 
 Simulator::Simulator(const std::string& path, int burnInHops, int numOfHops) 

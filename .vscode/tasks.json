@@ -23,6 +23,7 @@
                 "-lm",
                 "-lcnpy",
                 "-lz",
+                "-lboost_program_options",
                 "-v"
             ],
             "group": "build",

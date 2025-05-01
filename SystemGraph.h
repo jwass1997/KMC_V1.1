@@ -105,7 +105,7 @@ class SystemGraph {
 
         friend class Simulator;
 
-    private:
+    /* private: */
         bool dimensionlessDistances;
 
         unsigned int nAcceptors = 200;
@@ -120,11 +120,11 @@ class SystemGraph {
         double a = 20.0;
         double T = 77.0;
 
-        double energyDisorder = 0.05*e / kbT;
+        double energyDisorder = 0.1*e / kbT;
         double R = std::sqrt(M_PI*radius*radius / static_cast<double>(nAcceptors));
         double A0 = (e*e) / (4.0*kbT*PI*eps0*epsr*1e-9*R);
 
-        bool addRandomEnergy = true;
+        bool addRandomEnergy = false;
 
         double minHopDistance = 3.0;
 

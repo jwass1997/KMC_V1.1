@@ -262,7 +262,8 @@ void createBatchOfSingleSystem(
             int nAcceptors = simulator.system->getAcceptorNumber();
             int numOfStates = simulator.system->getNumOfStates();
 
-            std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+            std::vector<double> voltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};//sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+            voltages[(outputElectrodeIndex+1) % 8] = uni(rng);
             voltages[outputElectrodeIndex] = 0.0;
 
             for (int i = 0; i < numOfElectrodes; ++i) {
@@ -333,7 +334,8 @@ int argParser(int argc, char* argv[]) {
         singleRunOptions.add_options()
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
             ("simulationSteps", boost::program_options::value<int>()->required())
-            ("deviceName", boost::program_options::value<std::string>()->required());
+            ("deviceName", boost::program_options::value<std::string>()->required())
+        ;
         
         boost::program_options::variables_map singleRunVM;
         boost::program_options::store(
@@ -359,7 +361,8 @@ int argParser(int argc, char* argv[]) {
             ("batchSize", boost::program_options::value<int>()->default_value(512))
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
             ("simulationSteps", boost::program_options::value<int>()->required())
-            ("batchName", boost::program_options::value<std::string>()->required());
+            ("batchName", boost::program_options::value<std::string>()->required())
+        ;
         
         boost::program_options::variables_map batchRunVM;
         boost::program_options::store(
@@ -384,7 +387,7 @@ int argParser(int argc, char* argv[]) {
         return 1;
     }
 
-    else if (firstCommand == "IVpoint") {
+    /* else if (firstCommand == "IVpoint") {
         boost::program_options::options_description IVRunOptions("IV point calculation");
         IVRunOptions.add_options()
             ("voltage", boost::program_options::value<double>()->required())
@@ -394,7 +397,8 @@ int argParser(int argc, char* argv[]) {
             ("simulationSteps", boost::program_options::value<int>()->required())
             ("numOfIntervals", boost::program_options::value<int>()->default_value(100))
             ("ID", boost::program_options::value<int>()->required())
-            ("saveFolderPath", boost::program_options::value<std::string>()->required());
+            ("saveFolderPath", boost::program_options::value<std::string>()->required())
+        ;
             
         boost::program_options::variables_map IVRunVM;
         boost::program_options::store(
@@ -422,7 +426,7 @@ int argParser(int argc, char* argv[]) {
         cnpy::npz_save(fileName, "output", &current, {1}, "a");
 
         return 1;
-    }
+    } */
     
     else {
         std::cerr << "Unknown command: " << firstCommand << "\n";

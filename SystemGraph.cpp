@@ -221,8 +221,8 @@ void SystemGraph::initializeElectrodes() {
 
 void SystemGraph::initializeCoordinates(const std::string& configuration) {
 
-    auto acceptorConfig = getConfigFilePath(configuration, "default_circle_acceptors.txt");
-    auto donorConfig = getConfigFilePath(configuration, "default_circle_donors.txt");
+    auto acceptorConfig = getConfigFilePath(configuration, "device_circle_acceptors.txt");
+    auto donorConfig = getConfigFilePath(configuration, "device_circle_donors.txt");
 
     std::ifstream acceptorFile(acceptorConfig);
 
@@ -448,7 +448,7 @@ void SystemGraph::initializeOccupiedStates() {
 
 void SystemGraph::initializePotential() {
 
-    finiteElementSolver = new CircularFEMSolver(radius, 200, 200, electrodeData);
+    finiteElementSolver = new CircularFEMSolver(radius, 500, 500, electrodeData);
     finiteElementSolver->solvePoissonEquation();
 }
 

@@ -11,7 +11,7 @@ build() {
 
 run() {
 	echo "Creating batch..."
-	./main batchRun --batchSize=1 --equilibriumSteps=10000 --simulationSteps=10000000 --batchName=test
+	./main batchRun --batchSize=200 --equilibriumSteps=10000 --simulationSteps=1000000 --batchName=test
 }
 
 build

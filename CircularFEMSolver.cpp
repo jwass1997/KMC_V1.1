@@ -176,7 +176,7 @@ std::vector<int> CircularFEMSolver::getElectrodeVertices(double angularPosition)
         throw std::invalid_argument("Angular position not normalized");
     }
 
-    double deltaPhi = 1.0 / 20.0;
+    double deltaPhi = 1.0 / 30.0;
     angularPosition = angularPosition / 360.0;
 
     bool includingZero = false;
