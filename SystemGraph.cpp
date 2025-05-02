@@ -390,6 +390,7 @@ void SystemGraph::initializeStateEnergies() {
             acceptorCoordinates[i*2], 
             acceptorCoordinates[i*2 + 1]
         )*e / kbT;
+        std::cout << energy << "\n";
 		double sumOfInverseDistances = 0.0;
 		for(int j = 0; j <  nDonors; j++) {
 			sumOfInverseDistances += 1.0 / calculateDistance(

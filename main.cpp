@@ -55,9 +55,10 @@ int main(int argc, char* argv[]) {
 
     std::cout<<averageCurrent<<"\n"; */
     Simulator sim(defaultConfig);
-    for (int i = 0; i < sim.system->numOfStates; ++i) {
+    recordDevice("1", 1e4, 1e6, defaultConfig, "currentData");
+    /* for (int i = 0; i < sim.system->numOfStates; ++i) {
         std::cout << sim.system->stateEnergies[i] << "\n";
-    }
+    } */
     //sim.simulateNumberOfSteps(1e3, true);
     std::vector<int> netCounts(numOfElectrodes, 0);
     /* for (int i = 0; i < numOfElectrodes; ++i) {
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]) {
         std::cout << sim.system->stateEnergies[i] << "\n";
     } */
 
-    auto fem = sim.system->finiteElementSolver;
+    /* auto fem = sim.system->finiteElementSolver;
     auto mesh = fem->mesh;
     int numV = mesh->GetNV();
     std::ofstream out("my_potential.csv");
@@ -91,7 +92,7 @@ int main(int argc, char* argv[]) {
         out << x << "," << y << "," << phi << "\n";
     }
 
-    out.close();
+    out.close(); */
 
     /* for (int i = 0; i < nAcceptors; ++i) {
         std::cout << sim.system->acceptorCoordinates[i*2] << " " << sim.system->acceptorCoordinates[i*2+1] << "\n";
