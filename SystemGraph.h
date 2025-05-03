@@ -13,7 +13,7 @@
 
 #include "utils.h"
 
-class CircularFEMSolver;
+class FiniteElementeCircle;
 
 class SystemGraph {
     public:
@@ -89,9 +89,7 @@ class SystemGraph {
 
         void sampleTransitionEvent();
 
-        void updateElectrodeVoltage(int electrodeIndex, double voltage);
-
-        void multiElectrodeUpdate(std::vector<int> electrodeIndices, std::vector<double> voltages);
+        void updateVoltages(std::vector<double>& voltages);
 
         void increaseEventCount();
 
@@ -124,6 +122,8 @@ class SystemGraph {
         double R = std::sqrt(M_PI*radius*radius / static_cast<double>(nAcceptors));
         double A0 = (e*e) / (4.0*kbT*PI*eps0*epsr*1e-9*R);
 
+        double electrodeWidth = 60.0;
+
         bool addRandomEnergy = false;
 
         double minHopDistance = 3.0;
@@ -152,11 +152,13 @@ class SystemGraph {
 
         std::vector<int> occupationOfStates;
 
-        std::vector<double> constantStateEnergies;
+        std::vector<double> randomEnergies;
 
-        std::vector<double> stateEnergies;
+        std::vector<double> acceptorDonorInteraction;
 
         std::vector<double> acceptorInteraction;
+
+        std::vector<double> stateEnergies;        
 
         std::vector<double> constantTransitionRates;
 
@@ -183,7 +185,7 @@ class SystemGraph {
             {315.0, 1.0},
         };
 
-        CircularFEMSolver* finiteElementSolver;
+        FiniteElementeCircle* finiteElementSolver;
 
         friend class Simulator;
 };

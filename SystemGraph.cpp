@@ -2,7 +2,7 @@
 #include <omp.h>
 
 #include "SystemGraph.h"
-#include "CircularFEMSolver.h"
+#include "FEMmethods.h"
 
 SystemGraph::SystemGraph() 
     : finiteElementSolver(nullptr)
@@ -21,9 +21,10 @@ SystemGraph::SystemGraph()
     distanceMatrix.resize(numOfStates*numOfStates, 0.0);
     inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
     occupationOfStates.resize(nAcceptors, 0);
-    constantStateEnergies.resize(numOfStates, 0.0);
-    stateEnergies.resize(numOfStates, 0.0);
     acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
+    randomEnergies.resize(nAcceptors, 0.0);
+    acceptorDonorInteraction.resize(nAcceptors, 0.0);
+    stateEnergies.resize(numOfStates, 0.0);    
     eventCounts.resize(numOfStates*numOfStates, 0);
     lastHopIndices.resize(2, 0);
 
@@ -125,6 +126,7 @@ void SystemGraph::setElectrodeVoltage(unsigned int electrodeIdx, double voltage)
 void SystemGraph::initializeSystemGraph() {
 
     radius = radius / R;
+    electrodeWidth = electrodeWidth / R;
     a = a / R;
     minHopDistance = minHopDistance / R;
     maxHopDistance = maxHopDistance / R;
@@ -162,6 +164,7 @@ void SystemGraph::initializeSystemGraph(const std::string& path) {
     R = std::sqrt(M_PI*radius*radius / static_cast<double>(nAcceptors));
 
     radius = radius / R;
+    electrodeWidth = electrodeWidth / R;
     a = a / R;
     minHopDistance = minHopDistance / R;
     maxHopDistance = maxHopDistance / R;
@@ -174,7 +177,8 @@ void SystemGraph::initializeSystemGraph(const std::string& path) {
     distanceMatrix.resize(numOfStates*numOfStates, 0.0);
     inverseAcceptorDistances.resize(nAcceptors*nAcceptors, 0.0);
     occupationOfStates.resize(nAcceptors, 0);
-    constantStateEnergies.resize(numOfStates, 0.0);
+    randomEnergies.resize(nAcceptors, 0.0);
+    acceptorDonorInteraction.resize(nAcceptors, 0.0);
     stateEnergies.resize(numOfStates, 0.0);
     acceptorInteraction.resize(nAcceptors*nAcceptors, 0.0);
     eventCounts.resize(numOfStates*numOfStates, 0);
@@ -377,20 +381,14 @@ void SystemGraph::initializeContainers() {
 
 void SystemGraph::initializeStateEnergies() {
 
-    /**
-     * 
-     * Repulsion and potential energy
-     * 
-     */
-
     std::vector<double> inverseDistances(nAcceptors, 0.0);
-
+    // Acc-Don interaction + random energy + potential energy (for acceptors only)
     for(int i = 0; i < nAcceptors; ++i) {
-        double energy = finiteElementSolver->calculatePotential(
+        double potentialEnergy = finiteElementSolver->getPotential(
             acceptorCoordinates[i*2], 
             acceptorCoordinates[i*2 + 1]
         )*e / kbT;
-        std::cout << energy << "\n";
+        std::cout << potentialEnergy << "\n";
 		double sumOfInverseDistances = 0.0;
 		for(int j = 0; j <  nDonors; j++) {
 			sumOfInverseDistances += 1.0 / calculateDistance(
@@ -402,31 +400,27 @@ void SystemGraph::initializeStateEnergies() {
 		}
 
 		inverseDistances[i] = sumOfInverseDistances;
-		constantStateEnergies[i] = A0*sumOfInverseDistances;
+		acceptorDonorInteraction[i] = A0*sumOfInverseDistances;
 
-		constantStateEnergies[i] += energy;
 		if(addRandomEnergy) {
 			std::normal_distribution<double> normalDist(0.0, energyDisorder);
 			double randomEnergy = sampleFromNormalDistribution(0.0, energyDisorder);	
-			constantStateEnergies[i] += randomEnergy;		
+			randomEnergies[i] = randomEnergy;		
 		}
+        stateEnergies[i] = potentialEnergy + acceptorDonorInteraction[i] + randomEnergies[i];
 	}
-
+    // Potential energy (for electrodes only)
 	for(int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
-		constantStateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
+		stateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
 	}
-
+    // Acc-Acc interaction
     for (int i = 0; i < nAcceptors; ++i) {
         for (int j = 0; j < nAcceptors; ++j) {
             if (i != j) {
                 acceptorInteraction[i] += (1 - occupationOfStates[j]) * inverseAcceptorDistances[i*nAcceptors + j];
             }
         }
-        stateEnergies[i] = constantStateEnergies[i] - A0*acceptorInteraction[i];
-    }
-
-    for (int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
-        stateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
+        stateEnergies[i] += - A0*acceptorInteraction[i];
     }
 }
 
@@ -449,8 +443,19 @@ void SystemGraph::initializeOccupiedStates() {
 
 void SystemGraph::initializePotential() {
 
-    finiteElementSolver = new CircularFEMSolver(radius, 500, 500, electrodeData);
-    finiteElementSolver->solvePoissonEquation();
+    finiteElementSolver = new FiniteElementeCircle(radius, 1e5);
+
+    for (int i = 0; i < electrodeData.size(); ++i) {
+        finiteElementSolver->setElectrode(
+            electrodeData[i]->voltage,
+            electrodeData[i]->angularPosition / 360.0 * 2.0*M_PI - 0.5*electrodeWidth,
+            electrodeData[i]->angularPosition / 360.0 * 2.0*M_PI + 0.5*electrodeWidth
+        );
+    }
+
+    finiteElementSolver->initRun(true);
+
+    finiteElementSolver->run();
 }
 
 void SystemGraph::updateStateEnergies() {
@@ -481,7 +486,11 @@ void SystemGraph::updateStateEnergies() {
     }
 
     for (int i = 0; i < nAcceptors; ++i) {
-        stateEnergies[i] = constantStateEnergies[i] - A0*acceptorInteraction[i];
+        double potentialEnergy = finiteElementSolver->getPotential(
+            acceptorCoordinates[i*2],
+            acceptorCoordinates[i*2 + 1]
+        );
+        stateEnergies[i] = potentialEnergy + acceptorDonorInteraction[i] + randomEnergies[i] - A0*acceptorInteraction[i];
     }
 }
 
@@ -601,22 +610,20 @@ void SystemGraph::resetEventCounts() {
 }
 
 void SystemGraph::resetPotential() {
-
+    // Subtracts current potential energy
     for (int i = 0; i < nAcceptors; ++i) {
-        constantStateEnergies[i] -= finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
-        stateEnergies[i] -= finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] -= finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
     }
 }
 
 void SystemGraph::updatePotential() {
-
+    // Adds current potential energy
     for (int i = 0; i < nAcceptors; ++i) {
-        constantStateEnergies[i] += finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
-        stateEnergies[i] += finiteElementSolver->calculatePotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] += finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
     }
 }
 
-void SystemGraph::updateElectrodeVoltage(int electrodeIndex, double voltage) {
+void SystemGraph::updateVoltages(std::vector<double>& voltages) {
     /**
      * 
      * Whole process of updating an electrode and updating constant state energies.
@@ -627,51 +634,21 @@ void SystemGraph::updateElectrodeVoltage(int electrodeIndex, double voltage) {
     if(finiteElementSolver == nullptr) {
         std::cerr << "Solver not initialized, cant update potential" << "\n";
     }
-    else if(electrodeIndex >= nElectrodes) {
-        throw std::invalid_argument("Electrode index out of bounds");
-    }
-
-    setElectrodeVoltage(electrodeIndex, voltage);
-    for(int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
-        constantStateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
-    }
-
-    double angularPosition = electrodeData[electrodeIndex]->angularPosition;
-
-    resetPotential();
-
-    finiteElementSolver->updateElectrode(angularPosition, electrodeIndex, electrodeData[electrodeIndex]->voltage);
-    finiteElementSolver->solvePoissonEquation();
-    
-    updatePotential();
-}
-
-void SystemGraph::multiElectrodeUpdate(std::vector<int> electrodeIndices, std::vector<double> newVoltages) {
-
-    if (finiteElementSolver == nullptr) {
-        std::cerr << "Solver not initialized, can not update potential" << "\n";
-    }
-
-    for (const int& electrodeIndex : electrodeIndices) {
-        if (electrodeIndex >= nElectrodes || electrodeIndex < 0) {
-            throw std::invalid_argument("Electrode index is out of bounds");
-        }
-    }
-
-    if (electrodeIndices.size() != newVoltages.size()) {
-        throw std::invalid_argument("Number of electrode indices do not match voltage indices");
-    }
-    
-    for (int i = 0; i < electrodeIndices.size(); ++i) {
-        setElectrodeVoltage(electrodeIndices[i], newVoltages[i]);
-        constantStateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
-        stateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
+    else if(voltages.size() > nElectrodes) {
+        throw std::invalid_argument("Too many voltages");
     }
 
     resetPotential();
 
-    finiteElementSolver->updateMultipleElectrodes(electrodeIndices, newVoltages);
-    finiteElementSolver->solvePoissonEquation();
+    for (int i = 0; i < voltages.size(); ++i) {
+        finiteElementSolver->updateElectrodeVoltage(i, voltages[i]);
+    }
 
+    finiteElementSolver->run();
+        
     updatePotential();
+
+    for (int i = 0; i < nElectrodes; ++i) {
+        stateEnergies[i + nAcceptors] = voltages[i]*e / kbT;
+    }
 }

@@ -8,14 +8,11 @@
 
 #include "SystemGraph.h"
 #include "Simulator.h"
-#include "CircularFEMSolver.h"
+#include "FEMmethods.h"
 #include "utils.h"
 
 int main(int argc, char* argv[]) {
     std::string defaultConfig = "default_configs";
-    int nAcceptors = 200;
-    int numOfElectrodes = 8;
-    int numOfStates = 200 + numOfElectrodes;
     /* //argParser(argc, argv);
     
 
@@ -55,12 +52,55 @@ int main(int argc, char* argv[]) {
 
     std::cout<<averageCurrent<<"\n"; */
     Simulator sim(defaultConfig);
-    recordDevice("1", 1e4, 1e6, defaultConfig, "currentData");
+
+    int nA = sim.system->nAcceptors;
+    int nE = sim.system->nElectrodes;
+    int numOfStates = 200 + nE;
+    int numPoints = 20;
+    double minVoltage = -1.5;
+    double maxVoltage = 1.5;
+    double range = maxVoltage - minVoltage;
+    double vStep = range / static_cast<double>(numPoints-1);
+
+    double current = 0.0;
+    std::ofstream file;
+    file.open("current_save.csv");
+    std::vector<double> voltageSetting = {
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    };
+    /* int outputElectrodeIdx = 0;
+    for (int i = 0; i < numPoints; ++i) {
+        voltageSetting[1] = minVoltage + i*vStep;
+        //std::cout << voltageSetting[1] << "\n";
+        current = 0.0;
+        sim.simulateNumberOfSteps(1e4, false);
+        sim.system->updateVoltages(voltageSetting);
+        double startTime = sim.system->getSystemTime();
+        sim.simulateNumberOfSteps(1e5, true);
+        int inCounts = 0;
+        int outCounts = 0;
+        for (int i = 0; i < numOfStates; ++i) {
+            inCounts += sim.system->getNumberOfEvents(i, nA+outputElectrodeIdx);
+            outCounts += sim.system->getNumberOfEvents(nA+outputElectrodeIdx, i);
+        }
+        current = static_cast<double>(inCounts - outCounts);
+        double endTime = sim.system->getSystemTime();
+        file << current / (endTime - startTime) << "\n";
+    }
+    file.close(); */
+    //recordDevice("1", 1e4, 1e6, defaultConfig, "currentData");
     /* for (int i = 0; i < sim.system->numOfStates; ++i) {
         std::cout << sim.system->stateEnergies[i] << "\n";
     } */
     //sim.simulateNumberOfSteps(1e3, true);
-    std::vector<int> netCounts(numOfElectrodes, 0);
+    //std::vector<int> netCounts(numOfElectrodes, 0);
     /* for (int i = 0; i < numOfElectrodes; ++i) {
         int inCounts = 0;
         int outCounts = 0;

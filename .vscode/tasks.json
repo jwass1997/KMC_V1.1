@@ -12,7 +12,7 @@
                 "Simulator.cpp",
                 "utils.cpp",
                 //"FEMSolver.cpp",   
-                "CircularFEMSolver.cpp",
+                "FEMmethods.cpp",
                 "-o",
                 //"CircularFEMSolver",
                 "main",

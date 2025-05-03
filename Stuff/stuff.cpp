@@ -211,3 +211,74 @@ std::string saveFolder = "currentData";
     }
     std::string fileName = "currents.npz";
     cnpy::npz_save(fileName, "currents", currents.data(), {static_cast<size_t>(numOfPoints)}, "w");
+
+    void SystemGraph::multiElectrodeUpdate(std::vector<int> electrodeIndices, std::vector<double> newVoltages) {
+
+        if (finiteElementSolver == nullptr) {
+            std::cerr << "Solver not initialized, can not update potential" << "\n";
+        }
+    
+        for (const int& electrodeIndex : electrodeIndices) {
+            if (electrodeIndex >= nElectrodes || electrodeIndex < 0) {
+                throw std::invalid_argument("Electrode index is out of bounds");
+            }
+        }
+    
+        if (electrodeIndices.size() != newVoltages.size()) {
+            throw std::invalid_argument("Number of electrode indices do not match voltage indices");
+        }
+        
+        for (int i = 0; i < electrodeIndices.size(); ++i) {
+            setElectrodeVoltage(electrodeIndices[i], newVoltages[i]);
+            constantStateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
+            stateEnergies[nAcceptors + electrodeIndices[i]] = newVoltages[i]*e / kbT;
+        }
+    
+        resetPotential();
+    
+        finiteElementSolver->updateMultipleElectrodes(electrodeIndices, newVoltages);
+        finiteElementSolver->solvePoissonEquation();
+    
+        updatePotential();
+    }
+
+/* else if (firstCommand == "IVpoint") {
+        boost::program_options::options_description IVRunOptions("IV point calculation");
+        IVRunOptions.add_options()
+            ("voltage", boost::program_options::value<double>()->required())
+            ("numOfDevices", boost::program_options::value<int>()->default_value(30))
+            ("scanElectrodeIndex", boost::program_options::value<int>()->default_value(0))
+            ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
+            ("simulationSteps", boost::program_options::value<int>()->required())
+            ("numOfIntervals", boost::program_options::value<int>()->default_value(100))
+            ("ID", boost::program_options::value<int>()->required())
+            ("saveFolderPath", boost::program_options::value<std::string>()->required())
+        ;
+            
+        boost::program_options::variables_map IVRunVM;
+        boost::program_options::store(
+            boost::program_options::command_line_parser(
+                remainingCommand).options(IVRunOptions).run(),
+                IVRunVM);
+        boost::program_options::notify(IVRunVM);
+
+        std::vector<double> voltageSetting(8, 0.0);
+        voltageSetting[(IVRunVM["scanElectrodeIndex"].as<int>() + 1) % 8] = IVRunVM["voltage"].as<double>();
+
+        double current = IVPoint(
+            voltageSetting,
+            IVRunVM["numOfDevices"].as<int>(),
+            IVRunVM["scanElectrodeIndex"].as<int>(),
+            IVRunVM["equilibriumSteps"].as<int>(),
+            IVRunVM["simulationSteps"].as<int>(),
+            IVRunVM["numOfIntervals"].as<int>(),
+            IVRunVM["ID"].as<int>(),
+            "default_configs"
+        );
+
+        std::string fileName = IVRunVM["saveFolderPath"].as<std::string>() + "/point_" + std::to_string(IVRunVM["ID"].as<int>()) + ".npz";
+        cnpy::npz_save(fileName, "input", &IVRunVM["voltage"].as<double>(), {1}, "w");
+        cnpy::npz_save(fileName, "output", &current, {1}, "a");
+
+        return 1;
+    } */
