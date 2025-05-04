@@ -282,3 +282,168 @@ std::string saveFolder = "currentData";
 
         return 1;
     } */
+
+    std::string defaultConfig = "default_configs";
+    /* //argParser(argc, argv);
+    
+
+    int nAcceptors = 200;
+    int numOfElectrodes = 8;
+    int numOfStates = 200 + numOfElectrodes;
+    int scanElectrodeIndex = 0;
+    int simulationSteps = 1e5;
+    int numOfIntervals = 100;
+    Simulator sim(defaultConfig);
+
+    sim.simulateNumberOfSteps(1e4, false);
+
+    double averageCurrent = 0.0;
+    double totalTime = 0.0;
+    int totalNet = 0;
+    int intervalSteps = simulationSteps / numOfIntervals;
+    int intervalCounter = 0;
+    while(intervalCounter < numOfIntervals) {
+        double startClock = sim.system->getSystemTime();
+        sim.simulateNumberOfSteps(intervalSteps, true);
+        double endClock = sim.system->getSystemTime();
+        double elapsedTime = endClock - startClock;
+        int inCounts = 0;
+        int outCounts = 0;
+        for (int i = 0; i < numOfStates; ++i) {
+            outCounts += sim.system->getNumberOfEvents(nAcceptors+scanElectrodeIndex, i);
+            inCounts += sim.system->getNumberOfEvents(i, nAcceptors+scanElectrodeIndex); 
+        }
+        totalTime += elapsedTime;
+        totalNet += inCounts-outCounts;
+
+        sim.system->resetEventCounts();
+        intervalCounter++;
+    }
+    averageCurrent = static_cast<double>(totalNet) / totalTime;
+
+    std::cout<<averageCurrent<<"\n"; */
+    Simulator sim(defaultConfig);
+
+    int nA = sim.system->nAcceptors;
+    int nE = sim.system->nElectrodes;
+    int numOfStates = 200 + nE;
+    int numPoints = 50;
+    double minVoltage = -1.5;
+    double maxVoltage = 1.5;
+    double range = maxVoltage - minVoltage;
+    double vStep = range / static_cast<double>(numPoints-1);
+
+    double current = 0.0;
+    std::ofstream file;
+    file.open("current_save.csv");
+    std::vector<double> voltageSetting = {
+        0.0,
+        0.0,
+        -0.7,
+        1.1,
+        -0.8,
+        0.7,
+        -1.2,
+        1.0
+    };
+    sim.system->updateVoltages(voltageSetting);
+    /* FiniteElementeBase* finElem = sim.system->finiteElementSolver;
+
+    mfem::GridFunction potential = *(sim.system->finiteElementSolver->solutionVector);
+    auto mesh = finElem->mesh;
+    auto sol  = finElem->solutionVector;
+    int maxNumberOfElements = 1e5;
+    std::ofstream out("potential.csv");
+    out << "x,y,potential\n";
+    for (int i = 0; i < mesh->GetNV(); i++)
+    {
+        auto vert = mesh->GetVertex(i);             // a double[2]
+        double phi = (*sol)[i];                     // solution at that DOF
+        out << vert[0] << "," << vert[1] << "," << phi << "\n";
+    }
+    out.close(); */
+    
+    //recordDevice("1", 1e4, 1e6, defaultConfig, "currentData");
+    /* for (int i = 0; i < sim.system->numOfStates; ++i) {
+        std::cout << sim.system->stateEnergies[i] << "\n";
+    } */
+    //sim.simulateNumberOfSteps(1e3, true);
+    //std::vector<int> netCounts(numOfElectrodes, 0);
+    /* for (int i = 0; i < numOfElectrodes; ++i) {
+        int inCounts = 0;
+        int outCounts = 0;
+        for (int j = 0; j < numOfStates; ++j) {
+            inCounts += sim.system->getNumberOfEvents(j, nAcceptors+i);
+            outCounts += sim.system->getNumberOfEvents(nAcceptors+i, j);
+        }
+        netCounts[i] = inCounts - outCounts;
+        std::cout << netCounts[i] << "\n";
+    } */
+
+    /* for (int i = 0; i < nS; ++i) {
+        std::cout << sim.system->stateEnergies[i] << "\n";
+    } */
+
+    /* for (int i = 0; i < nAcceptors; ++i) {
+        std::cout << sim.system->acceptorCoordinates[i*2] << " " << sim.system->acceptorCoordinates[i*2+1] << "\n";
+    } */
+
+    std::string defaultConfig = "default_configs";
+
+    Simulator sim(defaultConfig);
+
+    int nA = sim.system->nAcceptors;
+    int nE = sim.system->nElectrodes;
+    int numOfStates = 200 + nE;
+    int numPoints = 200;
+    double minVoltage = -1.5;
+    double maxVoltage = 1.5;
+    double range = maxVoltage - minVoltage;
+    double vStep = range / static_cast<double>(numPoints-1);
+
+    double current = 0.0;
+    std::ofstream file;
+    file.open("current_save.csv");
+    std::vector<double> voltageSetting = {
+        0.0,
+        0.0,
+        -0.7,
+        1.1,
+        -0.8,
+        0.7,
+        -1.2,
+        1.0
+    };
+    sim.system->updateVoltages(voltageSetting);
+
+    int outputElectrodeIdx = 0;
+    for (int i = 0; i < numPoints; ++i) {
+        voltageSetting[1] = minVoltage + i*vStep;
+        sim.system->updateVoltages(voltageSetting);
+        current = 0.0;
+        sim.simulateNumberOfSteps(1e4, false);
+        sim.system->resetEventCounts();
+        double startTime = sim.system->getSystemTime();
+        sim.simulateNumberOfSteps(1e4, true);
+        int inCounts = 0;
+        int outCounts = 0;
+        for (int i = 0; i < numOfStates; ++i) {
+            inCounts += sim.system->getNumberOfEvents(i, nA+outputElectrodeIdx);
+            outCounts += sim.system->getNumberOfEvents(nA+outputElectrodeIdx, i);
+        }
+        current = static_cast<double>(inCounts - outCounts);
+        double endTime = sim.system->getSystemTime();
+        file << current / (endTime - startTime) << "\n";
+    }
+    file.close();
+
+    double myGetPotential(const double& x, const double& y, mfem::GridFunction solutionVector, int maxNumberOfElements) {
+        double radius = std::sqrt(2.0*M_PI*150.0*150.0 / 200.0);
+        int layers = std::sqrt(maxNumberOfElements / 6.0);
+        double deltaR = radius / layers;
+        int layer = std::sqrt(x * x + y * y) / deltaR + 0.5;
+        double phi = std::atan2(y, x) / (2 * PI);
+        // std::cout<<"return index: "<<int(3*(layers+1)*layers-3*layer*(layer+1) +
+        // (phi < 0 ? phi + 1 : phi) * 6 * layer + 0.5)<<std::endl;
+        return solutionVector[int(3 * (layers + 1) * layers - 3 * layer * (layer + 1) + (phi < 0 ? phi + 1 : phi) * 6 * layer + 0.5)];
+    } 

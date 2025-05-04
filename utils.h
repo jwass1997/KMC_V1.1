@@ -87,9 +87,7 @@ double IVPoint(
     int equilibriumSteps,
     int simulationSteps,
     int numOfIntervals,
-    int ID,
-    const std::string& defaultConfig,
-    const std::string& saveFolderPath
+    const std::string& defaultConfig
 );
 
 double currentFromVoltageCombination(

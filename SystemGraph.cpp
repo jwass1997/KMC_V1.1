@@ -388,7 +388,7 @@ void SystemGraph::initializeStateEnergies() {
             acceptorCoordinates[i*2], 
             acceptorCoordinates[i*2 + 1]
         )*e / kbT;
-        std::cout << potentialEnergy << "\n";
+        //std::cout << potentialEnergy << "\n";
 		double sumOfInverseDistances = 0.0;
 		for(int j = 0; j <  nDonors; j++) {
 			sumOfInverseDistances += 1.0 / calculateDistance(
@@ -410,8 +410,8 @@ void SystemGraph::initializeStateEnergies() {
         stateEnergies[i] = potentialEnergy + acceptorDonorInteraction[i] + randomEnergies[i];
 	}
     // Potential energy (for electrodes only)
-	for(int i = nAcceptors; i < nAcceptors+nElectrodes; ++i) {
-		stateEnergies[i] = electrodeData[i-nAcceptors]->voltage*e / kbT;
+	for(int i = 0; i < nElectrodes; ++i) {
+		stateEnergies[i] = finiteElementSolver->getPotential(electrodeCoordinates[i*2], electrodeCoordinates[i*2 + 1])*e / kbT;
 	}
     // Acc-Acc interaction
     for (int i = 0; i < nAcceptors; ++i) {
@@ -447,15 +447,13 @@ void SystemGraph::initializePotential() {
 
     for (int i = 0; i < electrodeData.size(); ++i) {
         finiteElementSolver->setElectrode(
-            electrodeData[i]->voltage,
-            electrodeData[i]->angularPosition / 360.0 * 2.0*M_PI - 0.5*electrodeWidth,
-            electrodeData[i]->angularPosition / 360.0 * 2.0*M_PI + 0.5*electrodeWidth
+            0.0,
+            electrodeData[i]->angularPosition/360.0 * 2.0*M_PI - 0.5*electrodeWidth / radius,
+            electrodeData[i]->angularPosition/360.0 * 2.0*M_PI + 0.5*electrodeWidth / radius
         );
     }
 
     finiteElementSolver->initRun(true);
-
-    finiteElementSolver->run();
 }
 
 void SystemGraph::updateStateEnergies() {
@@ -489,7 +487,7 @@ void SystemGraph::updateStateEnergies() {
         double potentialEnergy = finiteElementSolver->getPotential(
             acceptorCoordinates[i*2],
             acceptorCoordinates[i*2 + 1]
-        );
+        )*e / kbT;
         stateEnergies[i] = potentialEnergy + acceptorDonorInteraction[i] + randomEnergies[i] - A0*acceptorInteraction[i];
     }
 }
@@ -612,24 +610,25 @@ void SystemGraph::resetEventCounts() {
 void SystemGraph::resetPotential() {
     // Subtracts current potential energy
     for (int i = 0; i < nAcceptors; ++i) {
-        stateEnergies[i] -= finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] -= finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1])*e / kbT;
+    }
+    for (int i = 0; i < nElectrodes; ++i) {
+        stateEnergies[i + nAcceptors] -= finiteElementSolver->getPotential(electrodeCoordinates[i*2], electrodeCoordinates[i*2 + 1])*e / kbT;
     }
 }
 
 void SystemGraph::updatePotential() {
     // Adds current potential energy
     for (int i = 0; i < nAcceptors; ++i) {
-        stateEnergies[i] += finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1]);
+        stateEnergies[i] += finiteElementSolver->getPotential(acceptorCoordinates[i*2], acceptorCoordinates[i*2 + 1])*e / kbT;
+    }
+
+    for (int i = 0; i < nElectrodes; ++i) {
+        stateEnergies[i + nAcceptors] += finiteElementSolver->getPotential(electrodeCoordinates[i*2], electrodeCoordinates[i*2 + 1])*e / kbT;
     }
 }
 
 void SystemGraph::updateVoltages(std::vector<double>& voltages) {
-    /**
-     * 
-     * Whole process of updating an electrode and updating constant state energies.
-     * After calling this function the device is ready to be simulated again.
-     * 
-     */
 
     if(finiteElementSolver == nullptr) {
         std::cerr << "Solver not initialized, cant update potential" << "\n";
@@ -647,8 +646,4 @@ void SystemGraph::updateVoltages(std::vector<double>& voltages) {
     finiteElementSolver->run();
         
     updatePotential();
-
-    for (int i = 0; i < nElectrodes; ++i) {
-        stateEnergies[i + nAcceptors] = voltages[i]*e / kbT;
-    }
 }

@@ -150,20 +150,21 @@ void recordDevice(
     cnpy::npz_save(deviceName, "device_time", &total_time, {1}, "a");
 }
 
-/* double IVPoint(
+double IVPoint(
     std::vector<double> voltageSetting,
     int numOfDevices,
     int scanElectrodeIndex,
     int equilibriumSteps,
     int simulationSteps,
     int numOfIntervals,
-    int ID,
     const std::string& defaultConfig) {
 
         double averageOutputCurrent = 0.0;
         
         for (int deviceNumber = 0; deviceNumber < numOfDevices; ++deviceNumber) {
             Simulator simulator(defaultConfig);
+            std::vector<double> initVoltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            simulator.system->updateVoltages(initVoltages);
             double current = currentFromVoltageCombination(
                 simulator,
                 voltageSetting,
@@ -191,8 +192,7 @@ double currentFromVoltageCombination(
         
         int nAcceptors = simulator.system->getAcceptorNumber();
         int numOfStates = simulator.system->getNumOfStates();
-        std::vector<int> electrodeIndices = {0, 1, 2, 3, 4, 5, 6, 7};
-        simulator.system->multiElectrodeUpdate(electrodeIndices, voltageSetting); 
+        simulator.system->updateVoltages(voltageSetting); 
         
         simulator.simulateNumberOfSteps(equilibriumSteps, false);
 
@@ -223,9 +223,9 @@ double currentFromVoltageCombination(
         averageCurrent = static_cast<double>(totalNet) / totalTime;
 
         return averageCurrent;
-} */
+}
 
-/* void createBatchOfSingleSystem(
+void createBatchOfSingleSystem(
     int batchSize, 
     int outputElectrodeIndex,
     double minVoltage, 
@@ -259,10 +259,13 @@ double currentFromVoltageCombination(
         #pragma omp for schedule(dynamic)
         for (int batch = 0; batch < batchSize; ++batch) {
             Simulator simulator(defaultConfigs);
+            std::vector<double> initVoltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+            simulator.system->updateVoltages(initVoltages);
+
             int nAcceptors = simulator.system->getAcceptorNumber();
             int numOfStates = simulator.system->getNumOfStates();
 
-            std::vector<double> voltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};//sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+            std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
             voltages[(outputElectrodeIndex+1) % 8] = uni(rng);
             voltages[outputElectrodeIndex] = 0.0;
 
@@ -270,11 +273,6 @@ double currentFromVoltageCombination(
                 inputs[batch*numOfElectrodes + i] = voltages[i];
             }
 
-            simulator.system->multiElectrodeUpdate(systemElectrodes, voltages);
-            simulator.simulateNumberOfSteps(equilibriumSteps, false);
-
-            int intervalSteps = simulationSteps / numOfIntervals;
-            int intervalCounter = 0;
             double averageOutputCurrent = currentFromVoltageCombination(
                 simulator,
                 voltages,
@@ -292,9 +290,9 @@ double currentFromVoltageCombination(
     cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
-} */
+}
 
-/* int argParser(int argc, char* argv[]) {
+int argParser(int argc, char* argv[]) {
 
     boost::program_options::options_description globalOptions(" ");
 
@@ -393,4 +391,4 @@ double currentFromVoltageCombination(
     }
 
     return 0;
-} */
+}
