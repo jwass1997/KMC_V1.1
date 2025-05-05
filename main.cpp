@@ -13,19 +13,19 @@
 
 int main(int argc, char* argv[]) {
 
-    std::string defaultConfig = "default_configs";
+    /* std::string defaultConfig = "default_configs";
 
-    /* int numPoints = 100;
+    int numPoints = 100;
     double minVoltage = -1.5;
     double maxVoltage = 1.5;
     double range = maxVoltage - minVoltage;
     double vStep = range / static_cast<double>(numPoints-1);    
 
-    int numOfDevices = 5;
+    int numOfDevices = 1;
     int scanElectrodeIndex = 0;
     int controlElectrode = 1;
     int equilibriumSteps = 1e4;
-    int simulationSteps = 1e5;
+    int simulationSteps = 1e4;
     int numOfIntervals = 1;
     
     std::ofstream file;
@@ -34,7 +34,8 @@ int main(int argc, char* argv[]) {
     std::vector<double> voltageSetting = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     for (int _point = 0; _point < numPoints; ++_point) {
 
-        voltageSetting[controlElectrode] = minVoltage + -_point*vStep;
+        voltageSetting[controlElectrode] = minVoltage + _point*vStep;
+        //std::cout << voltageSetting[controlElectrode] << "\n";
         current = IVPoint(
             voltageSetting,
             numOfDevices,
@@ -45,10 +46,7 @@ int main(int argc, char* argv[]) {
             defaultConfig  
         );
 
-        std::cout << "_point==" << _point << "\n"
-                  << "current==" << current << "\n";
-
-        file << voltageSetting[controlElectrode] << current << "\n";
+        file << current << "\n";
     }
 
     file.close(); */

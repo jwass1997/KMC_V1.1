@@ -249,13 +249,15 @@ void createBatchOfSingleSystem(
     std::vector<double> inputs(batchSize*numOfElectrodes, 0.0);
     std::vector<double> outputs(batchSize, 0.0);   
     std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), static_cast<size_t>(numOfElectrodes)}; 
-    std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)}; 
+    std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)};  
 
+    std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
 
     #pragma omp parallel 
     {   
         std::mt19937 rng(std::random_device{}() + omp_get_thread_num());
         std::uniform_real_distribution<double> uni(minVoltage, maxVoltage);
+
         #pragma omp for schedule(dynamic)
         for (int batch = 0; batch < batchSize; ++batch) {
             Simulator simulator(defaultConfigs);
@@ -264,8 +266,7 @@ void createBatchOfSingleSystem(
 
             int nAcceptors = simulator.system->getAcceptorNumber();
             int numOfStates = simulator.system->getNumOfStates();
-
-            std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+            
             voltages[(outputElectrodeIndex+1) % 8] = uni(rng);
             voltages[outputElectrodeIndex] = 0.0;
 
