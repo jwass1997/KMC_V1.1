@@ -66,5 +66,5 @@ if __name__ == "__main__":
     radius = 150.0
     R = np.sqrt(np.pi*radius*radius / 200)
     radius = radius / R
-    data = np.load("currentData/device_1.npz")
+    data = np.load("currentData/device_test.npz")
     visualizeCurrentCircularGeometry(radius, data)

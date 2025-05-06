@@ -251,7 +251,11 @@ void createBatchOfSingleSystem(
     std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), static_cast<size_t>(numOfElectrodes)}; 
     std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)};  
 
-    std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+    std::vector<double> voltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};//sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+    
+    double temperature = 0.0;
+    double sigma = 0.0;
+    int nDonors = 0;
 
     #pragma omp parallel 
     {   
@@ -261,6 +265,12 @@ void createBatchOfSingleSystem(
         #pragma omp for schedule(dynamic)
         for (int batch = 0; batch < batchSize; ++batch) {
             Simulator simulator(defaultConfigs);
+            
+            if (batch == 0) {
+                temperature = simulator.system->T;
+                sigma = simulator.system->energyDisorder;
+                nDonors = simulator.system->nDonors;
+            }
             std::vector<double> initVoltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
             simulator.system->updateVoltages(initVoltages);
 
@@ -291,6 +301,9 @@ void createBatchOfSingleSystem(
     cnpy::npz_save(fileName, "ID", &batchID, {1}, "w");
     cnpy::npz_save(fileName, "inputs", inputs.data(), shapeInputs, "a");
     cnpy::npz_save(fileName, "outputs", outputs.data(), shapeOutputs, "a");
+    cnpy::npz_save(fileName, "T/K", &temperature, {1}, "a");
+    cnpy::npz_save(fileName, "sigma/kbT", &sigma, {1}, "a");
+    cnpy::npz_save(fileName, "nDonors", &nDonors, {1}, "a");
 }
 
 int argParser(int argc, char* argv[]) {
