@@ -398,6 +398,70 @@ int argParser(int argc, char* argv[]) {
 
         return 1;
     }
+
+    else if (firstCommand == "voltageSweep") {
+        boost::program_options::options_description sweepOptions("Sweep run options");
+        sweepOptions.add_options()
+            ("numOfPoints", boost::program_options::value<int>()->default_value(100))
+            ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
+            ("simulationSteps", boost::program_options::value<int>()->required())
+            ("fileName", boost::program_options::value<std::string>()->required())
+            ("min", boost::program_options::value<double>()->default_value(-1.5))
+            ("max", boost::program_options::value<double>()->default_value(1.5))
+        ;
+
+        boost::program_options::variables_map sweepVM;
+        boost::program_options::store(
+            boost::program_options::command_line_parser(
+                remainingCommand).options(sweepOptions).run(),
+                sweepVM);
+        boost::program_options::notify(sweepVM);
+
+        std::string saveFolderPath = "currentData/sweep_" + sweepVM["fileName"].as<std::string>() + ".npz";
+        
+        int outputElectrodeIndex = 0;
+        int inputElectrodeIndex = 5;
+        std::vector<double> inputs(sweepVM["numOfPoints"].as<int>(), 0.0);
+        std::vector<double> outputs(sweepVM["numOfPoints"].as<int>(), 0.0);
+        
+        std::vector<double> controlVoltages = sampleVoltageSetting(8, sweepVM["min"].as<double>(), sweepVM["max"].as<double>());
+        controlVoltages[outputElectrodeIndex] = 0.0;
+
+        std::vector<double> initSetting {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
+        Simulator sim("default_configs");
+        sim.system->updateVoltages(initSetting);   
+        double averageCurrent = 0.0;
+
+        for (int i = 0; i < sweepVM["numOfPoints"].as<int>(); ++i) {
+            controlVoltages[inputElectrodeIndex] = sampleFromUniformDistribution(sweepVM["min"].as<double>(), sweepVM["max"].as<double>());
+            sim.system->updateVoltages(controlVoltages);
+            averageCurrent = currentFromVoltageCombination(
+                sim,
+                controlVoltages,
+                outputElectrodeIndex,
+                sweepVM["equilibriumSteps"].as<int>(),
+                sweepVM["simulationSteps"].as<int>(),
+                1,
+                "default_configs"
+            );
+
+            inputs[i] = controlVoltages[inputElectrodeIndex];
+            outputs[i] = averageCurrent;
+        }
+
+        controlVoltages[outputElectrodeIndex] = 0.0;
+        controlVoltages[inputElectrodeIndex] = 0.0;
+
+        std::vector<size_t> controlVoltagesShape = {static_cast<size_t>(controlVoltages.size())};
+        std::vector<size_t> dataShape = {static_cast<size_t>(sweepVM["numOfPoints"].as<int>())};
+        
+        cnpy::npz_save(saveFolderPath, "input_idx", &inputElectrodeIndex, {1}, "w");
+        cnpy::npz_save(saveFolderPath, "output_idx", &outputElectrodeIndex, {1}, "a");
+        cnpy::npz_save(saveFolderPath, "control_voltages", controlVoltages.data(), controlVoltagesShape, "a");
+        cnpy::npz_save(saveFolderPath, "inputs", inputs.data(), dataShape, "a");
+        cnpy::npz_save(saveFolderPath, "outputs", outputs.data(), dataShape, "a");
+    }
     
     else {
         std::cerr << "Unknown command: " << firstCommand << "\n";

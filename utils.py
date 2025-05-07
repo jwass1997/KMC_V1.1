@@ -61,6 +61,7 @@ def visualizeCurrentCircularGeometry(radius: float,
                         alpha=np.sqrt(current_value / max_current))
 
     plt.show()
+    plt.savefig("_.png")
 
 if __name__ == "__main__":
     radius = 150.0

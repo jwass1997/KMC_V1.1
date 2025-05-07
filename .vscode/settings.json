@@ -89,7 +89,9 @@
         "__tree": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__functional_03": "cpp",
+        "__functional_base": "cpp"
     },
     "cmake.sourceDirectory": "/home/jacob/KMC/Stuff/mfem-4.7"
 }
