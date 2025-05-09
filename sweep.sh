@@ -11,7 +11,7 @@ build() {
 
 run() {
 	echo "Starting to sweep..."
-	./main voltageSweep --numOfPoints=100 --equilibriumSteps=10000 --simulationSteps=100000 --fileName=test --min=-5.0 --max=10.0
+	./main voltageSweep --numOfPoints=50 --equilibriumSteps=10000 --simulationSteps=100000 --fileName=test --min=-2.0 --max=2.0
 }
 
 build
