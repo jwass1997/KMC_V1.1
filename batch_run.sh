@@ -2,7 +2,7 @@
 
 build() {
 	echo "Compiling..."
-	g++ -std=c++17 -O3 \
+	g++ -std=c++17 -Ofast \
 	FEMmethods.cpp SystemGraph.cpp Simulator.cpp utils.cpp main.cpp \
 	-o main \
 	-lmfem -lm -lcnpy -lz -fopenmp -lboost_program_options \
@@ -11,7 +11,7 @@ build() {
 
 run() {
 	echo "Creating batch..."
-	./main batchRun --batchSize=500 --equilibriumSteps=10000 --simulationSteps=100000 --batchName=test
+	./main batchRun --batchSize=100 --equilibriumSteps=10000 --simulationSteps=100000 --batchName=4
 }
 
 build

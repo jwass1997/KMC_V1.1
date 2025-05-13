@@ -251,7 +251,7 @@ void createBatchOfSingleSystem(
     std::vector<size_t> shapeInputs = {static_cast<size_t>(batchSize), static_cast<size_t>(numOfElectrodes)}; 
     std::vector<size_t> shapeOutputs = {static_cast<size_t>(batchSize)};  
 
-    std::vector<double> voltages = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};//sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);
+    std::vector<double> voltages = sampleVoltageSetting(numOfElectrodes, -1.5, 1.5);//{0.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, 0.0};
     
     double temperature = 0.0;
     double sigma = 0.0;
