@@ -1,4 +1,5 @@
 #include <random>
+#include <algorithm>
 #include <omp.h>
 #include <boost/program_options.hpp>
 
@@ -51,6 +52,25 @@ double calculateDistance(
     return distance;
 }
 
+std::vector<double> calculateSlopes(
+    std::vector<double> fX,
+    std::vector<double> X) {
+        
+    if (fX.size() != X.size()) {
+        std::cerr << "Slope can not be calculated if sizes do not match" << "\n";
+    }
+
+    std::vector<double> slopes(fX.size(), 0.0);
+
+    double _slope = 0.0;
+    for (int i = 1; i < slopes.size(); ++i) {
+        _slope = (fX[i] - fX[i-1]) / (X[i] - X[i-1]);
+        slopes[i] = _slope;
+    }
+
+    return slopes;
+}
+
 void createDirectoryFromStringPath(const std::string& path, const std::string& folderName) {
 
     /**
@@ -59,7 +79,7 @@ void createDirectoryFromStringPath(const std::string& path, const std::string& f
      * 
      */
 
-    if(folderName.empty()) {
+    if (folderName.empty()) {
         std::cerr << "Must specify a folder name " << "\n";
         return;
     }
@@ -312,7 +332,8 @@ int argParser(int argc, char* argv[]) {
 
     globalOptions.add_options()
         ("help, h", "help message")
-        ("command", boost::program_options::value<std::string>(), "command to run");
+        ("command", boost::program_options::value<std::string>(), "command to run")
+    ;
     
     boost::program_options::positional_options_description position;
     position.add("command", 1);
@@ -374,6 +395,8 @@ int argParser(int argc, char* argv[]) {
             ("equilibriumSteps", boost::program_options::value<int>()->default_value(1e4))
             ("simulationSteps", boost::program_options::value<int>()->required())
             ("batchName", boost::program_options::value<std::string>()->required())
+            ("min", boost::program_options::value<double>()->default_value(-1.5))
+            ("max", boost::program_options::value<double>()->default_value(1.5))
         ;
         
         boost::program_options::variables_map batchRunVM;
@@ -461,6 +484,10 @@ int argParser(int argc, char* argv[]) {
         cnpy::npz_save(saveFolderPath, "control_voltages", controlVoltages.data(), controlVoltagesShape, "a");
         cnpy::npz_save(saveFolderPath, "inputs", inputs.data(), dataShape, "a");
         cnpy::npz_save(saveFolderPath, "outputs", outputs.data(), dataShape, "a");
+    }
+
+    else if (firstCommand == "") {
+
     }
     
     else {
